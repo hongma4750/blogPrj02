@@ -44,7 +44,7 @@ import sist.co.Service.SistMemberService;
 
 
 @Controller
-public class SistMemberController {
+public class SistMemberController { 
 	
 	private static final Logger logger = LoggerFactory.getLogger(SistMemberController.class);
 	 
