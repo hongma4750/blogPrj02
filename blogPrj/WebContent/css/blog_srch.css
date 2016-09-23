@@ -1,0 +1,68 @@
+@CHARSET "UTF-8";
+
+	#scon {
+		font-family: 돋움, Dotum, Helvetica, sans-serif;
+		font-size: 12px;
+	}
+
+	.s_top{
+		margin: 10px;
+	}
+	
+	#scon .navbar-left {
+		border: 5px solid #E9E9E9;
+		padding:6px;
+		width: 980px;
+		height:58px;
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+	
+	
+	.srch_result{
+		padding: 10px;
+		padding-bottom: 40px;
+		border-top: 2px solid silver;
+		border-bottom: 1px solid silver;
+	}
+
+	.s_con {
+		margin-bottom: 30px;
+	}
+	
+	.s2{
+		font-size: 11px;
+		color: rgb(138, 131, 126);
+		
+	}
+	.s3 {
+		float:right;
+		color: rgb(138, 131, 126);
+		font-size: 11px;
+		
+	}
+	.s4 {
+		display:block;
+		margin-top: 10px;
+	}
+	.right_cat {
+		float: right;
+	}
+	
+	
+	.srch_paginglist {
+		padding-top: 10px;
+		width:980px;
+		height: 44px;
+		text-align:center;
+	}
+	
+	
+	.srch_paginglist .sp1{ /* 코딩할땐 :first 해서 첫 페이징 강조해주면 될듯. 클릭한 쪽만 css바뀌게 */
+		font-weight: bold;
+		color: #FF7700;
+	}
+	
+	.srch_paginglist .sp2{
+		color: silver;
+	}

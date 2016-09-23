@@ -1,0 +1,675 @@
+@CHARSET "UTF-8";
+ 
+	@font-face{
+		font-family: '돋움',Dotum,Helvetica,sans-serif;   
+		font-size: 12px
+		src:url('../font/sae.ttf') format('truetype');
+	}
+	
+body {
+	font-family: '돋움',Dotum,Helvetica,sans-serif;   
+	
+}
+input, select {  vertical-align:middle; font-size:1em; font-family:"돋움", dotum; }	
+
+#cal_footer{
+	height: 31px;	
+}
+
+button {
+	    color: #222;
+	    letter-spacing: 0;
+	    vertical-align: middle;
+	    padding: 3px 6px 2px;
+	    _padding-bottom: 0;
+	    overflow: visible;
+	    cursor: pointer;
+	    border: 1px solid #cbcbcb;
+	    line-height: 20px;
+	    text-decoration: none!important;
+	    display: inline-block;
+	    -webkit-appearance: none;
+	    background: #f8f8f8;
+	}
+	
+	select{
+		height: 26px;
+	}
+	
+	input{
+		height: 26px;
+	}
+	
+	* {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+	}
+	
+	input:focus {
+    outline: 0;
+    border-color: #9155e5;
+	}
+	
+	h3{
+		
+    	color: #222;
+	}
+	#wrap{
+		
+		margin:0 auto;
+		padding:0;
+		text-align:left;
+		position:relative;
+		
+	}
+	
+	#header {
+	    position: relative;
+	    width: 100%;  
+	}
+	
+	#header_logo{
+		position: relative;
+	    width: 100%;
+	    height: 38px;
+	    _height /**/: 56px;
+	    margin: 0 auto;
+	    padding-top: 18px;
+	    
+	}
+	
+	#header_nav{
+		position: relative;
+	    clear: both;
+	    height: 38px;
+	   
+	}
+	
+	/* 전체 영역 */
+	#container{
+		top: 3px;
+		bottom: 29px;
+		left: 0;
+		right: 0;
+		background-color: #fff;
+		z-index: 25;
+		margin: 10px 0;
+	  	zoom: 1;
+	    position: relative;
+	}
+	
+	/* 왼쪽 메뉴 */
+	#left_callist{
+	   position: absolute;
+	   top: 0;
+	   left: 0;
+	   bottom: 0;
+	   width: 250px;
+	   border-right: 1px solid #31333b;
+	   background: #464854;
+	   line-height: normal;
+	   z-index: 20;
+	}
+	
+	/* 메인 */
+	#section_cen{
+		position: relative;
+		width: 100%;
+		left: 124px;
+		overflow-y: hidden;
+		overflow-x: hidden;
+	}
+	
+	#footer{
+		width:50px;
+		clear: both;
+	    margin: 0;
+	    padding: 22px 0 25px;
+	    border-top: 3px solid #000;
+	    background: #3f3f3f;
+	    text-align: center;
+	}
+	
+	/* 일정 쓰기 버튼 */
+/* 	.sch_header{
+		width:100%;
+		padding-left:20px;
+		border-bottom: 1px solid #d9d9d9;
+	}
+	 */
+	.sch_body{
+		padding-left:20px;
+	}
+	
+	.section1{
+		border-bottom: 5px solid #d9d9d9;
+	}
+	.pre{
+		color: #999;
+		font-weight: normal;
+	}
+	.sch_wbtn{
+		display: block;
+	    border: 1px solid rgba(0,0,0,0.15);
+	    color: #fff;
+	    font-weight: bold;
+	    text-align: center;
+	    line-height: 35px;
+	    background: #9155e5;
+	    height: 34px;
+	    overflow: hidden;
+	    width: auto;
+	    cursor: pointer;
+	    position: relative;
+	}
+	/* 미니 캘린더 */
+	.mini_cal{
+		height: 157px;
+	}
+	
+	/* 내 캘린더 토글*/
+	.cal_tit{
+		padding-left: 18px;
+		width: 240px;
+		height: 26px;
+		float: left;
+	}
+	
+	/* 캘린더 만들기 */
+	.cal_make{
+		padding-left: 18px;
+		display:inline-block;
+		left: 200px;
+	}
+	
+	/* 캘린더 설정 */
+	.cal_set{
+	
+		
+	}
+	
+	/* 캘린더 리스트 */
+	.category_list{
+		width: 236px;
+	}
+	
+	/* 중요 일정 보기 */
+	#important_view{
+		display: block;
+		height: 29px;
+	}
+	
+	
+	
+	/* 오래된 일정 정리하기 */
+	#old_clean{
+		display: block;
+		height: 29px;
+	}
+	.tit {
+	    top: 8px;
+	    font-size: 12px;
+	    font-weight: bold;
+	    padding-right: 60px;
+	    display: inline-block;
+	}
+
+	.pos_input{
+		display: inline-block;
+	    overflow: hidden;
+	    margin-right: 121px;
+	    border: 1px solid #cbcbcb;
+	    
+	}
+	.sch_tr{
+	    left: 0;
+	    font-weight: bold;
+	   	height: 38px;	
+	}
+	
+	.date{
+		padding-top: 10px;
+		border-bottom: 1px solid #f1f1f1;
+	}
+	
+	.invitee{
+		padding-top: 10px;
+		border-bottom: 1px solid #f1f1f1;
+		padding: 0 0 12px 60px;
+	}
+	
+	.inne{
+		padding-top: 10px;
+		border-bottom: 1px solid #f1f1f1;
+	}
+
+	.alarm{
+		border-bottom: 1px solid #f1f1f1;
+	}
+	
+	._back btn_back_calender{
+	    position: absolute;
+	    top: 1px;
+	    left: 0;
+	    width: 1px;
+	    height: 9px;
+	    background-color: #999;
+	}
+	
+	.sch_body {
+	    position: relative;
+	    overflow: hidden;
+	    background: #fff;
+	    zoom: 1;
+	}
+	
+	/* 저장 버튼*/
+	save_btn {
+	    background-image: url(https://ssl.pstatic.net/static/calendar/2016/sp_works_e15933.png);
+	    background-position: -273px -230px;
+	    background-repeat: no-repeat;
+	    width: 58px;
+	    height: 28px;
+	    display: inline-block;
+	    vertical-align: top;
+	    margin: -2px 5px 0 0;
+	    vertical-align: middle;
+	}
+	
+	.selectbox-source{
+	    border: 1px solid #cbcbcb;
+	}
+	
+	.time_selectbox-source{
+		border: 1px solid #cbcbcb;
+	}
+	
+	.time_selectbox-source-disabled{
+		border-color: #e3e3e3;
+    	background-color: #f7f7f7;
+	}
+	
+	
+	.selectbox13{
+	    display: inline;
+	    float: none;
+	    padding: 0;	
+	    margin-top:  \0/IE89;
+	    border: 0;
+	    background: 0;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    white-space: nowrap;
+	}
+	
+	/* 제목 */
+	.input_txt{
+		width: 544px;
+	}
+	
+	.important_chk{
+		padding-left: 10px;
+	}
+	
+	/* 일시 입력 */
+	.date_input{
+		width: 82px;
+	}
+	
+	.bar{
+		display: inline-block;
+	    margin-right: 1px;
+	    margin-top: 6px;
+	}
+	/* 참석자*/
+	.attendant_article {
+	    position: relative;
+	    max-height: 91px;
+	    overflow: hidden;
+	    overflow-y: auto;
+	    margin: 9px 0 0 0;
+	    border: 1px solid #e5e5e5;
+	    background: #fff;
+	}
+	
+	.blind {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 0;
+	    height: 0;
+	    overflow: hidden;
+	    visibility: hidden;
+	    font-size: 0;
+	    line-height: 0;
+	}
+	
+	.txt_ara{
+		overflow: auto;
+	    overflow-x: hidden;
+	    padding: 5px 0 3px 7px;
+	    border: 1px solid #c5c5c5;
+	    line-height: 17px;
+	    vertical-align: top;
+	    resize: none;
+	    width: 631px;
+	}
+	
+	._sticker li{
+		display: inline-block;
+	}
+	
+	._sticker{
+		display: inline-block;
+	}
+	
+	.sticker_section li {
+	    overflow: hidden;
+	    float: left;
+	    width: 90px;
+	    height: 90px;
+	    border: 1px solid #e5e5e5;
+	    vertical-align: top;
+	    cursor: pointer;
+	}
+	
+	.sticker_section li img {
+		vertical-align: middle;
+	    width: 19px;
+    	height: 17px;
+	}
+	
+	button img {
+	    vertical-align: middle;
+	    margin: 0 2px 1px 0;
+	}
+	
+	/* 설정 페이지 */
+	.tab-pane{
+		
+	}
+	.set_table{
+/* 		margin-top: 30px; */
+	    border-style: solid;
+   		border-color: #939393;
+   		border-width: 2px 0 1px 0;
+    	border-collapse: collapse;
+	}
+	.set_th{
+		padding-left: 10px;
+		vertical-align: middle;
+		font-weight: bold;
+		background-color: #f9f9f9;
+	}
+	
+	.set_tr{
+		padding-top: 20px;
+		border-top: 1px solid #ebebeb;
+	}
+	
+	.set_td{
+		vertical-align: middle;
+		padding-left: 10px;
+	    vertical-align: bottom;
+    	height: 25px;
+	}
+	.set_list li{
+		display: inline;
+		margin-right: 10px;
+	}
+	.set_list label {
+		font-weight: normal;
+	}
+	
+	.sch_set_th{
+		border-top: 1px solid #e3e3e3;
+	}
+	
+	
+ 	.sch_set_th th{
+		padding-left: 10px;
+		height: 25px;
+	    border-left: 1px solid #e3e3e3;
+	    background-color: #fafafa;
+	    color: #959595;
+	    font-weight: normal;
+	    text-align: center;
+	}
+	
+	.sch_set_th td{
+		text-align: center;
+		border-left: 1px solid #f1f1f1;
+	}
+	
+	.sch_set_td{
+		background-color: #fffcf5;
+		padding-left: 10px;
+		vertical-align: middle;
+		text-align: left;
+	}
+	
+	.set_btn_upup{
+		background-position: 0 0;
+		display: inline-block;
+	    overflow: hidden;
+	    float: left;
+	    width: 17px;
+	    height: 17px;
+	    margin-left: 4px;
+	    background: url(https://ssl.pstatic.net/static/calendar/2011/sp_btn_setorder.png);
+	    line-height: 999px;
+	    vertical-align: top;
+	    border-left: 1px solid #f1f1f1;
+	}
+	
+	.set_btn_up{
+		background-position:-40px 0;
+		display: inline-block;
+	    overflow: hidden;
+	    float: left;
+	    width: 17px;
+	    height: 17px;
+	    margin-left: 4px;
+	    background: url(https://ssl.pstatic.net/static/calendar/2011/sp_btn_setorder.png);
+	    line-height: 999px;
+	    vertical-align: top;
+	}
+	
+	.set_btn_down{
+		
+	}
+	
+	.set_btn_downdown{
+		
+	}
+	
+	.set_alarm_ubtn{
+		float: right;
+	}
+	
+	
+	.sch_set_th td{
+		text-align: center;
+		border-left: 1px solid #f1f1f1;
+	}
+	
+	/* 달력 만들기 */
+	.make_tit{
+	    width: 150px;
+	    font-weight: bold;
+	    display: inline-block;
+	}
+
+	
+	/* 달력 버튼 */
+	.search_area{
+		padding-left: 20px;
+	}
+	
+	.search_input{
+		width: 161px;
+		height: 32px;
+		border-color: #9155e5;
+	    color: #9155e5;
+	    font-weight: bold;
+	    font-size: 14px;
+	    
+	}
+	
+	.search_btn{
+		left: -5px;
+		position: relative;
+		width: 37px;
+		height: 32px;
+		border-color: #9155e5;
+		cursor: pointer;
+	    background: #fff;
+	    background-image: url(https://ssl.pstatic.net/static/calendar/2016/sp_ico_v36.png);
+    	background-repeat: no-repeat;
+    	background-position: -120px -213px;
+	}
+	
+	.search_detail{
+		position: relative;
+		width: 37px;
+		height: 32px;
+		background: #fff;
+   		border: 1px solid #cbcbcb;
+   		font-size: 14px;
+   		color: #555;
+	}
+	
+	.search_area_detail{
+		position: inherit;
+		padding-left: 20px;
+		padding-top: 0;
+		
+	}
+	
+	.search_area_detail_table{
+		position: relative;
+	}
+	
+	.search_lbl{
+		position: relative;
+		display:inline-block;
+		font-size: 12px;
+	}
+	
+	.ssdate{
+		width: 74px;
+		height: 26px;
+	}
+	
+	.stitle{
+		width: 161px;
+		height: 26px;
+	}
+	
+	.search_sel{
+		width: 161px;
+		height: 26px;
+	}
+	
+	.search_lbl{
+		
+	}
+	
+	.search_chk{
+		display: inline;
+		word-spacing: -1px;
+		font-size: 12px;
+		vertical-align: middle;
+		text-align: center;
+	}
+	
+	.search_detail_btn{
+		width: 54px;
+		height: 92px;
+	}
+	
+	/* 왼쪽 메뉴 */
+	.all_view{
+		width: 250px;
+		height: 56px;
+		padding-left: 18px;
+		padding-top: 20px;
+		vertical-align:middle;
+	    border-bottom: 1px solid #f0f0f0;
+	}
+	.view_btn{
+	    width: 9px;
+	    height: 9px;
+		background: url(https://ssl.pstatic.net/static/calendar/2016/sp_left.png) no-repeat 0 0;
+	}
+	
+	.calendar_menu{
+		padding: 8px;
+		line-height: 25px;
+		width: 136px;
+		height: 68px;
+		top: -50px;
+		left: 212px; 
+		z-index: 32001;
+		display: none; 
+		position: relative;
+		border-style: solid;
+		border-width: 1px;
+	    border-color: #d9d9d9 #bfbfbf #b6b6b6 #d5d5d5;
+	    background-color: #fff;
+	    box-shadow: 1px 2px 1px rgba(0,0,0,0.1);
+	}
+	
+	.action_list a{
+		color: #333;
+	    font-size: 13px;
+	}
+
+	
+	/* 캘린더 모양 */
+	.caltable{
+	border-collapse: collapse; 
+	}
+	
+	.sunday{
+		color:red;
+		text-align: left;
+		vertical-align: top;
+	}
+	.satday{
+		color:blue;
+		text-align: left;
+		vertical-align: top;
+	}
+	.otherday{
+		color:black;
+		text-align: left;
+		vertical-align: top;
+	}
+	.days2{
+		font-size:20px;
+		color:#4d6bb3;
+		text-align: center;
+		vertical-align: middle;
+	}
+	.days3{
+		font-size:20px;
+		color:#4d6bb3;
+		text-align: center;
+		vertical-align: middle;
+		background-color: #4d6bb3;
+		color:#ffffff;
+		line-height: 1.7em;
+		font-weight: normal;
+	}
+	.innerTable{
+		border: 0px;
+	}
+	
+	.box_border{
+		width: 100%;
+			left: 124px;
+	}
+	

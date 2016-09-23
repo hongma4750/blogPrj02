@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+  
+  <mapper namespace="SistMember">
+  	
+  	<select id="login" parameterType="sist.co.Model.SistMemberVO" resultType="sist.co.Model.SistMemberVO">
+  		SELECT M_ID,M_NAME, M_GENDER, M_BIRTHDAY, M_EMAIL, M_PHONE,M_PHOTO, M_ACTION, M_AUTH
+	 	FROM MEMBER 
+	 	WHERE M_ID = #{m_id} AND M_PW = #{m_pw} AND M_ACTION != 0
+  	</select>
+  	
+  	<insert id="insertMember" parameterType="sist.co.Model.SistMemberVO">
+  		INSERT INTO MEMBER VALUES (#{m_id},#{m_pw},#{m_name},#{m_gender},#{m_birthday},#{m_email},#{m_phone},
+  		'\blogPrj\upload/no_image.gif',0,3)
+  	</insert>
+  	
+  	<select id="getId" parameterType="sist.co.Model.SistMemberVO" 	resultType="java.lang.Integer">
+  		SELECT NVL(COUNT(*), 0) FROM MEMBER WHERE M_ID = #{m_id}
+  	</select>
+  	
+  	
+  	<update id="createTable" parameterType="HashMap">
+  		${sql}
+  	</update>
+  	
+  	<update id="updateActionMember" parameterType="sist.co.Model.SistMemberVO">
+  		UPDATE MEMBER SET M_ACTION = 1 WHERE M_ID = #{m_id}
+  	</update>
+  	
+  	<select id="idUsePhone" parameterType="sist.co.Model.SistMemberVO" resultType="sist.co.Model.SistMemberVO">
+  		SELECT M_ID FROM MEMBER WHERE M_NAME = #{m_name} AND M_PHONE = #{m_phone}
+  	</select>
+  	
+  	<select id="idUseEmail" parameterType="sist.co.Model.SistMemberVO" resultType="sist.co.Model.SistMemberVO">
+  		SELECT M_ID FROM MEMBER WHERE M_NAME = #{m_name} AND M_EMAIL = #{m_email}
+  	</select>
+  	
+  	<select id="pwUsePhone" parameterType="sist.co.Model.SistMemberVO" resultType="sist.co.Model.SistMemberVO">
+  		SELECT M_ID FROM MEMBER WHERE M_ID = #{m_id} AND M_PHONE = #{m_phone}
+  	</select>
+  	
+  	<select id="pwUseEmail" parameterType="sist.co.Model.SistMemberVO" resultType="sist.co.Model.SistMemberVO">
+  		SELECT M_ID FROM MEMBER WHERE M_ID = #{m_id} AND M_EMAIL = #{m_email}
+  	</select>
+  	
+  	<update id="changeName" parameterType="sist.co.Model.SistMemberVO">
+  		UPDATE MEMBER SET M_NAME=#{m_name} where M_ID=#{m_id}
+  	</update>
+  	
+  	<select id="selectId" parameterType="sist.co.Model.SistMemberVO" resultType="sist.co.Model.SistMemberVO">
+  		SELECT M_ID,M_NAME, M_GENDER, M_BIRTHDAY, M_EMAIL, M_PHONE,M_PHOTO, M_ACTION, M_AUTH
+	 	FROM MEMBER 
+	 	WHERE M_ID = #{m_id} 
+  	</select>
+  	
+  	<update id="changeEmail" parameterType="sist.co.Model.SistMemberVO">
+  		UPDATE MEMBER SET M_EMAIL=#{m_email} where M_ID=#{m_id}
+  	</update>
+  	
+  	<update id="changePhone" parameterType="sist.co.Model.SistMemberVO">
+  		UPDATE MEMBER SET M_PHONE=#{m_phone} where M_ID=#{m_id}
+  	</update>
+  	
+  	<update id="myProfile" parameterType="sist.co.Model.SistMemberVO">
+  		UPDATE MEMBER SET M_PHOTO=#{m_photo} where M_ID=#{m_id}
+  	</update>
+  	
+  	<update id="changePW" parameterType="sist.co.Model.SistMemberVO">
+  		UPDATE MEMBER SET M_PW=#{m_pw} where M_ID=#{m_id}
+  	</update>
+  	
+  	<select id="checkPw" parameterType="sist.co.Model.SistMemberVO" 	resultType="java.lang.Integer">
+  		SELECT NVL(COUNT(*), 0) FROM MEMBER WHERE M_ID = #{m_id} AND M_PW=#{m_pw}
+  	</select>
+  	
+  	<select id="countMyMessage" parameterType="sist.co.Model.SistMessage" 	resultType="java.lang.Integer">
+  		SELECT NVL(COUNT(*), 0) FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
+  	</select>
+  	
+  	<select id="selectNewMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
+  		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
+  	</select>
+  	
+  	
+  	<select id="selectAllMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
+  		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1
+  	</select>
+  	
+  	
+  	
+  	
+  	<!-- ssunhj: getmember -->
+  	<select id="getmember" parameterType="java.lang.String" resultType="sist.co.Model.SistMemberVO">
+		SELECT * FROM MEMBER 
+		WHERE M_ID = #{m_id}
+	</select>
+  	
+  	
+  	
+  </mapper>

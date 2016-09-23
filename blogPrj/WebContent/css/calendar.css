@@ -1,0 +1,56 @@
+@CHARSET "UTF-8";
+table{
+  border-collapse: collapse;
+}
+
+table,td,th{
+  border: 1px solid black;
+}
+.sunday{
+  color:red;
+  text-align:left;
+  vertical-align: top;
+}
+
+.satday{
+  color:blue;
+  text-align:left;
+  vertical-align: top;
+}
+
+.otherday{
+  color:black;
+  text-align:left;
+  vertical-align: top; 
+}
+
+.days2{
+  font-size:20px;
+  color:#4d6bb3;
+  text-align:center;
+  vertical-align: middle; 
+}
+
+.days3{
+  font-size:20px;
+  color:#ffffff;
+  background-color:#4d6bb3;
+  text-align:center;
+  vertical-align: middle; 
+  line-height: 1.7em;
+  font-weight: normal;
+}
+.days31{
+   font-size:10px;
+   color:#4d6bb3;
+   text-align: center;
+   vertical-align: middle;
+}
+.days4{
+   align: center;
+   text-align: center;
+   vertical-align: middle;
+}
+.innerTable{
+  border: 0px;
+}

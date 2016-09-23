@@ -1,0 +1,431 @@
+@CHARSET "UTF-8";
+/* 앨범형 게시판 css */ 
+	@font-face{
+		font-family:'sae';
+		src:url('../font/sae.ttf') format('truetype');
+	}
+	
+	body {font-family: 돋움, Dotum, Helvetica, sans-serif;}
+	
+	div {
+	    display: block;
+	}
+	
+	 a { text-decoration:none; color:#445F9D; }
+	label { padding:0; margin:0; position:relative; top:1px; left:0px; }
+	input, select {  vertical-align:middle; font-size:1em; font-family:"돋움", dotum; }	
+	input { border:solid 1px #D5D5D5; padding:0.2em; }
+	input[type="checkbox"], input[type="radio"] { border:0; padding:0; margin:0; }
+	
+	
+	* {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    
+}
+
+	#wrap{
+		font-family: Arial, Dotum, "돋움", sans-serif;
+		font-size :13px;
+		width:980px;
+		margin:0 auto;
+		padding:0;
+		text-align:left;
+		position:relative;
+		
+	}
+	
+	.topwrap{
+		padding: 10px;
+	}
+	
+	#header {
+	    position: relative;
+	    width: 100%;
+	    
+	}
+	
+	#header_logo{
+		padding : 10px;
+		position: relative;
+	    width: 100%;
+	    height: 83px;
+	    _height: 56px;
+	    margin: 0 auto;
+	    padding-top: 18px;
+	    color: white;
+	}
+	
+	.head_move {
+		position: relative;
+		float: right;
+	}
+	
+	#header_line{
+		position: relative;
+	    clear: both;
+	    height: 38px;
+	    background-color: black;
+	   
+	}
+	
+	.head_line {
+		padding : 10px;
+	}
+	
+	
+	/* top css */		
+	.thumbnail {
+		margin: 8px; 
+		width: 171px;
+		border: 1px solid silver;
+		position: relative;
+		float: left;
+		
+	}
+	
+	.head_line a:active{
+		color: #20A524;
+	}
+	
+	.thumbnail img{
+		width: 161px;
+		height: 161px;
+		
+	}
+
+	
+	.category {
+		margin: 10px;
+		margin-left:30px; 
+		margin-right:30px; 
+		width: 171px;
+		/* background-color: pink; */
+		position: relative;
+		float: left;
+	}
+	
+	.lreple {
+		position: relative;
+	    float: left;
+		margin: 8px; 
+		width: 171px;
+		/* background-color: teal; */
+	}
+	
+	#container{
+		width: 100%;
+		padding-bottom: 25px;
+		float: left;
+	    position: relative;
+	}
+	
+	.head_line{
+		height: 38px;
+	}
+	
+	.head_logo{
+		height: 50px;
+	}
+
+/* top css end */		
+/* container css */
+	.pic_view {
+		width:980px;
+		padding: 10px;
+		height: 44px;
+		border: 1px solid silver;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+	
+	.search_frame{
+		width:980px;
+		padding: 10px;
+		height: 44px;
+		border: 1px solid silver;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+	
+	.total_content{
+		width:980px;
+		padding: 15px;
+		border: 1px solid silver;
+		margin-top: 8px;
+		margin-bottom: 8px;
+		padding-bottom: 30px;
+	}
+	
+	
+	.piccon{
+		width:980px;
+		padding: 35px;
+		border: 1px solid silver;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+	
+	.pdetail_content p{
+		display:inline;
+	}
+	
+	.pview2 {
+		position: relative;
+	    float: right;
+	}
+	
+	
+	.paginglist{
+		width:980px;
+		height: 44px;
+		border: 1px solid silver;
+		margin: 0 auto;
+	}
+	
+	.pagination {
+		width: 400px;
+		height:35px;
+	}
+	
+	.scon .navbar-left {
+		border: 5px solid #E9E9E9;
+		padding:6px;
+		width: 980px;
+		height:58px;
+		margin-top: 30px;
+		margin-bottom: 30px;
+	}
+
+	.s_top{
+		margin: 10px;
+	}
+	
+	.s_con{
+		padding: 10px;
+		border-top: 3px solid silver;
+		border-bottom: 3px solid silver;
+	}
+	.list_txt {
+		margin-bottom: 2px;
+	    word-wrap: break-word;
+	    word-break: break-all;
+	}
+	
+	.list_txt a{
+	 	color: rgb(138, 131, 126);
+	}
+	
+	.list_txt a:hover{
+	 	color: rgb(138, 131, 126);
+	}
+	
+	.list_date {
+		font-size: 11px;
+		color: silver;
+	}
+	
+	.piccon tr,td {
+		display: table-cell;
+	    vertical-align: inherit;
+	
+	}
+	
+	.piccon tr {
+		display: table-row;
+	    vertical-align: inherit;
+	    border-color: inherit;
+		width: 920px;
+
+	}
+	
+	.piccon td {
+		vertical-align: top;
+	}	
+	
+	
+	.piccon dl{
+		width: 200px;
+		margin: 0 15px;
+	    padding-top: 8px;
+	    padding-bottom: 19px;
+/* 	    display: block;
+	    -webkit-margin-before: 1em;
+	    -webkit-margin-after: 1em;
+	    -webkit-margin-start: 0px;
+	    -webkit-margin-end: 0px; */
+	}
+	
+	.piccon dd{
+		margin: 0;
+    	padding: 0;
+	}
+
+	.piccon p {
+		margin: 0;
+	}
+	
+	.piccon img{
+		border: none;
+		width: 200px;
+		border-image-source: initial;
+	    border-image-slice: initial;
+	    border-image-width: initial;
+	    border-image-outset: initial;
+	    border-image-repeat: initial;
+	    border-width: initial;
+	    border-style: none;
+	    border-color: initial;
+	}
+	
+			
+	
+/* container css end */
+	.content {
+		width:980px;
+		height: 300px;
+		padding: 20px;
+		border: 1px solid silver;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+	
+	.tview2{
+		position: relative;
+		float: right;
+	}
+	
+	.go_top {
+		font-size: 12px;
+		position: relative;
+		float: right;
+	}
+	
+
+
+
+/* footer */
+	.foot_content{
+		display: block;
+	}
+
+
+	.write_reple a{
+		font-weight: bold;
+		color: rgb(138, 131, 126);
+		text-decoration: none;
+	}
+	
+	.write_reple a:hover{
+		color: rgb(138, 131, 126);
+		text-decoration: none;
+	}
+
+	.re_re{
+		font-weight: normal;
+		color: rgb(138, 131, 126);
+		
+	}
+	.r_re li {
+		border-bottom: 1px dashed silver;
+	}
+	
+	.re_date {
+		color: rgb(138, 131, 126);
+	}
+	.re_re_li .dt1{
+		padding-left: 20px;
+	}
+
+	.dt2{
+		vertical-align: top;
+		display: inline-block;
+	}
+	.foot_reple dt, .foot_reple dd{
+		display: inline-table;
+	}
+	
+
+	
+	.guest{
+		position: relative;
+	    float: left;
+		margin: 8px; 
+		width: 171px;
+		
+	}
+
+	
+	#footer{
+		clear: both;
+	    margin: 0;
+	    height: 220px;
+	    padding: 22px 0 25px;
+	}
+	
+/* footer end */	
+
+/* 이미지 슬라이더 */
+
+.pic_list {
+	margin: 40px auto;
+}
+
+.als-container {
+	position: relative;
+	width: 100%;
+	margin: 0px auto;
+	z-index: 0;
+}
+
+.als-viewport {
+	position: relative;
+	overflow: hidden;
+	margin: 0px auto;
+}
+
+.als-wrapper {
+	position: relative;
+	list-style: none;
+}
+
+
+.als-prev, .als-next {
+	position: absolute;
+	cursor: pointer;
+	clear: both;
+}
+
+#pic_slide .als-prev {
+	left: 200px;
+}
+
+#pic_slide .als-next {
+	right: 200px;
+}
+
+#pic_slide .als-prev, #pic_slide .als-next {
+	top: 40px;
+}
+
+#pic_slide .als-item {
+	position: relative;
+	display: block;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+	margin: 0px 5px;
+	padding: 4px 0px;
+	min-height: 120px;
+	min-width: 100px;
+}
+
+.als-item img {
+	width: 124px;
+	height: 94px;
+	display: block;
+	margin: 0 auto;
+	vertical-align: middle;
+}
+

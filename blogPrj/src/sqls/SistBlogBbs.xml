@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SistBlogBbs">
+	<!-- 블로그 글쓰기 -->
+	<insert id="writeBBS" parameterType="sist.co.Model.SistBlogDTO">
+		INSERT INTO BLOG_BBS
+				(BBS_SEQ,M_ID,BBS_CA_SEQ,BBS_TITLE,BBS_CONTENT,BBS_HID,BBS_COMCHK,BBS_LIKECHK,BBS_SCRAPCHK,BBS_DATE)
+			VALUES(SEQ_BLOGBBS.NEXTVAL,#{m_id},#{bbs_ca_seq},#{bbs_title},#{bbs_content},
+				#{bbs_hid},1,1,#{bbs_scrapchk},SYSDATE)
+	</insert>
+	
+	<!-- 블로그 메인에 내용 전부 불러오기 -->
+	<select id="getBlogList" resultType="sist.co.Model.SistBlogDTO">
+		SELECT * FROM BLOG_BBS
+		WHERE M_ID=#{m_id}
+		ORDER BY BBS_DATE DESC
+	</select>
+	
+	<select id="getBBS" parameterType="sist.co.Model.SistBlogDTO" resultType="sist.co.Model.SistBlogDTO">
+		SELECT * FROM BLOG_BBS 
+		WHERE BBS_SEQ=#{bbs_seq }
+	</select>
+	
+	<!-- 게시판 내용 수정 -->
+	<update id="updateBBS" parameterType="sist.co.Model.SistBlogDTO">
+		UPDATE BLOG_BBS SET 
+			BBS_CA_SEQ=#{bbs_ca_seq}, BBS_TITLE=#{bbs_title}, BBS_CONTENT=#{bbs_content},
+			BBS_HID=#{bbs_hid},  BBS_COMCHK=1, BBS_LIKECHK=1,BBS_SCRAPCHK=#{bbs_scrapchk}
+		WHERE BBS_SEQ=#{bbs_seq}
+	</update> 
+
+	<!-- 게시물 삭제 -->
+	<delete id="delBBS" parameterType="java.lang.Integer">
+		DELETE FROM BLOG_BBS
+		WHERE BBS_SEQ=#{bbs_seq}
+	</delete>
+	
+<!-- blog_like////////////////////// -->
+	<!-- 좋아요  지금은 블로그 타이틀 없음-->
+	<insert id="addBbsLike" parameterType="sist.co.Model.SistBbsLikeDTO">
+		INSERT INTO BBS_LIKE
+			(LIKE_SEQ, M_ID, BBS_SEQ, LIKE_DATE)
+		VALUES(SEQ_BBSLIKE.NEXTVAL,#{m_id}, #{bbs_seq}, SYSDATE)
+	</insert>
+	
+	<!-- 상세페이지에서 좋아요-->
+	<select id="likeCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT NVL(COUNT(*), 0) FROM BBS_LIKE
+		WHERE BBS_SEQ=#{bbs_seq}
+	</select>
+	
+	<!-- 좋아요 했나 안했나 검사 -->
+	<select id="symox" parameterType="sist.co.Model.SistBbsLikeDTO" resultType="java.lang.Integer">
+		SELECT NVL(COUNT(*),0)
+		FROM BBS_LIKE WHERE M_ID=#{m_id} AND BBS_SEQ=#{bbs_seq}
+	</select>
+	
+	<!-- 버튼 다시 눌렀을때 좋아요 이미 했으면 좋아요 취소 -->
+	<delete id="delBbsLike" parameterType="sist.co.Model.SistBbsLikeDTO">
+		DELETE FROM BBS_LIKE
+			WHERE M_ID=#{m_id} AND BBS_SEQ=#{bbs_seq}
+	</delete>	
+	
+	<!-- 공감 리스트 전부 불러오기 -->
+	<select id="getLikeList" resultType="sist.co.Model.SistBbsLikeDTO">
+		SELECT * FROM BBS_LIKE
+		ORDER BY LIKE_DATE DESC
+	</select>
+	
+	<!-- 공감 허용한 리스트들 전부 불러오기 -->
+	<select id="getLikeallow" resultType="sist.co.Model.SistBlogDTO">
+		SELECT * FROM BLOG_BBS
+		WHERE BBS_LIKECHK = 1
+	</select>
+	
+	<!-- 특정 게시물의 공감 리스트 전부 불러오기. bbs_like테이블과 member테이블 조인 -->
+	<select id="getLikePeople" parameterType="java.lang.Integer" resultType="sist.co.Model.SistLikePeopleDTO">
+		SELECT  BLIKE.LIKE_DATE,MEM.M_ID,MEM.M_NAME FROM BBS_LIKE BLIKE, MEMBER MEM
+		WHERE BBS_SEQ=#{bbs_seq} AND BLIKE.M_ID=MEM.M_ID
+	</select>
+	
+	
+</mapper>
