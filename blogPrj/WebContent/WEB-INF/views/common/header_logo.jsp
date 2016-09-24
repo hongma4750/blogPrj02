@@ -99,12 +99,12 @@
                   	</a>
                   </li>
                   
-                  <c:if test="${myMessageCount != 0 }">
+                  
                   	<div class="row" style="height:10%; width:100%; text-align:center;
-                  	 z-index:20; position:absolute; left:495px;" >
+                  	 z-index:20; position:absolute; left:495px; display:none;" id="messageCountDiv" >
 		            	<span class="badge " id="messageCount">${myMessageCount }</span>
 		            </div>
-                  </c:if>
+                  
                
                   <li>
                   	<a href="#" id="notice">
@@ -229,9 +229,8 @@
 			             <span class="message">${myMessage.message_content}</span>
 					  </a>
 					</div>
-
-				
 				</c:forEach>
+				<c:remove var="newMyMessageList" scope="session" />
 				
 				
  
@@ -259,6 +258,8 @@
 
 
 <script>
+
+
 $('#userInfo').click(function(){
     //비로그인시 로그인 안내 div태그
     document.all.mymyInfo.style.display = "inherit";
@@ -273,6 +274,9 @@ $('#userInfo').click(function(){
  $(document).ready(function(){
 	 var myMessageCount = '${myMessageCount}';
 	 
+	 if(myMessageCount > 0 ){
+		 $("#messageCountDiv").show();
+	 }
 		var m_id = '${login.m_id}';
 		var checkNewMessage = false;
 		var checkNewMessageFiveCount = 0;
@@ -314,11 +318,13 @@ $('#userInfo').click(function(){
 				       	cache : false,
 				       	success : function (checkMyNewMessage) {
 				       		
-				       		
 				       		if(checkMyNewMessage != myMessageCount){
 				       			//기존 메세지 카운수랑 새로 체크해본 결과가 다르다
+
 				       			myMessageCount = checkMyNewMessage;
-				       			$("#messageCount").text(myMessageCount);
+				       			
+				       			$("#messageCountDiv").show();
+				       			$("#messageCount").text(checkMyNewMessage);
 				       			checkNewMessage = true;
 				       			
 				       			$.ajax({
@@ -326,28 +332,34 @@ $('#userInfo').click(function(){
 				       				url:"changeNewMessage.do",
 				       				data:"m_id="+m_id,
 				       				
-				       				success : function(){
-				       					printNewNoticeMessage();
+				       				success : function(retVal){
+				       					printNewNoticeMessage(retVal);
 				       				}
 				       			})
 				       		}
 				       		
-				       		
-				       		if(checkNewMessage){
-				       			if(checkNewMessageFiveCount < 5){
-				       				if($("#messageCount").css("display") == "none"){
-				       					$("#messageCount").show();
-				       				}else{
-				       					$("#messageCount").hide();
-				       				}
-				       				
-				       				checkNewMessageFiveCount += 1;
-				       			}else{
-				       				$("#messageCount").show();
-				       				checkNewMessage = false;
-				       				checkNewMessageFiveCount = 0;
-				       			}
-				       		}
+				       		if(checkMyNewMessage == 0){
+				       			$("#messageCountDiv").hide();
+				       		}else{
+				       			if(checkNewMessage){
+					       			if(checkNewMessageFiveCount < 5){
+					       				if($("#messageCount").css("display") == "none"){
+					       					$("#messageCount").show();
+					       				}else{
+					       					$("#messageCount").hide();
+					       				}
+					       				
+					       				checkNewMessageFiveCount += 1;
+					       			}else{
+					       				$("#messageCount").show();
+					       				checkNewMessage = false;
+					       				checkNewMessageFiveCount = 0;
+					       				
+					       				
+					       			}
+					       		}
+				       		}		
+	
 				       	}
 				       });
 		    	}
@@ -361,8 +373,47 @@ $('#userInfo').click(function(){
  
  /* 팝업 사라지는 자바 스크립트*/
  
- function printNewNoticeMessage(){
+ function printNewNoticeMessage(retVal){
+	 var cloned = $(".mymynoticeMessage").clone();
+	 
 	 $("#mymynoticeMessage").remove();
+	 
+		var values = [];
+		
+		values = retVal.newMyMessageList;
+		
+		var addDiv ='<div style="width:100%; height:80%; " id="mymynoticeMessage" class="mymynoticeMessage">';
+		
+		for(var j = 0;j<values.length; j++){
+			addDiv += '<div class="list-group" style="margin:auto; padding:auto;">';
+			addDiv += '<a href="#" class="list-group-item ">';
+			addDiv += '<span class="photo" style="maring:auto; padding:auto;">';
+			addDiv += '<img alt="avatar" src="'+values[j].m_photo+'" style="width:35px;height:40px;">';
+			addDiv += '</span>';
+			addDiv += '<span class="subject">';
+			addDiv += '<span class="from">'+values[j].m_name+'</span>';
+			addDiv += '</span>';
+			addDiv += '<span class="message">'+values[j].message_content+'</span>';
+			addDiv += '</a></div>';
+		}
+		
+		addDiv+='</div>'
+		
+		$("#temps").html(addDiv);
+
+		//var listLength = newMyMessageList[0].message_receiver;
+
+		/* alert("list size : "+values.length);
+		
+		if (window.sessionStorage) {
+            sessionStorage.setItem('newMyMessageList', values);
+        }
+		
+		$('#temps').append(cloned.removeClass('mymynoticeMessage').attr('id', 'mymynoticeMessage').show()); */
+
+		
+	 
+	 
  }
  
           

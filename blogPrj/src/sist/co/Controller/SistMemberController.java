@@ -9,7 +9,9 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.servlet.ServletException;
@@ -52,8 +54,25 @@ public class SistMemberController {
 	SistMemberService sistMemberService;
 
 	@RequestMapping(value="index.do",method=RequestMethod.GET)
-	public String index(Model model){
+	public String index(HttpServletRequest request , Model model) throws Exception{
 		logger.info("환영합니다. index.do 실행중");
+		
+		SistMemberVO vo = (SistMemberVO) request.getSession().getAttribute("login");
+		
+		if(vo != null){
+			SistMessage sm = new SistMessage();
+			
+			sm.setMessage_receiver(vo.getM_id());
+			
+			int myMessageCount = sistMemberService.countMyMessage(sm);
+			//메세지 리스트
+			List<SistMessage> newMyMessageList =  sistMemberService.selectNewMessage(sm);
+			
+			//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
+
+			request.getSession().setAttribute("myMessageCount", myMessageCount);
+			request.getSession().setAttribute("newMyMessageList", newMyMessageList);
+		}
 		return "index.tiles";
 	}
 	
@@ -140,7 +159,7 @@ public class SistMemberController {
 				//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
 				request.getSession().setAttribute("myMessageCount", myMessageCount);
 				request.getSession().setAttribute("newMyMessageList", newMyMessageList);
-				
+				request.getSession().setAttribute("test0101", 123);
 				return "redirect:index.do";
 			}
 		}else{
@@ -655,22 +674,7 @@ public class SistMemberController {
 		
 	}
 	
-	@RequestMapping(value="checkNewMessage.do", method=RequestMethod.GET)
-	@ResponseBody
-	public int checkNewMessage(HttpServletRequest request, SistMemberVO vo , Model model) throws Exception{
-		logger.info("checkNewMessage.do 이동중");
-		
-		SistMessage sm = new SistMessage();
-		sm.setMessage_receiver(request.getParameter("m_id"));
-		
-		System.out.println("id = "+vo.getM_id());
-		
-		int checkMyNewMessage = sistMemberService.countMyMessage(sm);
-		
-		System.out.println("newMessage count : "+checkMyNewMessage);
-		return checkMyNewMessage;
-
-	}
+	
 	
 	
 	@RequestMapping(value="sendMessage.do",method={RequestMethod.GET,RequestMethod.POST})
@@ -702,9 +706,31 @@ public class SistMemberController {
 		
 	}
 	
+	@RequestMapping(value="checkNewMessage.do", method=RequestMethod.GET)
+	@ResponseBody
+	public int checkNewMessage(HttpServletRequest request, SistMemberVO vo , Model model) throws Exception{
+		logger.info("checkNewMessage.do 이동중");
+		
+		SistMessage sm = new SistMessage();
+		sm.setMessage_receiver(request.getParameter("m_id"));
+		
+		System.out.println("id = "+vo.getM_id());
+		
+		int checkMyNewMessage = sistMemberService.countMyMessage(sm);
+		
+		System.out.println("newMessage count : "+checkMyNewMessage);
+		
+		request.getSession().setAttribute("myMessageCount", checkMyNewMessage);
+		
+		
+		
+		return checkMyNewMessage;
+
+	}
+	
 	@RequestMapping(value="changeNewMessage.do", method=RequestMethod.GET)
 	@ResponseBody
-	public void changeNewMessage(HttpServletRequest request, SistMemberVO vo , Model model) throws Exception{
+	public Object changeNewMessage(HttpServletRequest request, SistMemberVO vo , Model model) throws Exception{
 		logger.info("checkNewMessage.do 이동중");
 		
 		SistMessage sm = new SistMessage();
@@ -714,11 +740,17 @@ public class SistMemberController {
 		
 		int myMessageCount = sistMemberService.countMyMessage(sm);
 		//메세지 리스트
-		List<SistMessage> newMyMessageList = sistMemberService.selectNewMessage(sm);
+		List<SistMessage> newMyMessageList =  sistMemberService.selectNewMessage(sm);
 		
 		//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
-		request.getSession().setAttribute("myMessageCount", myMessageCount);
+
+		//request.getSession().setAttribute("myMessageCount", myMessageCount);
 		request.getSession().setAttribute("newMyMessageList", newMyMessageList);
+		
+		Map<String,Object> retVal = new HashMap<String,Object>();
+		retVal.put("newMyMessageList", newMyMessageList);
+		
+		return retVal;
 	}
 	
 	

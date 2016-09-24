@@ -66,6 +66,8 @@ values
 (select m_name from MEMBER where m_id = 'lovely4750'),
 (select m_photo from MEMBER where m_id = 'lovely4750'));
 
+update message set message_read = 1;
+
 
 insert into message 
 values
@@ -82,6 +84,30 @@ values
 insert into message 
 values
 (seq_message.nextval,'lovely4750','aa1212','안녕하세요4',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요5',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요6',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요7',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요8',sysdate,0,0,
 (select m_name from MEMBER where m_id = 'lovely4750'),
 (select m_photo from MEMBER where m_id = 'lovely4750'));
 

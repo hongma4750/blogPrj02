@@ -82,6 +82,7 @@
   	
   	<select id="selectNewMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
   		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
+  		ORDER BY MESSAGE_SEQ DESC
   	</select>
   	
   	
