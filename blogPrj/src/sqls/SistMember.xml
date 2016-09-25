@@ -81,14 +81,54 @@
   	</select>
   	
   	<select id="selectNewMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
-  		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
   		ORDER BY MESSAGE_SEQ DESC
   	</select>
   	
   	
   	<select id="selectAllMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
-  		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1 
+  		ORDER BY MESSAGE_SEQ DESC
   	</select>
+  	
+  	<insert id="sendMessageAF" parameterType="sist.co.Model.SistMessage">
+  		INSERT INTO MESSAGE VALUES (seq_message.nextval,#{message_sender},#{message_receiver},
+  		#{message_content},sysdate,0,0,
+  		(select m_name from member where m_id=#{message_sender}),
+  		(select m_photo from member where m_id=#{message_sender}))
+  	</insert>
+  	
+  	<select id="detailMessage" parameterType="int" resultType="sist.co.Model.SistMessage">
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM MESSAGE WHERE MESSAGE_SEQ = #{message_seq}
+  	</select>
+  	
+  	<update id="updateMessageRead" parameterType="int">
+  		UPDATE MESSAGE SET MESSAGE_READ = 1 WHERE MESSAGE_SEQ = #{message_seq}
+  	</update>
+  	
+  	<update id="deleteMessage" parameterType="int">
+  		UPDATE MESSAGE SET MESSAGE_DEL = 1 WHERE MESSAGE_SEQ = #{message_seq}
+  	</update>
+  	
+  	<select id="getPointChargePageList" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM 
+  		 (SELECT sub.MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO, ROWNUM AS RNUM FROM 
+  		 	( SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1 ORDER BY MESSAGE_SEQ DESC)
+  		  sub)
+		WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+  	</select>
+  	
+  	<update id="allDelteMessage" parameterType="sist.co.Model.SistMessage">
+  		UPDATE MESSAGE SET MESSAGE_DEL = 1 WHERE MESSAGE_RECEIVER = #{message_receiver}
+  	</update>
+  	
+  	<update id="seeAllMessage" parameterType="sist.co.Model.SistMessage">
+  		UPDATE MESSAGE SET MESSAGE_READ = 1 WHERE MESSAGE_RECEIVER = #{message_receiver}
+  	</update>
   	
   	
   	

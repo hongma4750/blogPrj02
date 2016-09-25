@@ -60,18 +60,46 @@ public class SistMemberController {
 		SistMemberVO vo = (SistMemberVO) request.getSession().getAttribute("login");
 		
 		if(vo != null){
+			
+			
+
+			
 			SistMessage sm = new SistMessage();
 			
 			sm.setMessage_receiver(vo.getM_id());
 			
+			
+			//새로운 메세지 카운트
 			int myMessageCount = sistMemberService.countMyMessage(sm);
+			
+			//페이지 수
+			
+			String pageobj = request.getParameter("page");
+			int currentpage;
+			if (pageobj == null) {
+				currentpage = 1;
+			} else {
+				currentpage = Integer.parseInt(pageobj);
+			}
+			
+			
+			int page01 = (currentpage - 1) * 10 + 1;
+			int page02 = currentpage * 10;
+			
+			sm.setPage01(page01);
+			sm.setPage02(page02);
+			
 			//메세지 리스트
 			List<SistMessage> newMyMessageList =  sistMemberService.selectNewMessage(sm);
-			
+			List<SistMessage> allMyMessageList = sistMemberService.selectAllMessage(sm);
+			List<SistMessage> pageList = sistMemberService.getPointChargePageList(sm);
 			//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
 
 			request.getSession().setAttribute("myMessageCount", myMessageCount);
 			request.getSession().setAttribute("newMyMessageList", newMyMessageList);
+			request.getSession().setAttribute("allMyMessageList", allMyMessageList);
+			
+			model.addAttribute("pageList",pageList);
 		}
 		return "index.tiles";
 	}
@@ -155,11 +183,13 @@ public class SistMemberController {
 				
 				//메세지 리스트
 				List<SistMessage> newMyMessageList = sistMemberService.selectNewMessage(sm);
+				List<SistMessage> allMyMessageList = sistMemberService.selectAllMessage(sm);
 				
 				//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
 				request.getSession().setAttribute("myMessageCount", myMessageCount);
 				request.getSession().setAttribute("newMyMessageList", newMyMessageList);
-				request.getSession().setAttribute("test0101", 123);
+				request.getSession().setAttribute("allMyMessageList", allMyMessageList);
+				
 				return "redirect:index.do";
 			}
 		}else{
@@ -681,18 +711,41 @@ public class SistMemberController {
 	public String sendMessage(HttpServletRequest request, Model model) throws Exception {
 		logger.info("sendMessage.do 실행중");
 		
-		String fndid = request.getParameter("fndid");
+		String status = request.getParameter("status");
+		System.out.println("status : "+status);
 		
-		System.out.println("fndid : "+fndid);
+		if(status != null){
+			int message_seq = Integer.parseInt(request.getParameter("message_seq"));
+			sistMemberService.updateMessageRead(message_seq);
+			
+			String fndid = request.getParameter("fndid");
+			
+			System.out.println("fndid : "+fndid);
+			
+			SistMemberVO vo = new SistMemberVO();
+			vo.setM_id(fndid);
+			
+			SistMemberVO fndInfo = sistMemberService.selectId(vo);
+			
+			
+			model.addAttribute("fndInfo",fndInfo);
+			return "sendMessage.tiles";
+		}else{
+			String fndid = request.getParameter("fndid");
+			
+			System.out.println("fndid : "+fndid);
+			
+			SistMemberVO vo = new SistMemberVO();
+			vo.setM_id(fndid);
+			
+			SistMemberVO fndInfo = sistMemberService.selectId(vo);
+			
+			
+			model.addAttribute("fndInfo",fndInfo);
+			return "sendMessage.tiles";
+		}
 		
-		SistMemberVO vo = new SistMemberVO();
-		vo.setM_id(fndid);
 		
-		SistMemberVO fndInfo = sistMemberService.selectId(vo);
-		
-		
-		model.addAttribute("fndInfo",fndInfo);
-		return "sendMessage.tiles";
 	}
 	
 	@RequestMapping(value="sendMessageAF.do",method={RequestMethod.GET,RequestMethod.POST})
@@ -701,10 +754,57 @@ public class SistMemberController {
 		
 		System.out.println("sender : "+sm.getMessage_sender()+" , receiver : "+sm.getMessage_receiver());
 		
-		
-		sistMemberService.sendMessageAF(sm);
-		
+		try{
+			sistMemberService.sendMessageAF(sm);
+			System.out.println("메세지 보내기 성공");
+		}catch(ServletException e){
+			System.out.println(e.getMessage());
+		}
 	}
+	
+	@RequestMapping(value="detailMessage.do",method={RequestMethod.GET,RequestMethod.POST})
+	public String detailMessage(HttpServletRequest request, Model model) throws Exception {
+		logger.info("detailMessage.do 실행중");
+		
+		int message_seq = Integer.parseInt(request.getParameter("message_seq"));
+		
+		SistMessage sm = sistMemberService.detailMessage(message_seq);
+		
+		model.addAttribute("detailMessage",sm);
+		return "detailMessage.tiles";
+	}
+	
+	@RequestMapping(value="updateMessageRead.do",method={RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public YesMember updateMessageRead(HttpServletRequest request, Model model) throws Exception {
+		logger.info("updateMessageRead.do 실행중");
+		
+		YesMember yes = new YesMember();
+		
+		int message_seq = Integer.parseInt(request.getParameter("message_seq"));
+		try{
+			sistMemberService.updateMessageRead(message_seq);
+			yes.setMessage("Suc");
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			yes.setMessage("Fai");
+		}
+
+		return yes;
+	}
+	
+	@RequestMapping(value="deleteMessage.do",method={RequestMethod.GET,RequestMethod.POST})
+	public String deleteMessage(HttpServletRequest request, Model model) throws Exception {
+		logger.info("deleteMessage.do 실행중");
+		
+		int message_seq = Integer.parseInt(request.getParameter("message_seq"));
+		
+		sistMemberService.deleteMessage(message_seq);
+		
+		return "redirect:index.do";
+	}
+	
+	
 	
 	@RequestMapping(value="checkNewMessage.do", method=RequestMethod.GET)
 	@ResponseBody
@@ -751,6 +851,36 @@ public class SistMemberController {
 		retVal.put("newMyMessageList", newMyMessageList);
 		
 		return retVal;
+	}
+	
+	@RequestMapping(value="allDelteMessage.do",method={RequestMethod.GET,RequestMethod.POST})
+	public String allDelteMessage(HttpServletRequest request, Model model) throws Exception {
+		logger.info("allDelteMessage.do 실행중");
+		
+		String m_id = request.getParameter("m_id");
+		
+		SistMessage sm = new SistMessage();
+		sm.setMessage_receiver(m_id);
+		
+		
+		sistMemberService.allDelteMessage(sm);
+		
+		return "redirect:index.do";
+	}
+	
+	@RequestMapping(value="seeAllMessage.do",method={RequestMethod.GET,RequestMethod.POST})
+	public String seeAllMessage(HttpServletRequest request, Model model) throws Exception {
+		logger.info("seeAllMessage.do 실행중");
+		
+		String m_id = request.getParameter("m_id");
+		
+		SistMessage sm = new SistMessage();
+		sm.setMessage_receiver(m_id);
+		
+		
+		sistMemberService.seeAllMessage(sm);
+		
+		return "redirect:index.do";
 	}
 	
 	

@@ -107,7 +107,7 @@ values
 
 insert into message 
 values
-(seq_message.nextval,'lovely4750','aa1212','안녕하세요8',sysdate,0,0,
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요8김홍민입니다여러분은 지금 세상최그이쇼 김홍민쇼를보고계십니다는',sysdate,0,0,
 (select m_name from MEMBER where m_id = 'lovely4750'),
 (select m_photo from MEMBER where m_id = 'lovely4750'));
 

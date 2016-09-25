@@ -98,14 +98,16 @@
 	}
 	
 	#login_box{
-		height:150px;
+		/* height:550px; */
 		width:100%;
 		position:relative;
 	}
 	
 	#noticeArea{
-		height:100%;
+		/* height:100%; */
+		width:100%;
 		position:relative;
+		margin: 0 1px 0 0;
 	}
 	
 	#footer{

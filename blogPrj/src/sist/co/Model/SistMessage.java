@@ -15,6 +15,9 @@ public class SistMessage {
 	private String m_name;
 	private String m_photo;
 	
+	private int page01;
+	private int page02;
+	
 	public SistMessage() {
 		// TODO Auto-generated constructor stub
 	}
@@ -90,14 +93,37 @@ public class SistMessage {
 	public void setM_photo(String m_photo) {
 		this.m_photo = m_photo;
 	}
+	
+	
+
+	
+
+	public int getPage01() {
+		return page01;
+	}
+
+	public void setPage01(int page01) {
+		this.page01 = page01;
+	}
+
+	public int getPage02() {
+		return page02;
+	}
+
+	public void setPage02(int page02) {
+		this.page02 = page02;
+	}
 
 	@Override
 	public String toString() {
 		return "SistMessage [message_seq=" + message_seq + ", message_sender=" + message_sender + ", message_receiver="
 				+ message_receiver + ", message_content=" + message_content + ", message_date=" + message_date
 				+ ", message_read=" + message_read + ", message_del=" + message_del + ", m_name=" + m_name
-				+ ", m_photo=" + m_photo + "]";
+				+ ", m_photo=" + m_photo + ", page01=" + page01 + ", page02=" + page02 + "]";
 	}
+
+	
+	
 
 	
 	

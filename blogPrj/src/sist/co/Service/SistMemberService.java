@@ -48,8 +48,17 @@ public interface SistMemberService {
 	
 	void sendMessageAF(SistMessage sm) throws Exception;
 	
+	SistMessage detailMessage(int message_seq) throws Exception;
 	
+	void updateMessageRead(int message_seq) throws Exception;
 	
+	void deleteMessage(int message_seq) throws Exception;
+	
+	List getPointChargePageList (SistMessage sm) throws Exception;
+	
+	void allDelteMessage (SistMessage sm) throws Exception;
+	
+	void seeAllMessage (SistMessage sm) throws Exception;
 	
 	
 	

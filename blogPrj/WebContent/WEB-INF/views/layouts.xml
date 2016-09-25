@@ -71,6 +71,7 @@
   	<definition name="blogInfo.tiles" template="WEB-INF/views/member/blogInfo.jsp"></definition>
 	<!-- 메세지 -->
 	<definition name="sendMessage.tiles" template="/WEB-INF/views/message/sendMessage.jsp"></definition>
+	<definition name="detailMessage.tiles" template="/WEB-INF/views/message/detailMessage.jsp"></definition>
 	
 
 

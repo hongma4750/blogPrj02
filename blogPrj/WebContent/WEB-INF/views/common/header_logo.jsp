@@ -17,7 +17,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
-<script src="js/angular/angular.js"></script>
+
 
 
 <!-- asset CSS -->
@@ -34,6 +34,7 @@
 
     <script src="assets/js/chart-master/Chart.js"></script> 
 <!-- asset CSS -->
+	
 
 <style type="text/css">
 .photo img {
@@ -204,7 +205,7 @@
 				
 				
 				<div style="display:inline-block; text-align:right; padding:auto; margin:auto; height:100%; width:30%;">
-					<button class="btn btn-default" style="width:100%; height:100%; vertical-align: middle;">전체 삭제</button>
+					<button class="btn btn-default" style="width:100%; height:100%; vertical-align: middle;" onclick="allDelteMessage('${login.m_id}')">전체 삭제</button>
 				</div>
 			</div>
 			
@@ -217,8 +218,8 @@
 			
 				<c:forEach items="${newMyMessageList }" var="myMessage"> 
 
-					<div class="list-group" style="margin:auto; padding:auto;">
-					  <a href="#" class="list-group-item ">
+					<div class="list-group " style="margin:auto; padding:auto;" >
+					  <a href="#" class="list-group-item " onclick="detailBtn('${myMessage.message_seq}')">
 					  	<span class="photo" style="maring:auto; padding:auto;">
 					  		<img alt="avatar" src="${myMessage.m_photo }" style="width:35px;height:40px;">
 					  	</span>
@@ -226,16 +227,18 @@
 					  	<span class="subject">
 						    <span class="from">${myMessage.m_name } </span>
 			             </span>
-			             <span class="message">${myMessage.message_content}</span>
+			             
+			             <c:if test="${fn:length(myMessage.message_content)>37 }">
+							<span class="message">${fn:substring(myMessage.message_content,0,37)}...</span>
+						</c:if>
+						
+						<c:if test="${fn:length(myMessage.message_content) <= 37 }">
+							<span class="message">${myMessage.message_content }</span>
+						</c:if>
 					  </a>
 					</div>
 				</c:forEach>
-				<c:remove var="newMyMessageList" scope="session" />
 				
-				
- 
-
-	
 			</div>
 		</div>
 
@@ -250,7 +253,7 @@
 
 	<div style="width:100%; height:20%; background-color:skyblue">
 		<div class="row" style="width:100%; height:100%; padding:auto; margin:auto;">
-			<button class="btn btn-default" style="width:100%; height:100%;">see all message</button>
+			<button class="btn btn-default" style="width:100%; height:100%;" onclick="seeAllMessage('${login.m_id}')">see all message</button>
 		</div>
 	</div>
 </div>
@@ -271,8 +274,10 @@ $('#userInfo').click(function(){
  
  
  /* 팝업 사라지는 자바 스크립트*/
+ 
  $(document).ready(function(){
 	 var myMessageCount = '${myMessageCount}';
+	
 	 
 	 if(myMessageCount > 0 ){
 		 $("#messageCountDiv").show();
@@ -321,21 +326,39 @@ $('#userInfo').click(function(){
 				       		if(checkMyNewMessage != myMessageCount){
 				       			//기존 메세지 카운수랑 새로 체크해본 결과가 다르다
 
-				       			myMessageCount = checkMyNewMessage;
-				       			
-				       			$("#messageCountDiv").show();
-				       			$("#messageCount").text(checkMyNewMessage);
-				       			checkNewMessage = true;
-				       			
-				       			$.ajax({
-				       				type:"GET",
-				       				url:"changeNewMessage.do",
-				       				data:"m_id="+m_id,
-				       				
-				       				success : function(retVal){
-				       					printNewNoticeMessage(retVal);
-				       				}
-				       			})
+				       			if(checkMyNewMessage > myMessageCount ){		//메세지가 추가 되었을 경우
+					       			myMessageCount = checkMyNewMessage;
+					       			
+					       			$("#messageCountDiv").show();
+					       			$("#messageCount").text(checkMyNewMessage);
+					       			checkNewMessage = true;
+					       			
+					       			$.ajax({
+					       				type:"GET",
+					       				url:"changeNewMessage.do",
+					       				data:"m_id="+m_id,
+					       				
+					       				success : function(retVal){
+					       					printNewNoticeMessage(retVal);
+					       				}
+					       			})
+					       		}else if (checkMyNewMessage < myMessageCount){		//메세지를 읽었거나 삭제했을경우
+					       			myMessageCount = checkMyNewMessage;
+					       		
+					       			$("#messageCountDiv").show();
+					       			$("#messageCount").text(checkMyNewMessage);
+					       			
+					       			$.ajax({
+					       				type:"GET",
+					       				url:"changeNewMessage.do",
+					       				data:"m_id="+m_id,
+					       				
+					       				success : function(retVal){
+					       					printNewNoticeMessage(retVal);
+					       				}
+					       			})
+					       			
+					       		}
 				       		}
 				       		
 				       		if(checkMyNewMessage == 0){
@@ -386,7 +409,7 @@ $('#userInfo').click(function(){
 		
 		for(var j = 0;j<values.length; j++){
 			addDiv += '<div class="list-group" style="margin:auto; padding:auto;">';
-			addDiv += '<a href="#" class="list-group-item ">';
+			addDiv += '<a href="#"class="list-group-item" onclick="detailBtn('+values[j].message_seq+')">';
 			addDiv += '<span class="photo" style="maring:auto; padding:auto;">';
 			addDiv += '<img alt="avatar" src="'+values[j].m_photo+'" style="width:35px;height:40px;">';
 			addDiv += '</span>';
@@ -401,23 +424,33 @@ $('#userInfo').click(function(){
 		
 		$("#temps").html(addDiv);
 
-		//var listLength = newMyMessageList[0].message_receiver;
-
-		/* alert("list size : "+values.length);
-		
-		if (window.sessionStorage) {
-            sessionStorage.setItem('newMyMessageList', values);
-        }
-		
-		$('#temps').append(cloned.removeClass('mymynoticeMessage').attr('id', 'mymynoticeMessage').show()); */
-
-		
-	 
-	 
  }
  
-          
  
+function allDelteMessage(a){
+	location.href="allDelteMessage.do?m_id="+a;
+}
+
+function seeAllMessage(a){
+	location.href="seeAllMessage.do?m_id="+a;
+}
+          
+function detailBtn(seq){
+	
+	   var popUrl = "detailMessage.do?message_seq="+seq;   //팝업창에 출력될 페이지 URL
+
+	   var w = 500;
+	   var h = 600;
+	   
+	   var LeftPosition=(screen.width-w)/2;		//화면의 가로
+	   var TopPosition=(screen.height-h)/2;		//화면의 세로
+
+	   var popOption = "width=370, height=455, resizable=no, scrollbars=no, status=no,top="+TopPosition+",left="+LeftPosition;    //팝업창 옵션(optoin)
+	   
+	      window.open(popUrl,"메세지보내기",popOption);
+
+	}
+	
 </script>
 
 

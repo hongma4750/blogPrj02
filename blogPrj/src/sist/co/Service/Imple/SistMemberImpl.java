@@ -135,6 +135,49 @@ public class SistMemberImpl implements SistMemberService{
 	public void sendMessageAF(SistMessage sm) throws Exception {
 		sistMemberDAO.sendMessageAF(sm);
 	}
+	
+	@Override
+	public SistMessage detailMessage(int message_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return sistMemberDAO.detailMessage(message_seq);
+	}
+	
+	@Override
+	public void updateMessageRead(int message_seq) throws Exception {
+		sistMemberDAO.updateMessageRead(message_seq);
+		
+	}
+	
+	@Override
+	public void deleteMessage(int message_seq) throws Exception {
+		sistMemberDAO.deleteMessage(message_seq);
+		
+	}
+
+	@Override
+	public List getPointChargePageList(SistMessage sm) throws Exception {
+		// TODO Auto-generated method stub
+		return sistMemberDAO.getPointChargePageList(sm);
+	}
+	@Override
+	public void allDelteMessage(SistMessage sm) throws Exception {
+		sistMemberDAO.allDelteMessage(sm);
+		
+	}
+	
+	@Override
+	public void seeAllMessage(SistMessage sm) throws Exception {
+		sistMemberDAO.seeAllMessage(sm);
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
 
 	
 	//ssunhj: getmember
@@ -142,6 +185,17 @@ public class SistMemberImpl implements SistMemberService{
 		public SistMemberVO getmember(String m_id) throws Exception {
 			return sistMemberDAO.getmember(m_id);
 		}
+
+		
+
+		
+		
+
+		
+
+		
+
+		
 
 	
 	

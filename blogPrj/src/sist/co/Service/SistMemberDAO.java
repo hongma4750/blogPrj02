@@ -106,6 +106,32 @@ public class SistMemberDAO {
 		sqlSession.insert(ns+"sendMessageAF",sm);
 	}
 	
+	public SistMessage detailMessage(int message_seq) throws Exception{
+		return sqlSession.selectOne(ns+"detailMessage",message_seq);
+	}
+	
+	public void updateMessageRead(int message_seq) throws Exception{
+		sqlSession.update(ns+"updateMessageRead",message_seq);
+	}
+	
+	public void deleteMessage(int message_seq) throws Exception{
+		sqlSession.update(ns+"deleteMessage",message_seq);
+	}
+	
+	public List<SistMessage> getPointChargePageList(SistMessage sm) throws Exception{
+		return sqlSession.selectList(ns+"getPointChargePageList",sm);
+	}
+	
+	public void allDelteMessage (SistMessage sm) throws Exception{
+		sqlSession.update(ns+"allDelteMessage",sm);
+	}
+	
+	public void seeAllMessage (SistMessage sm) throws Exception{
+		sqlSession.update(ns+"seeAllMessage",sm);
+	}
+	
+	
+	
 	//ssunhj: getmember
 		public SistMemberVO getmember(String m_id)throws Exception{
 			//SistMemberVO memvo = new SistMemberVO();

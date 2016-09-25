@@ -15,6 +15,20 @@
 	<tiles:insertAttribute name="header"/>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/go_url.js"></script>
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/style.css"/>
+	
+<!-- 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+부트스트랩 링크
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+부트스트랩 링크 -->
+
 </head>
 <body>
 <div id="wrap">
@@ -66,11 +80,11 @@
 		
 		<!-- 중간-오른쪽  <로그인박스, 공지사항> -->
 		<div id="template_aside" style="background-color:#FFB2D9;">
-			<div id="login_box" >
+			<div id="login_box" style="display:block;">
 				<tiles:insertAttribute name="login_box"/>
 			</div>
 			
-			<div id="noticeArea">
+			<div id="noticeArea" style="display:block">
 				<tiles:insertAttribute name="noticeArea"/>
 			</div>
 		</div>
