@@ -42,7 +42,7 @@ by홍마 어제
 <br>
 
 <ul class="nav nav-tabs" role="tablist" id="myTab">
-  <li role="presentation" class="active" ><a href="settingmain.do" >내B이웃설정</a></li>
+  <li role="presentation" class="active" ><a href="settingmain.do?m_id=${login.m_id }" >내B이웃설정</a></li>
   <li role="presentation" class="active" ><a href="#none" >글쓰기</a></li>
   <li role="presentation" class="active" ><a href="blog.do" >이웃B</a></li>
 </ul>

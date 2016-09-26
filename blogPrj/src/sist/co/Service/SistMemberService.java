@@ -3,6 +3,7 @@ package sist.co.Service;
 import java.util.HashMap;
 import java.util.List;
 
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 
@@ -59,6 +60,10 @@ public interface SistMemberService {
 	void allDelteMessage (SistMessage sm) throws Exception;
 	
 	void seeAllMessage (SistMessage sm) throws Exception;
+	
+	void insertBlog(SistBlog sb) throws Exception;
+	
+	void updateBlog(SistBlog sb) throws Exception;
 	
 	
 	

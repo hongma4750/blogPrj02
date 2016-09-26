@@ -172,7 +172,7 @@ select* from friend
 --insert into FOLLOWING values (seq_following.NEXTVAL, 'bom', 'summer', '20160912' );
 
 insert into friend
-values(seq_friend.NEXTVAL, 'aa1212', 'summer123', '친구들', 1,sysdate,0); 
+values(seq_friend.NEXTVAL, 'aa1212', 'lovely4750', '친구들', 1,sysdate,0); 
 
 insert into fsetting values(seq_fsetting.NEXTVAL, 'bom', 0);
 

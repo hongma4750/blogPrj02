@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistDblFollowingVO;
 import sist.co.Model.SistFgroupVO;
 import sist.co.Model.SistFriendVO;
@@ -128,5 +129,11 @@ public class SistFriendDAO {
 			return fvo;
 		}
 	
+		
+		
+		//hongma:selectBlog
+		public SistBlog selectBlog(String m_id) throws Exception{
+			return sqlsession.selectOne(ns+"selectBlog",m_id);
+		}
 
 }

@@ -2,6 +2,7 @@ package sist.co.Service;
 
 import java.util.List;
 
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistDblFollowingVO;
 import sist.co.Model.SistFgroupVO;
 import sist.co.Model.SistFriendVO;
@@ -53,4 +54,9 @@ public interface SistFriendService {
 	
 	//팔로잉조회
 	public SistDblFollowingVO get2fol(int seq) throws Exception;
+	
+	
+	
+	//hongma:
+	SistBlog selectBlog(String m_id) throws Exception;
 }

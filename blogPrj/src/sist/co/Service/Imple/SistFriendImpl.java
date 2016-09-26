@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistDblFollowingVO;
 import sist.co.Model.SistFgroupVO;
 import sist.co.Model.SistFriendVO;
@@ -130,6 +131,19 @@ public class SistFriendImpl implements SistFriendService {
 	public SistDblFollowingVO get2fol(int seq) throws Exception {
 	
 		return sistFriendDAO.get2fol(seq);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	//hongma:
+	@Override
+	public SistBlog selectBlog(String m_id) throws Exception {
+		return sistFriendDAO.selectBlog(m_id);
 	}
 	
 	

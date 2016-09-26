@@ -18,77 +18,70 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
 
-<h1>여기는 블로그 정보</h1>
+<form action="updateBlog.do" method="post" >
+<div style="width:90%; height:100%; margin:10px; padding:10px;">
 
-<div style="width:80%; height:100%; text-align:left;">
-	<h2>블로그 정보</h2>
+	<div style="width:100%; height:100%; text-align:left;">
+		<h2>블로그 정보</h2>
+	
+		<table class="table table-hover" style="">
+			<col style="width:15%;"/>
+			<col style="width:27%;"/>
+			<col style="width:auto"/>
+			
+	  		<tr>
+	  			<th >
+					<p class="lead">제목</p>
+				</th>
+	  			<td>
+	  				<input type="hidden" name="m_id" value="${blogInfo.m_id }">
+	  				<input type="hidden" name="blog_seq" value="${blogInfo.blog_seq }">
+	  				<input type="text" size="50" maxlength="25" value="${blogInfo.blog_title }" name="blog_title">
+	
+	  			</td>
+	  			<td>
+	  			<small style="color:gray;">한글, 영문, 숫자 혼용가능 (한글 기준 25자 이내)</small>
+	  			</td>
+	  		</tr>
+	  		
+	  		<tr>
+	  			<th >
+					<p class="lead">별명</p>
+				</th>
+	  			<td>
+	  				<input type="text" size="50" maxlength="10" value="${blogInfo.blog_nickname }" name="blog_nickname">	
+	  			</td>
+	  			<td><small style="color:gray;">한글, 영문, 숫자 혼용가능 (한글 기준 10자 이내)</small></td>
+	  		</tr>
+	  		
+	  		<tr>
+	  			<th >
+					<p class="lead">소개글</p>
+				</th>
+	  			<td>
+	  				<textarea rows="10" cols="50" name="blog_introduce">${blogInfo.blog_introduce }</textarea>
+	  				&nbsp;
+	  				
+	  			</td>
+	  			
+	  			<td><small style="color:gray; vertical-align:top">
+	  				블로그 프로필 영역의<br>
+					프로필사진 아래에 반영됩니다.<br>
+					(한글 기준 200자 이내)
+					</small></td>
+	  		</tr>
 
-	<table class="table table-hover" style="">
-		<col style="width:15%;"/>
-		<col style="width:27%;"/>
-		<col style="width:auto"/>
-		
-  		<tr>
-  			<th >
-				<p class="lead">제목</p>
-			</th>
-  			<td>
-  				<input type="text" size="50" maxlength="25">
-
-  			</td>
-  			<td>
-  			<small style="color:gray;">한글, 영문, 숫자 혼용가능 (한글 기준 25자 이내)</small>
-  			</td>
-  		</tr>
-  		
-  		<tr>
-  			<th >
-				<p class="lead">별명</p>
-			</th>
-  			<td>
-  				<input type="text" size="50" maxlength="10">	
-  			</td>
-  			<td><small style="color:gray;">한글, 영문, 숫자 혼용가능 (한글 기준 10자 이내)</small></td>
-  		</tr>
-  		
-  		<tr>
-  			<th >
-				<p class="lead">소개글</p>
-			</th>
-  			<td>
-  				<textarea rows="10" cols="50"></textarea>
-  				&nbsp;
-  				
-  			</td>
-  			
-  			<td><small style="color:gray; vertical-align:top">
-  				블로그 프로필 영역의<br>
-				프로필사진 아래에 반영됩니다.<br>
-				(한글 기준 200자 이내)
-				</small></td>
-  		</tr>
-  		
-  		<tr>
-  			<th >
-				<p class="lead">블로그 이미지</p>
-			</th>
-  			<td>
-  				<img src="image/12.jpg" alt="..." class="img-rounded" style="width:350px;">	
-  			</td>
-  			<td>
-  				<button>등록</button>
-  				<button>삭제</button>
-  			</td>
-  		</tr>
-  		
-  		<tr>
-  			<td colspan="3" style="text-align:center;">
-  				<button>저장</button>
-  			</td>
-  		</tr>
-  		
-  		
-  		
-  		
-	</table>
+	  		
+	  		<tr>
+	  			<td colspan="3" style="text-align:center;">
+	  				<input type="submit" value="저장">
+	  			</td>
+	  		</tr>
+	  		
+	  		
+	  		
+	  		
+		</table>
+	</div>
 </div>
+</form>

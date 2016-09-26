@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import oracle.net.aso.s;
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistDblFollowingVO;
 import sist.co.Model.SistFgroupVO;
 import sist.co.Model.SistFriendVO;
@@ -232,8 +233,14 @@ public class SistFriendController {
 		
 		//이웃관리홈
 		@RequestMapping(value="settingmain.do",method={RequestMethod.GET,RequestMethod.POST})
-		public String settingmain(Model model){
+		public String settingmain(HttpServletRequest request, Model model) throws Exception{
 			logger.info("환영합니다. settingmain.do 실행중");
+			
+			model.addAttribute("sideMenu","blogInfo");
+			
+			SistBlog sb = sistFriendService.selectBlog(request.getParameter("m_id"));
+			
+			request.getSession().setAttribute("blogInfo", sb);
 			return "settingmain.tiles";
 		}
 		//이웃관리_메인

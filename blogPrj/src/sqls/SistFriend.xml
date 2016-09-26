@@ -80,4 +80,10 @@
     SELECT * FROM DBLFOLLOWING WHERE DF_SEQ=#{df_seq}
     </select>
     
+    
+    
+    <select id="selectBlog" parameterType="String" resultType="sist.co.Model.SistBlog">
+    	SELECT * FROM BLOG WHERE M_ID = #{m_id}
+    </select>
+    
   </mapper>

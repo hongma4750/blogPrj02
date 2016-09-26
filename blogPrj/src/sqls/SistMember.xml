@@ -130,6 +130,16 @@
   		UPDATE MESSAGE SET MESSAGE_READ = 1 WHERE MESSAGE_RECEIVER = #{message_receiver}
   	</update>
   	
+  	<insert id="insertBlog" parameterType="sist.co.Model.SistBlog">
+  		INSERT INTO BLOG (blog_seq,m_id,blog_title,blog_nickname,blog_introduce) 
+  		VALUES (seq_blog.nextval,#{m_id},#{blog_title},#{blog_nickname},#{blog_introduce})
+  	</insert>
+  	
+  	<update id="updateBlog" parameterType="sist.co.Model.SistBlog">
+  		UPDATE BLOG SET BLOG_TITLE = #{blog_title}, BLOG_NICKNAME = #{blog_nickname}, BLOG_INTRODUCE = #{blog_introduce}
+  		 WHERE M_ID = #{m_id}
+  	</update>
+  	
   	
   	
   	

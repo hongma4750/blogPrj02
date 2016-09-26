@@ -113,3 +113,27 @@ values
 
 
 select * from message where message_receiver = 'aa1212' and message_read != 1;
+
+
+--블로그
+
+DROP TABLE BLOG
+CASCADE CONSTRAINT;
+
+create table BLOG(
+	blog_seq number primary key,
+	m_id varchar2(50),
+	blog_title varchar2(50),
+	blog_nickname varchar2(50),
+	blog_introduce varchar2(500)
+);
+
+DROP SEQUENCE SEQ_BLOG;
+
+CREATE SEQUENCE SEQ_BLOG
+START WITH 1 INCREMENT BY 1; 
+
+select * from blog;
+
+INSERT INTO BLOG (blog_seq,m_id,blog_title,blog_nickname,blog_introduce) 
+  		VALUES (seq_blog.nextval,'aa1212','aa1212'+'블로그','aa1212','...')

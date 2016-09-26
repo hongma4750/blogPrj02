@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 import sist.co.Service.SistMemberDAO;
@@ -170,6 +171,18 @@ public class SistMemberImpl implements SistMemberService{
 		sistMemberDAO.seeAllMessage(sm);
 		
 	}
+	
+	@Override
+	public void insertBlog(SistBlog sb) throws Exception {
+		sistMemberDAO.insertBlog(sb);
+		
+	}
+	
+	@Override
+	public void updateBlog(SistBlog sb) throws Exception {
+		sistMemberDAO.updateBlog(sb);
+		
+	}
 
 	
 	
@@ -185,6 +198,10 @@ public class SistMemberImpl implements SistMemberService{
 		public SistMemberVO getmember(String m_id) throws Exception {
 			return sistMemberDAO.getmember(m_id);
 		}
+
+		
+
+		
 
 		
 

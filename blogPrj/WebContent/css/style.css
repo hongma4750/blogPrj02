@@ -107,7 +107,7 @@
 		/* height:100%; */
 		width:100%;
 		position:relative;
-		margin: 0 1px 0 0;
+		
 	}
 	
 	#footer{
@@ -119,6 +119,41 @@
 	    text-align: center;
 	    background-color:#3F3F3F;
 	    color:white;
+	}
+
+	#setcontainer{
+		margin:auto;
+		padding:auto;
+		width:100%;
+		padding-top : 15px;
+		min-height:700px;
+		overflow:auto;
+		
+	}
+	#setsidebar{
+		width:20%;
+		height:100%;
+		display:block;
+		float:left;
+		
+		min-height:100%;
+		
+		border-right:1px solid #6B767D;
+
+		background-color:#FBFBFB;
+	}
+	
+	#setcontent{
+		width:80%;
+		height:100%;
+		display:block;
+		
+		display:inlin-block;
+		float:left;
+		
+		margin:auto;
+		padding:auto;
+		min-height:100%;
 	}
 	
 	

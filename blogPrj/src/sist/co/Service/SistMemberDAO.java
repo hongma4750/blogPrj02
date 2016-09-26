@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 
@@ -128,6 +129,14 @@ public class SistMemberDAO {
 	
 	public void seeAllMessage (SistMessage sm) throws Exception{
 		sqlSession.update(ns+"seeAllMessage",sm);
+	}
+	
+	public void insertBlog(SistBlog vo) throws Exception{
+		sqlSession.insert(ns+"insertBlog",vo);
+	}
+	
+	public void updateBlog(SistBlog sb) throws Exception{
+		sqlSession.update(ns+"updateBlog",sb);
 	}
 	
 	

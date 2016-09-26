@@ -32,7 +32,7 @@
 	<div style="width:100%; height:10%; text-align:center;">
 		<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" 
 		aria-expanded="false" aria-controls="collapseExample" id="myCollapse">
-		  메세지 펼치기
+		  메세지 접기
 		</button>
 	</div>
 	
@@ -58,7 +58,7 @@
 		%>
 	<!--  페이징 -->
 	
-	<div style="width:100%; height:90%; margin:0; padding:0;" class="collapse" id="collapseExample">
+	<div style="width:100%; height:90%; margin:0; padding:0;" class="collapse in" id="collapseExample">
 
 			<div style="width:100%; height:85%;">
 				<table class="table table-condensed">
@@ -225,7 +225,7 @@
 
 
 <script>
-var checkCollapse = 0;
+var checkCollapse = 1;
 
 function deleteBtn(a){
 	location.href="deleteMessage.do?message_seq="+a;
@@ -249,8 +249,7 @@ function detailBtn(seq){
 
 
 $("#myCollapse").click(function(){
-	
-	
+
 	if(checkCollapse == 0){
 		$('#collapseExample').show();
 		$("#myCollapse").text("메세지 접기");

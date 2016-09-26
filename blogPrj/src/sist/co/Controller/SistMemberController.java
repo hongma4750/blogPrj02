@@ -38,6 +38,7 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import nl.captcha.text.producer.DefaultTextProducer;*/
 import sist.co.Model.FUpUtil;
 import sist.co.Model.SendEmail;
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 import sist.co.Model.YesMember;
@@ -57,9 +58,17 @@ public class SistMemberController {
 	public String index(HttpServletRequest request , Model model) throws Exception{
 		logger.info("환영합니다. index.do 실행중");
 		
+		//메인으로 돌아가면 finfo를 세션에서 지워준다
+	      HttpSession session = request.getSession();
+	      SistMemberVO finfo =(SistMemberVO)session.getAttribute("finfo");
+	      session.removeAttribute("finfo");
+	      System.out.println("fid 세션 삭제 ok");
+	      
 		SistMemberVO vo = (SistMemberVO) request.getSession().getAttribute("login");
 		
 		if(vo != null){
+			
+			
 			
 			
 
@@ -261,6 +270,14 @@ public class SistMemberController {
         }
 
 		sistMemberService.insertMember(vo);
+		
+		SistBlog sb = new SistBlog();
+		sb.setM_id(vo.getM_id());
+		sb.setBlog_title(vo.getM_name()+" 님의 블로그 입니다.");
+		sb.setBlog_nickname(vo.getM_name());
+		sb.setBlog_introduce("...");
+		
+		sistMemberService.insertBlog(sb);
 		
 		SendEmail send = new SendEmail(vo.getM_id(), vo.getM_email());
 		
@@ -881,6 +898,15 @@ public class SistMemberController {
 		sistMemberService.seeAllMessage(sm);
 		
 		return "redirect:index.do";
+	}
+		
+	@RequestMapping(value="updateBlog.do",method={RequestMethod.GET,RequestMethod.POST})
+	public String updateBlog(HttpServletRequest request,SistBlog sb, Model model) throws Exception {
+		logger.info("updateBlog.do 실행중");
+		
+		sistMemberService.updateBlog(sb);
+		
+		return "redirect:settingmain.do?m_id="+sb.getM_id();
 	}
 	
 	
