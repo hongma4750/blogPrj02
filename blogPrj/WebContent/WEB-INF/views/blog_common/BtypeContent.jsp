@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+    <%@ page import="java.util.*" %>
+    <%@ page import="sist.co.Model.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <!-- tag들 필요하면 Ctrl+c  /   Ctrl+v -->
@@ -26,19 +28,41 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/likeAjax.js"></script>
 
+<!--  페이징 -->
+		<%
+			String pageobj = request.getParameter("page");
+			int currentpage;
+			if (pageobj == null) {
+				currentpage = 1;
+			} else {
+				currentpage = Integer.parseInt(pageobj);
+			}
+			
+			List<SistBlogPageDTO> plist = (List<SistBlogPageDTO>)request.getAttribute("blogPageList");
+			List<SistBlogDTO> reList = (List<SistBlogDTO>)request.getAttribute("bloglist");
+			
+			int pnum;
+			int pageblock = 20;
+			int block = (int) Math.ceil((double) currentpage / pageblock);
+			int bstartpage = (block - 1) * pageblock + 1;
+			int bendpage = bstartpage + pageblock - 1;
+			pnum = (int) Math.ceil((double) reList.size() / 5);
+		%>
+	<!--  페이징 -->
+	
 
 <div class="con">
 	<!-- 전체보기 목록 -->
 	<div id="total_list">
 		<div class="total_view">
-			<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(24)</strong></a>
+			<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(${fn:length(bloglist) })</strong></a>
 			<a href="#none" class ="tview2" title="listopen" id="open_list"><strong>목록열기</strong></a>
 		</div>
 		
 		<div class="total_view_detail" style="display:none;">
 			<div class="row" style="margin:auto; padding:auto;">
 				<span>
-					<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(24)</strong></a>
+					<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(${fn:length(bloglist) })</strong></a>
 					
 					<span style="float:right;">
 						<small style="text-align:right; width:40px;">스크랩</small>&nbsp;
@@ -55,17 +79,17 @@
 					<col style="width:40px">
 					<col style="width:100px">
 					
-				<c:if test="${empty bloglist }">
+				<c:if test="${empty blogPageList }">
 					<tr valign="top">
 						<td colspan="4">작성된 게시글 목록이 없습니다.</td>
 					</tr>
 				</c:if>
-				<c:forEach items="${bloglist }" var="total_blist" varStatus="totalvar">
+				<c:forEach items="${blogPageList }" var="total_blist" varStatus="totalvar">
 					<tr valign="top">
 						<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
 						<td class="t2"><a href="BbbsDetail.do?bbs_seq=${total_blist.bbs_seq }&log_id=${login.m_id }">${total_blist.bbs_title }</a></td>
 						<td class="t3">12</td>
-						<td><small>${total_blist.bbs_date }</small></td>
+						<td><small>${fn:substring(total_blist.bbs_date,0,12) }</small></td>
 					</tr>
 				</c:forEach>
 					
@@ -90,12 +114,7 @@
 									<c:if test="${blogdto.m_id eq login.m_id }">
 										<input type="button" id="list_manageBtn" value="글관리 열기">
 									</c:if>
-									<select>
-										<option>5줄 보기</option>
-										<option>10줄 보기</option>
-										<option>15줄 보기</option>
-										<option>20줄 보기</option>
-									</select>
+									
 								</span>
 							</div>
 							
@@ -106,24 +125,79 @@
 				
 				<div class="row" style="margin:auto; padding:auto; text-align:center;">
 					<nav>
-					  <ul class="pagination">
-					    <li>
-					      <a href="#" aria-label="Previous">
-					        <span aria-hidden="true">&laquo;</span>
-					      </a>
-					    </li>
-					    <li><a href="#">1</a></li>
-					    <li><a href="#">2</a></li>
-					    <li><a href="#">3</a></li>
-					    <li><a href="#">4</a></li>
-					    <li><a href="#">5</a></li>
-					    <li>
-					      <a href="#" aria-label="Next">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
-					  </ul>
-					</nav>
+							<ul class="pagination">
+								<%
+									if (currentpage <= 1) {
+								%>
+								<li class="disabled"><span aria-hidden="true">처음</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blognl.do?page=1">처음</a></li>
+								<%
+									}
+								%>
+			
+								<%
+									if (currentpage <= 1) {
+								%>
+								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;" aria-lable="Previous"
+									href="blognl.do?page=<%=currentpage - 1%>"><span
+										aria-hidden="true">&laquo;</span></a></li>
+								<%
+									}
+								%>
+			
+								<%
+									if (bendpage > pnum) {
+										bendpage = pnum;
+									}
+									for (int i = bstartpage; i <= bendpage; i++) {
+										if (currentpage == i) {
+								%>
+								<li class='active'><a href="#"><%=i%></a></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blognl.do?page=<%=i%>"><%=i%></a></li>
+								<%
+									}
+									}
+								%>
+			
+								<%
+									if (currentpage >= pnum) {
+								%>
+								<li class="disabled"><span aria-hidden="true">&raquo;</span></a></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;" aria-lable="Next"
+									href="blognl.do?page=<%=currentpage + 1%>"><span
+										aria-hidden="true">&raquo;</span></a></li>
+								<%
+									}
+								%>
+								<%
+									if (currentpage >= pnum) {
+								%>
+								<li class="disabled"><span aria-hidden="true">끝</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blognl.do?page=<%=pnum%>">끝</a></li>
+								<%
+									}
+								%>
+							</ul>
+						</nav>
 				</div>
 				
 				
@@ -145,13 +219,13 @@
 <!-- 글 목록 전체보기 -->
 
 	<div class="viewcon">
-		<c:if test="${empty bloglist }">
+		<c:if test="${empty blogPageList }">
 			<div class="total_content">
 				<p>작성된 글이 없습니다.</p>
 			</div>
 		</c:if>
 		<form name="bfrmform" id="bfrmform" action="" method="post">
-		<c:forEach items="${bloglist }" var="blog" varStatus="blogvar">
+		<c:forEach items="${blogPageList }" var="blog" varStatus="blogvar">
 			<div class="total_content">
 				<div class="priv_content">
 					<p>
@@ -374,28 +448,85 @@
 
 	
 	
-	<div class="paginglist">
-		<nav aria-label="Page navigation">
-			  <ul class="pagination">
-			    <li>
-			      <a href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li>
-			      <a href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
+	<!-- <div class="paginglist" style="margin:auto; padding:auto; background-color:blue; display:block;"> -->
+		
+		<nav>
+			<ul class="pagination">
+				<%
+					if (currentpage <= 1) {
+				%>
+				<li class="disabled"><span aria-hidden="true">처음</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;"
+					href="blognl.do?page=1">처음</a></li>
+				<%
+					}
+				%>
+
+				<%
+					if (currentpage <= 1) {
+				%>
+				<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;" aria-lable="Previous"
+					href="blognl.do?page=<%=currentpage - 1%>"><span
+						aria-hidden="true">&laquo;</span></a></li>
+				<%
+					}
+				%>
+
+				<%
+					if (bendpage > pnum) {
+						bendpage = pnum;
+					}
+					for (int i = bstartpage; i <= bendpage; i++) {
+						if (currentpage == i) {
+				%>
+				<li class='active'><a href="#"><%=i%></a></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;"
+					href="blognl.do?page=<%=i%>"><%=i%></a></li>
+				<%
+					}
+					}
+				%>
+
+				<%
+					if (currentpage >= pnum) {
+				%>
+				<li class="disabled"><span aria-hidden="true">&raquo;</span></a></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;" aria-lable="Next"
+					href="blognl.do?page=<%=currentpage + 1%>"><span
+						aria-hidden="true">&raquo;</span></a></li>
+				<%
+					}
+				%>
+				<%
+					if (currentpage >= pnum) {
+				%>
+				<li class="disabled"><span aria-hidden="true">끝</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;"
+					href="blognl.do?page=<%=pnum%>">끝</a></li>
+				<%
+					}
+				%>
+			</ul>
+		</nav>
+		
 	
-</div>
+<!-- </div> -->
 
 
 
