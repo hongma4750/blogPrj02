@@ -32,8 +32,8 @@
 					    <div class="thumbnail">
 					      <img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 					      <div class="caption">
-					      	<p style="font-weight: bold; font-size: 9pt;">${login.m_id }</p>
-					        <span>...자기소개</span>
+					      	<p style="font-weight: bold; font-size: 9pt;">${someoneBlog.blog_nickname }[${someoneBlog.m_id }]</p>
+					        <span>${someoneBlog.blog_introduce }</span>
 					         <!-- 마이페이지로 갈때 아이디 전달해줘야함 -->
 			        		<span><button class="btn btn-warning" style="font-size:7px; width:25px; height:13px; padding:0;" onclick="location.href='myPage.do'">EDIT</button></span>
 					        <p><a href="bbswrite.do">포스트쓰기</a> &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; <a href="#none">관리</a></p>
@@ -69,6 +69,7 @@
 					</div>
 				</div>
 			</c:if>
+			
 			<c:if test="${login.m_id ne finfo.m_id}"> <!-- 다르면 다른사람 블로그. -->
 				<div class="topwrap">
 					<!-- 프사 -->
@@ -77,8 +78,8 @@
 					    <div class="thumbnail">
 					      <img src="${finfo.m_photo }" class="img-responsive" alt="Responsive image">
 					      <div class="caption">
-					      	<p style="font-weight: bold; font-size: 9pt;">${finfo.m_id }</p>
-					        <p>...자기소개</p>
+					      	<p style="font-weight: bold; font-size: 9pt;">${someoneBlog.blog_nickname }[${someoneBlog.m_id }]</p>
+					        <p>${someoneBlog.blog_introduce }</p>
 					      </div>
 					    </div>
 					  </div>

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sist.co.Model.SistBbsLikeDTO;
+import sist.co.Model.SistBlog;
 import sist.co.Model.SistBlogDTO;
+import sist.co.Model.SistBlogPageDTO;
 import sist.co.Model.SistLikePeopleDTO;
 import sist.co.Model.SistMemberVO;
 import sist.co.Service.SistBlogService;
+import sist.co.Service.SistFriendService;
 import sist.co.Service.SistMemberService;
 
 
@@ -34,6 +36,9 @@ public class SistBlogController {
    @Autowired
    SistMemberService sistMemberService;
    
+   @Autowired
+	SistFriendService sistFriendService;
+   
    /*블로그 기본 화면. 전체 리스트를 볼 수 있다.*/
    @RequestMapping(value="blog.do", method={RequestMethod.GET, RequestMethod.POST})
    public String blog(SistBlogDTO blog,HttpServletRequest request, Model model) throws Exception{
@@ -45,15 +50,55 @@ public class SistBlogController {
       //request.getSession().setAttribute("lid", lid); //세션에는 lid로 저장
       
       //친구 블로그 아이디
-      String fid = request.getParameter("fid")==null?"":request.getParameter("fid"); //맨 처음 넘어올때
+      //String fid = request.getParameter("fid")==null?"":request.getParameter("fid"); //맨 처음 넘어올때
       /*--------아이디만 가져오는게 아니라 여기에 getmember도 해야함.id로 프로필때문에 -----------------------*/
+      
+      //홍마
+      String fid = request.getParameter("fid");
       SistMemberVO finfo = sistMemberService.getmember(fid);
       //친구 아이디 정보들 저장되어있음
       request.getSession().setAttribute("finfo", finfo);
       System.out.println("fid: "+fid);
       
+      
+      //hongma------------------------------------------------------
+      List<SistBlogDTO> bloglist = sistBlogService.getBlogList(finfo.getM_id());
+      model.addAttribute("bloglist",bloglist);
+      
+      //like list
+      List<SistBbsLikeDTO> likelist = sistBlogService.getLikeList();
+      model.addAttribute("likelist",likelist);
+      
+      //like show list => get only 1 value
+      List<SistBlogDTO> likerest = sistBlogService.getLikeallow();
+      model.addAttribute("likerest",likerest);
+      
+      	
+		//페이지 수
+		
+		String pageobj = request.getParameter("page");
+		int currentpage;
+		if (pageobj == null) {
+			currentpage = 1;
+		} else {
+			currentpage = Integer.parseInt(pageobj);
+		}
+		
+		
+		int page01 = (currentpage - 1) * 5 + 1;
+		int page02 = currentpage * 5;
+		
+		SistBlogPageDTO pageDto = new SistBlogPageDTO();
+		pageDto.setPage01(page01);
+		pageDto.setPage02(page02);
+		pageDto.setM_id(finfo.getM_id());
+		
+		List<SistBlogPageDTO> blogPageList = sistBlogService.getPointChargePageList(pageDto);
+		model.addAttribute("blogPageList",blogPageList);
+      //hongma------------------------------------------------------
+      
       //내 블로그일때
-      if(log_data.getM_id().equals(finfo.getM_id())|| log_data.getM_id() == finfo.getM_id()){
+      /*if(log_data.getM_id().equals(finfo.getM_id())|| log_data.getM_id() == finfo.getM_id()){
          List<SistBlogDTO> bloglist = sistBlogService.getBlogList(log_data.getM_id());
          model.addAttribute("bloglist",bloglist);
          
@@ -78,7 +123,12 @@ public class SistBlogController {
          //like show list => get only 1 value
          List<SistBlogDTO> likerest = sistBlogService.getLikeallow();
          model.addAttribute("likerest",likerest);
-      }
+      }*/
+		
+		
+		//블로그 정보
+		SistBlog sb = sistFriendService.selectBlog(fid);
+		request.getSession().setAttribute("someoneBlog", sb);
 
       return "blog.tiles";
       
@@ -91,10 +141,10 @@ public class SistBlogController {
       logger.info("welcome SistBlogController blognl");
       
       //로그인 한 아이디. 세션에서 불러오기
-      SistMemberVO log_data =(SistMemberVO)request.getSession().getAttribute("login");
+      SistMemberVO finfo_date =(SistMemberVO)request.getSession().getAttribute("finfo");
       
       //내 블로그일때
-      List<SistBlogDTO> bloglist = sistBlogService.getBlogList(log_data.getM_id());
+      List<SistBlogDTO> bloglist = sistBlogService.getBlogList(finfo_date.getM_id());
       model.addAttribute("bloglist",bloglist);
       
       //like list
@@ -104,6 +154,27 @@ public class SistBlogController {
       //like show list => get only 1 value
       List<SistBlogDTO> likerest = sistBlogService.getLikeallow();
       model.addAttribute("likerest",likerest);
+      
+      String pageobj = request.getParameter("page");
+		int currentpage;
+		if (pageobj == null) {
+			currentpage = 1;
+		} else {
+			currentpage = Integer.parseInt(pageobj);
+		}
+		
+		
+		int page01 = (currentpage - 1) * 5 + 1;
+		int page02 = currentpage * 5;
+		
+		SistBlogPageDTO pageDto = new SistBlogPageDTO();
+		pageDto.setPage01(page01);
+		pageDto.setPage02(page02);
+		pageDto.setM_id(finfo_date.getM_id());
+		
+		List<SistBlogPageDTO> blogPageList = sistBlogService.getPointChargePageList(pageDto);
+		model.addAttribute("blogPageList",blogPageList);
+		
       
       
       return "blog.tiles";

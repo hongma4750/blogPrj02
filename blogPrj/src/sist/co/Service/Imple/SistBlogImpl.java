@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import sist.co.Model.SistBbsLikeDTO;
 import sist.co.Model.SistBlogDTO;
+import sist.co.Model.SistBlogPageDTO;
 import sist.co.Model.SistLikePeopleDTO;
 import sist.co.Service.SistBlogDAO;
 import sist.co.Service.SistBlogService;
@@ -94,6 +95,16 @@ public class SistBlogImpl implements SistBlogService {
 	@Override
 	public List<SistLikePeopleDTO> getLikePeople(int bbs_seq) throws Exception {
 		return sistBlogDao.getLikePeople(bbs_seq);
+	}
+
+	
+	
+	
+	
+	//홍마
+	@Override
+	public List<SistBlogPageDTO> getPointChargePageList(SistBlogPageDTO pageDto) throws Exception {
+		return sistBlogDao.getPointChargePageList(pageDto);
 	}
 	
 	

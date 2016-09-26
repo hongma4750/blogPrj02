@@ -25,6 +25,7 @@ insert into member values('aa1212','aa1212','aaaaa','m','20190705','aa','1001010
 select * from member;
 
 update member set m_action = 1 where m_id = 'aa1212';
+update member set m_action = 1 where m_id = 'lovely4750';
 update member set m_action = 1 where m_id = 'b';
 
 

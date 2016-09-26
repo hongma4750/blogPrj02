@@ -4,6 +4,7 @@ import java.util.List;
 
 import sist.co.Model.SistBbsLikeDTO;
 import sist.co.Model.SistBlogDTO;
+import sist.co.Model.SistBlogPageDTO;
 import sist.co.Model.SistLikePeopleDTO;
 
 public interface SistBlogService {
@@ -24,4 +25,8 @@ public interface SistBlogService {
 	public List<SistBlogDTO> getLikeallow() throws Exception;
 	public List<SistLikePeopleDTO> getLikePeople(int bbs_seq) throws Exception;
 	
+	
+	
+	//hongma:취중입니다.
+	List<SistBlogPageDTO> getPointChargePageList(SistBlogPageDTO pageDto) throws Exception;
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import sist.co.Model.SistBbsLikeDTO;
 import sist.co.Model.SistBlogDTO;
+import sist.co.Model.SistBlogPageDTO;
 import sist.co.Model.SistLikePeopleDTO;
 
 @Repository
@@ -79,6 +80,13 @@ public class SistBlogDAO {
 		List<SistLikePeopleDTO> peoplelist = new ArrayList<SistLikePeopleDTO>();
 		peoplelist = sqlSession.selectList(ns+"getLikePeople",bbs_seq);
 		return peoplelist;
+	}
+	
+	
+	
+	//hongma:취중코딩
+	public List<SistBlogPageDTO> getPointChargePageList(SistBlogPageDTO pageDto) throws Exception{
+		return sqlSession.selectList(ns+"getPointChargePageList",pageDto);
 	}
 	
 }
