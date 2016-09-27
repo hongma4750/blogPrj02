@@ -106,6 +106,16 @@ public class SistBlogImpl implements SistBlogService {
 	public List<SistBlogPageDTO> getPointChargePageList(SistBlogPageDTO pageDto) throws Exception {
 		return sistBlogDao.getPointChargePageList(pageDto);
 	}
+	//검색
+	@Override
+	public List<SistBlogDTO> selectBlogSearch(SistBlogDTO blogDto) throws Exception {
+		return sistBlogDao.selectBlogSearch(blogDto);
+	}
+	//검색 페이징
+	@Override
+	public List<SistBlogPageDTO> getPointChargeSearchPageList(SistBlogPageDTO pageDto) throws Exception {
+		return sistBlogDao.getPointChargeSearchPageList(pageDto);
+	}
 	
 	
 	

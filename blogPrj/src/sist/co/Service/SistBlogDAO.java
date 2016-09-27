@@ -88,5 +88,13 @@ public class SistBlogDAO {
 	public List<SistBlogPageDTO> getPointChargePageList(SistBlogPageDTO pageDto) throws Exception{
 		return sqlSession.selectList(ns+"getPointChargePageList",pageDto);
 	}
+	//hongma:검색
+	public List<SistBlogDTO> selectBlogSearch(SistBlogDTO blogDto) throws Exception{
+		return sqlSession.selectList(ns+"selectBlogSearch",blogDto);
+	}
+	//hongma:검색 페이징
+	public List<SistBlogPageDTO> getPointChargeSearchPageList(SistBlogPageDTO pageDto) throws Exception{
+		return sqlSession.selectList(ns+"getPointChargeSearchPageList",pageDto);
+	}
 	
 }

@@ -29,4 +29,8 @@ public interface SistBlogService {
 	
 	//hongma:취중입니다.
 	List<SistBlogPageDTO> getPointChargePageList(SistBlogPageDTO pageDto) throws Exception;
+	//검색
+	List<SistBlogDTO> selectBlogSearch(SistBlogDTO blogDto) throws Exception;
+	//검색 페이징
+	List<SistBlogPageDTO> getPointChargeSearchPageList(SistBlogPageDTO pageDto) throws Exception;
 }

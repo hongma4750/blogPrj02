@@ -243,8 +243,53 @@ public class SistBlogController {
    
    /* 블로그 내의 검색페이지로 이동*/
    @RequestMapping(value="blogsearch.do",method=RequestMethod.GET)
-   public String blogsearch(Model model){
+   public String blogsearch(HttpServletRequest request, Model model) throws Exception{
       logger.info("welcome SistBlogController blogsearch");
+      
+      
+      String blogSearch = request.getParameter("blogSearch");
+      model.addAttribute("blogSearch",blogSearch);
+      
+      
+      String m_id = ((SistMemberVO)request.getSession().getAttribute("finfo")).getM_id();
+      
+      
+      SistBlogDTO blogDto = new SistBlogDTO();
+      blogDto.setBbs_title(blogSearch);
+      blogDto.setBbs_content(blogSearch);
+      blogDto.setM_id(m_id);
+      
+      System.out.println("m_id : "+m_id);
+      
+      
+      
+      List<SistBlogDTO> searchList = sistBlogService.selectBlogSearch(blogDto);
+      model.addAttribute("searchList",searchList);
+    //페이지 수
+		
+	String pageobj = request.getParameter("page");
+	int currentpage;
+	if (pageobj == null) {
+		currentpage = 1;
+	} else {
+		currentpage = Integer.parseInt(pageobj);
+	}
+	
+	
+	int page01 = (currentpage - 1) * 5 + 1;
+	int page02 = currentpage * 5;
+	
+	
+	SistBlogPageDTO pageDto = new SistBlogPageDTO();
+	pageDto.setPage01(page01);
+	pageDto.setPage02(page02);
+	pageDto.setBbs_title(blogSearch);
+	pageDto.setBbs_content(blogSearch);
+	pageDto.setM_id(m_id);
+	
+	List<SistBlogPageDTO> blogSearPageList = sistBlogService.getPointChargeSearchPageList(pageDto);
+	model.addAttribute("blogSearPageList",blogSearPageList);
+
       return "blogsearch.tiles";
    }
    
