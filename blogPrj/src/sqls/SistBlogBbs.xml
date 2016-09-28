@@ -6,9 +6,9 @@
 	<!-- 블로그 글쓰기 -->
 	<insert id="writeBBS" parameterType="sist.co.Model.SistBlogDTO">
 		INSERT INTO BLOG_BBS
-				(BBS_SEQ,M_ID,BBS_CA_SEQ,BBS_TITLE,BBS_CONTENT,BBS_HID,BBS_COMCHK,BBS_LIKECHK,BBS_SCRAPCHK,BBS_DATE)
+				(BBS_SEQ,M_ID,BBS_CA_SEQ,BBS_TITLE,BBS_CONTENT,BBS_HID,BBS_COMCHK,BBS_LIKECHK,BBS_SCRAPCHK,BBS_DATE,BBS_LIKE_COUNT)
 			VALUES(SEQ_BLOGBBS.NEXTVAL,#{m_id},#{bbs_ca_seq},#{bbs_title},#{bbs_content},
-				#{bbs_hid},1,1,#{bbs_scrapchk},SYSDATE)
+				#{bbs_hid},1,1,#{bbs_scrapchk},SYSDATE,0)
 	</insert>
 	
 	<!-- 블로그 메인에 내용 전부 불러오기 -->
@@ -61,7 +61,21 @@
 	<delete id="delBbsLike" parameterType="sist.co.Model.SistBbsLikeDTO">
 		DELETE FROM BBS_LIKE
 			WHERE M_ID=#{m_id} AND BBS_SEQ=#{bbs_seq}
-	</delete>	
+	</delete>
+	
+	<!-- bbs게시판의 공감수 증가 -->
+	<update id="likeplus" parameterType="java.lang.Integer">
+		UPDATE BLOG_BBS SET 
+			BBS_LIKE_COUNT=BBS_LIKE_COUNT+1
+		WHERE BBS_SEQ=#{bbs_seq}
+	</update> 
+	
+	<!-- bbs게시판의 공감수 감소 -->
+	<update id="likeminus" parameterType="java.lang.Integer">
+		UPDATE BLOG_BBS SET 
+			BBS_LIKE_COUNT=BBS_LIKE_COUNT-1
+		WHERE BBS_SEQ=#{bbs_seq}
+	</update> 
 	
 	<!-- 공감 리스트 전부 불러오기 -->
 	<select id="getLikeList" resultType="sist.co.Model.SistBbsLikeDTO">
@@ -79,12 +93,8 @@
 	<select id="getLikePeople" parameterType="java.lang.Integer" resultType="sist.co.Model.SistLikePeopleDTO">
 		SELECT  BLIKE.LIKE_DATE,MEM.M_ID,MEM.M_NAME FROM BBS_LIKE BLIKE, MEMBER MEM
 		WHERE BBS_SEQ=#{bbs_seq} AND BLIKE.M_ID=MEM.M_ID
-	</select>
-	
-	
-	
-	<!-- 홍마 -->
-	<!-- 메인 페이징 -->
+	</select>	
+
 	<select id="getPointChargePageList" parameterType="sist.co.Model.SistBlogPageDTO" resultType="sist.co.Model.SistBlogPageDTO">
   		SELECT BBS_SEQ, M_ID, BBS_CA_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, POLL_SEQ, TOPIC_SEQ, BBS_HID, BBS_COMCHK, BBS_LIKECHK, BBS_SCRAPCHK, BBS_DATE
   		 FROM 
@@ -95,14 +105,48 @@
 		WHERE RNUM >= #{page01} AND #{page02} >=RNUM
   	</select>
   	
-  	<!-- 검색 -->
-  	<select id="selectBlogSearch" parameterType="sist.co.Model.SistBlogDTO" resultType="sist.co.Model.SistBlogDTO">
-  		SELECT * FROM BLOG_BBS
-  		WHERE (regexp_like(bbs_title,#{bbs_title}) or regexp_like(bbs_content,#{bbs_content})) AND M_ID = #{m_id}
-  		
-  	</select>
   	
-  	<!-- 검색 페이징 -->
+  	
+  	<!-- 댓글/////////////////////////////////////////////// -->
+  	<!-- 블로그 글쓰기 -->
+	<insert id="bbscomment" parameterType="sist.co.Model.SistBlogComDTO">
+		INSERT INTO BBS_COMMENT
+				(COM_SEQ,BBS_SEQ,COM_CONTENT,M_ID,BLOG_NICKNAME,COM_REF,COM_STEP,COM_DEPTH,COM_DEL,COM_PARENT,COM_DATE)
+			VALUES(SEQ_BBSCOMMENT.NEXTVAL,#{bbs_seq},#{com_content },#{m_id},#{blog_nickname },
+				(SELECT NVL(MAX(COM_REF), 0)+1 FROM BBS_COMMENT),0,0,0,0,SYSDATE)
+	</insert>
+	
+	
+	<!-- 상세페이지. 댓글 가져오기 -->
+	<select id="getreplyList" parameterType="java.lang.Integer" resultType="sist.co.Model.SistBlogComListDTO">
+		SELECT COM.COM_SEQ,COM.BBS_SEQ, COM.COM_CONTENT,COM.COM_REF, COM.COM_STEP,COM.COM_DEPTH,
+			COM.COM_DEL,COM.COM_PARENT,COM.COM_DATE,MEM.M_ID,MEM.M_PHOTO
+		FROM BBS_COMMENT COM, MEMBER MEM
+		WHERE BBS_SEQ=#{bbs_seq} AND COM.M_ID=MEM.M_ID
+		ORDER BY COM.COM_REF ASC, COM.COM_STEP ASC
+	</select>
+	
+	
+	<!-- 대댓글 하나 뒤로 밀기 -->
+	<update id="replypush" parameterType="sist.co.Model.SistBlogComDTO">	
+		UPDATE BBS_COMMENT SET
+			COM_STEP=COM_STEP+1
+		WHERE COM_REF=(SELECT COM_REF FROM BBS_COMMENT WHERE COM_SEQ=#{com_seq})
+			AND COM_STEP>(SELECT COM_STEP FROM BBS_COMMENT WHERE COM_SEQ=#{com_seq})			
+	</update>
+	
+	<!-- 대댓글 하나뒤로 민자리에 새로운 대댓글 삽입 -->
+	<insert id="rereplyadd" parameterType="sist.co.Model.SistBlogComDTO">
+		INSERT INTO BBS_COMMENT
+				(COM_SEQ,BBS_SEQ,COM_CONTENT,M_ID,BLOG_NICKNAME,COM_REF,COM_STEP,COM_DEPTH,COM_DEL,COM_PARENT,COM_DATE)
+			VALUES(SEQ_BBSCOMMENT.NEXTVAL,#{bbs_seq},#{com_content },#{m_id},#{blog_nickname },
+				(SELECT COM_REF FROM BBS_COMMENT WHERE BBS_COMMENT=#{com_seq}),
+				(SELECT COM_STEP FROM BBS_COMMENT WHERE BBS_COMMENT=#{com_seq})+1,
+				(SELECT COM_DEPTH FROM BBS_COMMENT WHERE BBS_COMMENT=#{com_seq})+1,
+				0,#{com_seq},SYSDATE)
+	</insert>
+
+<!-- 검색 페이징 -->
   	<select id="getPointChargeSearchPageList" parameterType="sist.co.Model.SistBlogPageDTO" resultType="sist.co.Model.SistBlogPageDTO">
   		SELECT BBS_SEQ, M_ID, BBS_CA_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, POLL_SEQ, TOPIC_SEQ, BBS_HID, BBS_COMCHK, BBS_LIKECHK, BBS_SCRAPCHK, BBS_DATE
   		 FROM 
@@ -114,6 +158,13 @@
 		WHERE RNUM >= #{page01} AND #{page02} >=RNUM
   	</select>
   	
+  	<delete id="deleteAllBbsInCategory" parameterType="int">
+  		DELETE FROM BLOG_BBS WHERE BBS_CA_SEQ = #{ca_seq}
+  	</delete>
+
+
+	
+
 	
 	
 </mapper>

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sist.co.Model.SistBbsLikeDTO;
+import sist.co.Model.SistBlogComDTO;
+import sist.co.Model.SistBlogComListDTO;
 import sist.co.Model.SistBlogDTO;
 import sist.co.Model.SistBlogPageDTO;
 import sist.co.Model.SistLikePeopleDTO;
@@ -81,6 +83,17 @@ public class SistBlogImpl implements SistBlogService {
 		sistBlogDao.delBbsLike(like);
 		
 	}
+	
+	@Override
+	public void likeplus(int bbs_seq) {
+		sistBlogDao.likeplus(bbs_seq);
+		
+	}
+
+	@Override
+	public void likeminus(int bbs_seq) {
+		sistBlogDao.likeminus(bbs_seq);
+	}
 
 	@Override
 	public List<SistBbsLikeDTO> getLikeList() throws Exception {
@@ -117,7 +130,36 @@ public class SistBlogImpl implements SistBlogService {
 		return sistBlogDao.getPointChargeSearchPageList(pageDto);
 	}
 	
+	@Override
+	public void deleteAllBbsInCategory(int ca_seq) throws Exception {
+		sistBlogDao.deleteAllBbsInCategory(ca_seq);
+		
+	}
+
 	
+/*댓글------------------------------------------------------------------------------*/
+	//댓글 삽입
+	@Override
+	public boolean bbscomment(SistBlogComDTO bbscom) throws Exception {
+		return sistBlogDao.bbscomment(bbscom);
+	}
+
+	//댓글 불러오기
+	@Override
+	public List<SistBlogComListDTO> getreplyList(int bbs_seq) throws Exception {
+		return sistBlogDao.getreplyList(bbs_seq);
+	}
+
+	//대댓글 뒤로 밀고 새로 삽입하기
+	@Override
+	public void rereply(SistBlogComDTO bbscom) throws Exception {
+		sistBlogDao.replypush(bbscom);
+		sistBlogDao.rereplyadd(bbscom);
+		
+	}
+
 	
+
+
 
 }

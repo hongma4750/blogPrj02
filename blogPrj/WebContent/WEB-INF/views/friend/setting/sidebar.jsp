@@ -30,7 +30,7 @@
 		<li class="vertical"><a <%=sideMenu.equals("blogInfo2")?"class='vertical active'":"class='vertical'" %> href="f_receive.do">서로이웃 맺기</a></li>
 
 		<li class="none">글 관리</li>
-		<li class="vertical"><a <%=sideMenu.equals("blogInfo3")?"class='vertical active'":"class='vertical'" %> href="#">블로그</a></li>
+		<li class="vertical"><a <%=sideMenu.equals("categoryHome")?"class='vertical active'":"class='vertical'" %> href="categoryHome.do">블로그</a></li>
 </ul>
 
 

@@ -138,3 +138,33 @@ select * from blog;
 
 INSERT INTO BLOG (blog_seq,m_id,blog_title,blog_nickname,blog_introduce) 
   		VALUES (seq_blog.nextval,'aa1212','aa1212'+'블로그','aa1212','...')
+  		
+  		
+  		
+--블로그 게시판 카테고리	
+  		
+DROP TABLE category
+CASCADE CONSTRAINT;
+
+
+create table category(
+	ca_seq number primary key,
+	m_id varchar2(50),
+	ca_ref number,
+	ca_step number,
+	ca_depth number,
+	ca_name varchar2(50),
+	ca_hidden number,
+	ca_parent number,
+	ca_view_type number
+);
+
+
+DROP SEQUENCE SEQ_category;
+
+CREATE SEQUENCE SEQ_category
+START WITH 1 INCREMENT BY 1; 
+
+select * from category;
+
+insert into CATEGORY values (seq_category.nextval,'aa1212',1,1,1,'aa두번째',0,1,0);

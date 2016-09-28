@@ -338,13 +338,12 @@
 					
 <!-- --------------------------------------------------------------------------------------------------- -->			
 				
-				
+				<!-- 댓글 -->
 				<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
 				<div class="foot_reple${blogvar.count }" id="foot_reple" style="display:none;">
 				<!-- 댓글 리스트 -->
 					<div class="r_re">
 						<ul>
-						<!-- 댓글 -->
 							<li class="re_li">
 								<dl>
 									<dt class="dt1">
@@ -370,7 +369,7 @@
 								<table>
 									<tr>
 										<td class="i1">
-											<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+											<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 										</td>
 										<td class="i2">
 											<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
@@ -410,7 +409,7 @@
 								<table>
 									<tr>
 										<td class="i1">
-											<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+											<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">						
 										</td>
 										<td class="i2">
 											<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
@@ -425,21 +424,25 @@
 						
 						</ul>
 					</div>
-				
+				<form name="replyform" id="replyform" method="post">			
 					<table>
 						<tr>
 							<td class="i1">
-								<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+								<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blog.bbs_seq }"/>
+								<input type="hidden" name="m_id" value="${login.m_id }"/>
+								<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+								<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 							</td>
 							<td class="i2">
-								<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+								<textarea cols="50" rows="2" class="com_cont${blogvar.count }" name="com_content" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
 							</td>
 							<td class="i3">
-								<input type="button" class="re_btn" value="덧글입력"/>
+								<input type="button" class="re_btngo${blogvar.count }" value="덧글입력"/>
 							</td>
 						</tr>
 						
 					</table>
+				</form>	
 				</div>
 			</div>
 	</c:forEach>
@@ -534,6 +537,86 @@
 /*blog_like/////////////////*/
 //공감 초기 세팅
 $(document).ready(function(){
+	//공감창 열기
+	for(var a =1; a<=leng; a++){ //bbs list 공감허용한 수만큼 돈다
+		var check_sym = 0;
+		$(".sym"+a.toString()).click(function(){
+			var a_class = $(this).attr('class'); //class명 가져오기
+			
+			var alen = a_class.length;
+			var aa = a_class.substring(3,alen); //숫자만 잘라냄
+			
+			var aacheck = 0;
+			
+			if(aacheck==0){ //공감이랑 댓글같이 열지 못하게
+				aacheck = 1;
+				$(".foot_sym"+aa).show();
+				$(".foot_reple"+aa).hide();
+			}else{
+				aacheck = 0;
+				$(".foot_sym"+aa).hide();
+				$(".foot_reple"+aa).show();
+
+			}
+			
+		})	
+	}
+	
+	
+	//댓글창 열기
+	for(var b=1; b<=leng; b++){ //bbs list 공감허용한 수만큼 돈다
+		var check_rep = 0;
+		$(".reple_show"+b.toString()).click(function(){
+			var b_class = $(this).attr('class'); //class명 가져오기
+			
+			var blen = b_class.length;
+			var bb = b_class.substring(10,blen); //숫자만 잘라냄
+			
+			var bbcheck = 0;
+			
+			if(bbcheck==0){
+				bbcheck = 1;
+				$(".foot_sym"+bb).hide();
+				$(".foot_reple"+bb).show();
+
+			}else{
+				bbcheck = 0;
+				$(".foot_sym"+bb).show();
+				$(".foot_reple"+bb).hide();
+
+			}
+			
+		})	
+	}
+	
+/* 	//댓글달기
+	for(var c=1; c<=leng; c++){
+		$(".re_btngo"+c.toString()).click(function(){
+			var c_class = $(this).attr('class');
+			var clen = c_class.length;
+			var cc = c_class.substring(8,clen); //숫자만 잘라냄
+			
+			alert("댓글쓸거다"+cc);
+			var b_seq = document.getElementsByName('bbs_seq')[cc].value;
+			//alert("b_seq:"+b_seq);
+			var b_content =$(".com_cont"+cc).val();
+			//alert("b_content:"+b_content);
+			var b_mid =document.getElementsByName('m_id')[cc].value; //m_id
+			//alert("b_mid:"+b_mid);
+			var b_nick =document.getElementsByName('blog_nickname')[cc].value; //nickname
+			//alert("b_nick:"+b_nick);
+			
+			var com_con ="\'comment.do?bbs_seq="+b_seq+"&com_content="+b_content+"&m_id="+b_mid+"&blog_nickname="+b_nick"\'"; //내용 가져오기
+			alert(com_con);
+			
+		})
+		
+	}
+	 */
+	
+	
+	
+	
 	var bbs_num = '${bbs_num}'; //blog.bbs_seq
 	var exc_num = new Array(); //로그인 한 사람이 누른 공감 담은 리스트
 	
@@ -654,58 +737,6 @@ $(document).ready(function(){
 				
 	} */
 
-	
-	//공감창 열기
-	for(var a =1; a<=leng; a++){ //bbs list 공감허용한 수만큼 돈다
-		var check_sym = 0;
-		$(".sym"+a.toString()).click(function(){
-			var a_class = $(this).attr('class'); //class명 가져오기
-			
-			var alen = a_class.length;
-			var aa = a_class.substring(3,alen); //숫자만 잘라냄
-			
-			var aacheck = 0;
-			
-			if(aacheck==0){ //공감이랑 댓글같이 열지 못하게
-				aacheck = 1;
-				$(".foot_sym"+aa).show();
-				$(".foot_reple"+aa).hide();
-			}else{
-				aacheck = 0;
-				$(".foot_sym"+aa).hide();
-				$(".foot_reple"+aa).show();
-
-			}
-			
-		})	
-	}
-	
-	
-	//댓글창 열기
-	for(var b=1; b<=leng; b++){ //bbs list 공감허용한 수만큼 돈다
-		var check_rep = 0;
-		$(".reple_show"+b.toString()).click(function(){
-			var b_class = $(this).attr('class'); //class명 가져오기
-			
-			var blen = b_class.length;
-			var bb = b_class.substring(10,blen); //숫자만 잘라냄
-			
-			var bbcheck = 0;
-			
-			if(bbcheck==0){
-				bbcheck = 1;
-				$(".foot_sym"+bb).hide();
-				$(".foot_reple"+bb).show();
-
-			}else{
-				bbcheck = 0;
-				$(".foot_sym"+bb).show();
-				$(".foot_reple"+bb).hide();
-
-			}
-			
-		})	
-	}
 
 	
 });
@@ -745,12 +776,6 @@ $(document).ready(function(){
 	})
 	
 
-	
-
-	
-	
-	
-	
 	
 /* 
 	
@@ -810,4 +835,15 @@ function likeajax(bbs_seq,loopnum){
 	
 	
 };
+
+//textarea높이 늘어나게
+function areaheight(obj){
+	obj.style.height="1px";
+	obj.style.height=(20+obj.scrollHeight)+"px";
+	
+}
+
+
+
+
 </script>

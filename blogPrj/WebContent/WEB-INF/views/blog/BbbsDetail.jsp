@@ -233,88 +233,127 @@ $(document).one("ready",function(){
 
 		<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
 			<div id="foot_reple" style="display:none;">
+				
+				<!-- 댓글목록 없을때 -->
+				<c:if test="${empty replylist }">
+					<form name="dereplyform" id="dereplyform" method="post">			
+						<table>
+							<tr>
+								<td class="i1">
+									<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blogdto.bbs_seq }"/>
+									<input type="hidden" name="m_id" value="${login.m_id }"/>
+									<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+									<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
+								</td>
+								<td class="i2">
+									<textarea cols="50" rows="2" class="com_cont" name="com_content" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
+								</td>
+								<td class="i3">
+									<input type="button" class="re_btngo" value="덧글입력"/>
+								</td>
+							</tr>
+							
+						</table>
+					</form>	
+				</c:if>
+				
 			<!-- 댓글 리스트 -->
 				<div class="r_re">
-					<ul>
-					<!-- 댓글 -->
-						<li class="re_li">
-							<dl>
-								<dt class="dt1">
-									<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
-								</dt>
-								<dt class="dt2">
-									<a href="blog.do" class="nick">hisun</a>
-									<span class="re_date"><small>2016.08.31. 18:16</small></span>
-									<div class="re_re" style="float: right;">
-										<a href="#none" class="re_sh"><small>답글</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsupdate.do"><small>수정</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsdel.do"><small>삭제</small></a>
-									</div>
-								</dt>
-								<dd>댓글 내용</dd>
-							</dl>
-						</li>
+				<c:if test="${not empty replylist }">
+					<c:forEach items="${replylist }" var="replist" varStatus="replistvar">
+						<ul>
+						<!-- 댓글 -->
+							<li class="re_li">
+								<dl>
+									<dt class="dt1">
+										<img src="${replist.m_photo }" class="img-responsive" alt="Responsive image">
+									</dt>
+									<dt class="dt2">
+										<a href="blog.do?fid=${replist.m_id }" class="nick">${replist.m_id }</a>
+										<!-- 댓글 리스트 포문 돌리기 -->
+										<span class="re_date"><small>${replist.com_date }</small></span>
+										<div class="re_re" style="float: right;">
+											<a href="#none" class="re_sh"><small>답글</small></a>
+											<span>&nbsp;|&nbsp;</span>
+											<a href="bbsupdate.do"><small>수정</small></a>
+											<span>&nbsp;|&nbsp;</span>
+											<a href="bbsdel.do"><small>삭제</small></a>
+										</div>
+									</dt>
+									<dd>${replist.com_content }</dd>
+								</dl>
+							</li>
+							
+							<!-- 답글누르면 나오는 폼-->
+							
+	<%-- 						<li class="re_hide" style="display:none;">
+								<i class="fa fa-share-square" aria-hidden="true"></i>
+								<table>
+									<tr>
+										<td class="i1">
+											<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">							
+										</td>
+										<td class="i2">
+											<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+										</td>
+										<td class="i3">
+											<input type="button" class="re_btn" value="덧글입력"/>
+										</td>
+									</tr>
+								
+								</table>
+							</li> --%>
+							
+							
+						<!-- 댓글에 댓글 -->	
+	<!-- 						<li class="re_re_li">
+								<dl>
+									<dt class="dt1">
+										<i class="fa fa-hand-o-right" aria-hidden="true"></i>
+										<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+									</dt>
+									<dt class="dt2">
+										<a href="blog.do" class="nick">hisun</a>
+										<span class="re_date"><small>2016.08.31. 18:16</small></span>
+										<div class="re_re" style="float: right;">
+											<a href="#none"><small>답글</small></a>
+											<span>&nbsp;|&nbsp;</span>
+											<a href="bbsupdate.do"><small>수정</small></a>
+											<span>&nbsp;|&nbsp;</span>
+											<a href="bbsdel.do"><small>삭제</small></a>
+										</div>
+									</dt>
+									<dd>대댓글</dd>
+								</dl>
+							</li> -->
 						
-						<li class="re_hide" style="display:none;">
-							<i class="fa fa-share-square" aria-hidden="true"></i>
+						</ul>
+					</c:forEach>
+					
+					
+						<form name="replyform" id="replyform" method="post">			
 							<table>
 								<tr>
 									<td class="i1">
-										<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+										<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blogdto.bbs_seq }"/>
+										<input type="hidden" name="m_id" value="${login.m_id }"/>
+										<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+										<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 									</td>
 									<td class="i2">
-										<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+										<textarea cols="50" rows="2" class="com_cont" name="com_content" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
 									</td>
 									<td class="i3">
-										<input type="button" class="re_btn" value="덧글입력"/>
+										<input type="button" class="re_btngo" value="덧글입력"/>
 									</td>
 								</tr>
-							
+								
 							</table>
-						</li>
-						
-						
-					<!-- 댓글에 댓글 -->	
-						<li class="re_re_li">
-							<dl>
-								<dt class="dt1">
-									<i class="fa fa-hand-o-right" aria-hidden="true"></i>
-									<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
-								</dt>
-								<dt class="dt2">
-									<a href="blog.do" class="nick">hisun</a>
-									<span class="re_date"><small>2016.08.31. 18:16</small></span>
-									<div class="re_re" style="float: right;">
-										<a href="#none"><small>답글</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsupdate.do"><small>수정</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsdel.do"><small>삭제</small></a>
-									</div>
-								</dt>
-								<dd>대댓글</dd>
-							</dl>
-						</li>
-					
-					</ul>
+						</form>	
+					</c:if>
+				
 				</div>
-			
-				<table>
-					<tr>
-						<td class="i1">
-							<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
-						</td>
-						<td class="i2">
-							<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
-						</td>
-						<td class="i3">
-							<input type="button" class="re_btn" value="덧글입력"/>
-						</td>
-					</tr>
-					
-				</table>
+
 			</div>
 		</form>
 </div>
@@ -430,6 +469,13 @@ $(document).one("ready",function(){
 		
 	})
 	
+	
+	
+$(".re_btngo").click(function(){
+	alert("댓글 달거다");
+	$("#replyform").attr({"target":"_self","action":"comment.do"}).submit();
+});
+	
 $("._btnupdate").click(function(){
 	alert("수정하러간다");
 	$("#bfrmform").attr({"target":"_self","action":"bbsupdate.do"}).submit();
@@ -479,4 +525,13 @@ function likeajax(){
  	
  	
 };
+
+
+//textarea높이 늘어나게
+function areaheight(obj){
+	obj.style.height="1px";
+	obj.style.height=(20+obj.scrollHeight)+"px";
+	
+};
+
 </script>

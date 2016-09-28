@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import sist.co.Model.SistBlog;
+import sist.co.Model.SistCategory;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 
@@ -61,13 +62,27 @@ public interface SistMemberService {
 	
 	void seeAllMessage (SistMessage sm) throws Exception;
 	
+	List selectAllMessage(SistMessage sm) throws Exception;
+	
 	void insertBlog(SistBlog sb) throws Exception;
 	
 	void updateBlog(SistBlog sb) throws Exception;
 	
+	//hongma: cateogry
+	void insertCategory (SistCategory sc) throws Exception;
 	
+	List<SistCategory> selectCategory (SistCategory sc ) throws Exception;
 	
-	List selectAllMessage(SistMessage sm) throws Exception;
+	void insertElseCategory (SistCategory sc) throws Exception;
+	
+	void insertChildCategory (SistCategory sc) throws Exception;
+	
+	SistCategory selectOneCategory (int ca_seq) throws Exception;
+	
+	void deleteOneCategory (int ca_seq) throws Exception;
+	
+	int countChild (int ca_seq) throws Exception;
+	
 
 	//ssunhj: getmember
 		SistMemberVO getmember(String m_id)throws Exception;

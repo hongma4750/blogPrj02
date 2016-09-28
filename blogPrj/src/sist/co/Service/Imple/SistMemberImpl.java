@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import sist.co.Model.SistBlog;
+import sist.co.Model.SistCategory;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 import sist.co.Service.SistMemberDAO;
@@ -183,6 +184,50 @@ public class SistMemberImpl implements SistMemberService{
 		sistMemberDAO.updateBlog(sb);
 		
 	}
+	
+	//hongma: category
+	@Override
+	public void insertCategory(SistCategory sc) throws Exception {
+		sistMemberDAO.insertCategory(sc);
+		
+	}
+	
+	@Override
+	public List<SistCategory> selectCategory(SistCategory sc) throws Exception {
+		// TODO Auto-generated method stub
+		return sistMemberDAO.selectCategory(sc);
+	}
+	
+	@Override
+	public void insertElseCategory(SistCategory sc) throws Exception {
+		sistMemberDAO.insertElseCategory(sc);
+	}
+	
+	@Override
+	public void insertChildCategory(SistCategory sc) throws Exception {
+		sistMemberDAO.insertChildCategory(sc);
+		
+	}
+	
+	@Override
+	public SistCategory selectOneCategory(int ca_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return sistMemberDAO.selectOneCategory(ca_seq);
+	}
+	
+	@Override
+	public void deleteOneCategory(int ca_seq) throws Exception {
+		sistMemberDAO.deleteOneCategory(ca_seq);
+		
+	}
+	
+	@Override
+	public int countChild(int ca_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return sistMemberDAO.countChild(ca_seq);
+	}
+
+
 
 	
 	
@@ -198,6 +243,18 @@ public class SistMemberImpl implements SistMemberService{
 		public SistMemberVO getmember(String m_id) throws Exception {
 			return sistMemberDAO.getmember(m_id);
 		}
+
+		
+		
+
+		
+		
+
+		
+
+		
+
+		
 
 		
 

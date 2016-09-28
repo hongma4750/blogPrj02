@@ -47,12 +47,18 @@
 					<!-- 카테고리 -->
 					<div class="category" style="display:inline-block;">
 						<strong>카테고리</strong> <br>
+							
+							
 							<ul class="cat">
 								<li><a href="#none" title="total"><strong>전체보기(20)</strong></a></li>
-								<li><a href="#none" title="mymy">내블로그야</a></li>
-								<li><a href="#none" title="hi">안녕</a></li>
-								<li><a href="#none" title="spring">spring</a></li>
-								<li><a href="#none" title="summber">summber</a></li>
+								<jsp:useBean id="ubbs" class="sist.co.help.arrowHelp"/>
+								<c:forEach items="${blogCategoryList }" var = "blogCategory">
+									<jsp:setProperty property="depth" name="ubbs" value="${blogCategory.ca_depth }"/>
+									<li><a href="#"><jsp:getProperty property="arrow" name="ubbs"/>${blogCategory.ca_name }</a></li>
+								</c:forEach>
+							</ul>
+							
+							<ul>
 							<hr>
 								<li><a href="pictype.do" title="pictype">앨범형</a></li>
 								<li><a href="#none" title="sin">신촌</a></li>
@@ -90,12 +96,17 @@
 					<!-- 카테고리 -->
 					<div class="category" style="display:inline-block;">
 						<strong>카테고리</strong> <br>
+						
 							<ul class="cat">
-								<li><a href="#none" title="total"><strong>전체보기(10)</strong></a></li>
-								<li><a href="#none" title="other">other</a></li>
-								<li><a href="#none" title="winter">winter</a></li>
-								<li><a href="#none" title="hello">hello</a></li>
-								<li><a href="#none" title="ha">ha</a></li>
+								<li><a href="#none" title="total"><strong>전체보기(20)</strong></a></li>
+								
+								<c:forEach items="${blogCategoryList }" var = "blogCategory">
+									<jsp:setProperty property="depth" name="ubbs" value="${blogCategory.ca_depth }"/>
+									<li><a href="#"><jsp:getProperty property="arrow" name="ubbs"/>${blogCategory.ca_name }</a></li>
+								</c:forEach>
+							</ul>
+							
+							<ul>
 							<hr>
 								<li><a href="pictype.do" title="pictype">앨범형</a></li>
 								<li><a href="#none" title="md">명동</a></li>

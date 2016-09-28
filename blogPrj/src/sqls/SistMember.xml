@@ -140,6 +140,43 @@
   		 WHERE M_ID = #{m_id}
   	</update>
   	
+  	<!-- hongma : cateogry -->
+  	<insert id="insertCategory" parameterType="sist.co.Model.SistCategory">
+  		INSERT INTO CATEGORY VALUES (seq_category.nextval,#{m_id},
+									(SELECT NVL(max(ca_ref),0)+1 from CATEGORY),0,0,
+									#{ca_name},0,0,0)
+  	</insert>
+  	
+  	<select id="selectCategory" parameterType="sist.co.Model.SistCategory" resultType="sist.co.Model.SistCategory">
+  		SELECT * FROM CATEGORY WHERE M_ID = #{m_id} ORDER BY CA_REF DESC, CA_STEP ASC
+  	</select>
+  	
+  	<insert id="insertElseCategory" parameterType="sist.co.Model.SistCategory">
+  		INSERT INTO CATEGORY VALUES (seq_category.nextval,#{m_id},
+  									(SELECT NVL(max(ca_ref),0)+1 from CATEGORY),0,0,
+  									#{ca_name},#{ca_hidden},#{ca_parent},#{ca_view_type})
+  	</insert>
+  	
+  	<insert id="insertChildCategory" parameterType="sist.co.Model.SistCategory">
+  		INSERT INTO CATEGORY VALUES (seq_category.nextval,#{m_id},
+  										(select ca_ref from CATEGORY where ca_seq=#{ca_parent}),
+										(select ca_step from CATEGORY where ca_seq=#{ca_parent})+1,
+										(select ca_depth from CATEGORY where ca_seq=#{ca_parent})+1,
+									#{ca_name},#{ca_hidden},#{ca_parent},#{ca_view_type})
+  	</insert>
+  	
+  	<select id="selectOneCategory" parameterType="int" resultType="sist.co.Model.SistCategory">
+  		SELECT * FROM CATEGORY WHERE CA_SEQ = #{ca_seq}
+  	</select>
+  	
+  	<delete id="deleteOneCategory" parameterType="int">
+  		DELETE FROM CATEGORY WHERE CA_SEQ = #{ca_seq}
+  	</delete>
+  	
+  	<select id="countChild" parameterType="int" resultType="int">
+  		SELECT NVL(COUNT(*), 0) FROM CATEGORY WHERE CA_PARENT = #{ca_seq}
+  	</select>
+  	
   	
   	
   	

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import sist.co.Model.SistBbsLikeDTO;
+import sist.co.Model.SistBlogComDTO;
+import sist.co.Model.SistBlogComListDTO;
 import sist.co.Model.SistBlogDTO;
 import sist.co.Model.SistBlogPageDTO;
 import sist.co.Model.SistLikePeopleDTO;
@@ -62,6 +64,12 @@ public class SistBlogDAO {
 	public void delBbsLike(SistBbsLikeDTO like){
 		sqlSession.delete(ns+"delBbsLike",like);
 	}
+	public void likeplus(int bbs_seq){
+		sqlSession.update(ns+"likeplus",bbs_seq);
+	}
+	public void likeminus(int bbs_seq){
+		sqlSession.update(ns+"likeminus",bbs_seq);
+	}
 	
 	//like list
 	public List<SistBbsLikeDTO> getLikeList() throws Exception{
@@ -96,5 +104,38 @@ public class SistBlogDAO {
 	public List<SistBlogPageDTO> getPointChargeSearchPageList(SistBlogPageDTO pageDto) throws Exception{
 		return sqlSession.selectList(ns+"getPointChargeSearchPageList",pageDto);
 	}
+	
+	public void deleteAllBbsInCategory (int ca_seq) throws Exception{
+		sqlSession.delete(ns+"deleteAllBbsInCategory",ca_seq);
+	}
+
+	
+//댓글 ///////////////////////////////////////////////////
+	//hj
+	//댓글 달기
+	public boolean bbscomment(SistBlogComDTO bbscom) throws Exception{
+		sqlSession.insert(ns+"bbscomment",bbscom);
+		return true;
+	}
+	
+	//댓글 불러오기
+	public List<SistBlogComListDTO> getreplyList(int bbs_seq) throws Exception{
+		List<SistBlogComListDTO> replylist = new ArrayList<SistBlogComListDTO>();
+		replylist = sqlSession.selectList(ns+"getreplyList",bbs_seq);
+		return replylist;
+	}
+	
+	//대댓글 하나 뒤로 밀기
+	public boolean replypush(SistBlogComDTO bbscom) throws Exception{
+		sqlSession.update(ns+"replypush",bbscom);
+		return true;
+	}
+	
+	//대댓글 뒤로 민 자리에 새로운 대댓글 삽입
+	public boolean rereplyadd(SistBlogComDTO bbscom) throws Exception{
+		sqlSession.insert(ns+"rereplyadd",bbscom);
+		return true;
+	}
+	
 	
 }

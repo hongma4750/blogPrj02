@@ -39,6 +39,7 @@ import nl.captcha.text.producer.DefaultTextProducer;*/
 import sist.co.Model.FUpUtil;
 import sist.co.Model.SendEmail;
 import sist.co.Model.SistBlog;
+import sist.co.Model.SistCategory;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 import sist.co.Model.YesMember;
@@ -271,6 +272,7 @@ public class SistMemberController {
 
 		sistMemberService.insertMember(vo);
 		
+		//블로그 설정
 		SistBlog sb = new SistBlog();
 		sb.setM_id(vo.getM_id());
 		sb.setBlog_title(vo.getM_name()+" 님의 블로그 입니다.");
@@ -278,7 +280,16 @@ public class SistMemberController {
 		sb.setBlog_introduce("...");
 		
 		sistMemberService.insertBlog(sb);
+		//블로그 설정
 		
+		//블로그 게시판 카테고리 설정
+		
+		SistCategory sc = new SistCategory();
+		sc.setM_id(vo.getM_id());
+		sc.setCa_name(vo.getM_id()+" 님의 카테고리");
+		sistMemberService.insertCategory(sc);
+		
+		//블로그 게시판 카테고리 설정
 		SendEmail send = new SendEmail(vo.getM_id(), vo.getM_email());
 		
 
