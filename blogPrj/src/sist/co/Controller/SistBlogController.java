@@ -1,5 +1,6 @@
 package sist.co.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +69,16 @@ public class SistBlogController {
       List<SistBlogDTO> bloglist = sistBlogService.getBlogList(finfo.getM_id());
       model.addAttribute("bloglist",bloglist);
       
+      //댓글 리스트<리스트>
+      ArrayList<ArrayList<SistBlogComListDTO>> commentList = new ArrayList<ArrayList<SistBlogComListDTO>>();
+      for(int i =0;i<bloglist.size();i++){
+    	  commentList.add((ArrayList<SistBlogComListDTO>) sistBlogService.getreplyList(bloglist.get(i).getBbs_seq()));
+    	  
+      }
+      model.addAttribute("commentList",commentList);
+      
+     
+      
       //like list
       List<SistBbsLikeDTO> likelist = sistBlogService.getLikeList();
       model.addAttribute("likelist",likelist);
@@ -134,6 +145,15 @@ public class SistBlogController {
       //내 블로그일때
       List<SistBlogDTO> bloglist = sistBlogService.getBlogList(finfo_date.getM_id());
       model.addAttribute("bloglist",bloglist);
+      
+    //댓글 리스트<리스트>
+      ArrayList<ArrayList<SistBlogComListDTO>> commentList = new ArrayList<ArrayList<SistBlogComListDTO>>();
+      for(int i =0;i<bloglist.size();i++){
+    	  commentList.add((ArrayList<SistBlogComListDTO>) sistBlogService.getreplyList(bloglist.get(i).getBbs_seq()));
+    	  
+      }
+      model.addAttribute("commentList",commentList);
+      
       
       //like list
       List<SistBbsLikeDTO> likelist = sistBlogService.getLikeList();

@@ -98,11 +98,20 @@ public class SistMemberController {
 			List<SistMessage> newMyMessageList =  sistMemberService.selectNewMessage(sm);
 			List<SistMessage> allMyMessageList = sistMemberService.selectAllMessage(sm);
 			List<SistMessage> pageList = sistMemberService.getPointChargePageList(sm);
+			
+			if(pageList.size()>0){
+				pageList.get(0).setCurrent_page(currentpage);
+			}else{
+				SistMessage nullMessage = new SistMessage();
+				nullMessage.setCurrent_page(0);
+				pageList.add(nullMessage);
+			}
+			
 			//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
 
 			request.getSession().setAttribute("myMessageCount", myMessageCount);
 			request.getSession().setAttribute("newMyMessageList", newMyMessageList);
-			request.getSession().setAttribute("allMyMessageList", allMyMessageList);
+			model.addAttribute("allMyMessageList",allMyMessageList);
 			
 			model.addAttribute("pageList",pageList);
 		}
@@ -1020,6 +1029,9 @@ public class SistMemberController {
 		//페이지 수
 		
 		String pageobj = request.getParameter("page");
+		
+		System.out.println("page : "+pageobj);
+		
 		int currentpage;
 		if (pageobj == null) {
 			currentpage = 1;
@@ -1036,6 +1048,14 @@ public class SistMemberController {
 
 		List<SistMessage> pageMessageList = sistMemberService.selectMessagePaging(sm);
 		
+		if(pageMessageList.size()>0){
+			pageMessageList.get(0).setCurrent_page(currentpage);
+		}else{
+			
+			SistMessage nullMessage = new SistMessage();
+			nullMessage.setCurrent_page(0);
+			pageMessageList.add(nullMessage);
+		}
 		
 		return pageMessageList;
 	}

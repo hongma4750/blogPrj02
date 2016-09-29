@@ -23,6 +23,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
+<style type="text/css">
+	#paging{text-align:center;}
+	a.paging-item,a.paging-side{margin:0 .25em;}
+	a.paging-item.selected{font-weight:bold;}
+</style>
+<script type="text/javascript" src="js/paging.js"></script>
+
+
 <!-- 부트스트랩 링크 -->
 
 
@@ -46,7 +54,7 @@
 
 	
 	<!--  페이징 -->
-		<%
+		<%-- <%
 			String pageobj = request.getParameter("page");
 			int currentpage;
 			if (pageobj == null) {
@@ -64,38 +72,38 @@
 			int bstartpage = (block - 1) * pageblock + 1;
 			int bendpage = bstartpage + pageblock - 1;
 			pnum = (int) Math.ceil((double) reList.size() / 10);
-		%>
+		%> --%>
 	<!--  페이징 -->
 	
 	<div style="width:100%; height:90%; margin:0; padding:0;" class="collapse in" id="collapseExample">
 
-			<div style="width:100%; height:85%;">
-				<table class="table table-condensed">
+			<div style="width:100%; height:85%;" id="messageDiv">
+				<table class="table table-condensed" id="message_table">
 					<col style="width:75px">
 					<col style="width:auto;">
 					<col style="width:50px">
 					<tr><td>보낸사람</td><td>내용</td><td>삭제</td></tr>
 					
 					<c:choose>
-						<c:when test="${allMyMessageList eq null }">
+						<c:when test="${empty allMyMessageList}">
 							<tr style="background-color:#BDBDBD;"><td colspan="3">받은 쪽지가 없습니다.</td></tr>
 						</c:when>
 						
 						<c:otherwise>
-							<c:forEach items="${pageList }" var="myMessage"> 
+							<c:forEach items="${pageList }" var="myMessage" varStatus = "varstat"> 
 						
 								<c:choose>
 									<c:when test="${myMessage.message_read == 1 }">
-										<tr style="background-color:#BDBDBD;">
-											<td>${myMessage.m_name }</td>
+										<tr style="background-color:#BDBDBD;" class="message_tr${varstat.index}">
+											<td><span class="message_name${varstat.index}">${myMessage.m_name }</span></td>
 											
 											<td onclick="detailBtn('${myMessage.message_seq}')" class="cursor_test">
 												<c:if test="${fn:length(myMessage.message_content)>8 }">
-													<span class="message">${fn:substring(myMessage.message_content,0,7)}...</span>
+													<span class="message_content${varstat.index}">${fn:substring(myMessage.message_content,0,7)}...</span>
 												</c:if>
 												
 												<c:if test="${fn:length(myMessage.message_content) <8 }">
-													<span class="message">${myMessage.message_content }</span>
+													<span class="message_content${varstat.index}">${myMessage.message_content }</span>
 												</c:if>
 											</td>
 											
@@ -143,7 +151,7 @@
 				
 				<div align="center" style="width:100%;heigth:15%">
 					
-						<nav>
+						<%-- <nav>
 							<ul class="pagination">
 								<%
 									if (currentpage <= 1) {
@@ -216,10 +224,10 @@
 									}
 								%>
 							</ul>
-						</nav>
+						</nav> --%>
 						
 						
-						
+						<div id="paging"></div>
 
 				</div>		<%--style="width:100%;heigth:10%" --%>
 		</div>		
@@ -279,7 +287,85 @@ $("#myCollapse").click(function(){
 
 </script>
 
+<script type="text/javascript">
 
 
+var pageobj = '${pageList.get(0).current_page}';
 
+var allMyMessageListLength = '${fn:length(allMyMessageList)}';
+
+
+var pnum;
+var pageblock = 5;		//보여줄 페이지 갯수
+var block = parseInt( Math.ceil(parseFloat(pageobj / pageblock)));		
+var bstartpage = (block - 1) * pageblock + 1;
+var bendpage = bstartpage + pageblock - 1;
+pnum = parseInt(Math.ceil(parseFloat(allMyMessageListLength / 10))); 	//list보여줄 갯수
+
+
+$('#paging').paging({
+	
+	current:bstartpage,max:pnum,
+	onclick:function(e,page){
+		
+		$.ajax({
+			type:"POST",
+			url:"paging.do",
+			data:"page="+page,
+			success:function(pageMessageList){
+				printMessage(pageMessageList);
+			}
+			
+		});
+	}
+});
+
+function printMessage(pageMessageList){
+	var messageList = pageMessageList;
+
+	$("#message_table").remove();
+	
+	if(messageList.length >0 ){
+		var addTable = "";
+		addTable+='<table class="table table-condensed" id="message_table"><col style="width:75px"><col style="width:auto;"><col style="width:50px">'
+			+'<tr><td>보낸사람</td><td>내용</td><td>삭제</td></tr>';
+			
+		for(var j =0;j<messageList.length;j++){
+			if(messageList[j].message_read==1){
+				addTable+='<tr style="background-color:#BDBDBD;">';
+				addTable+='<td><span class="message_name">'+messageList[j].m_name+'</span></td>';
+				addTable+='<td onclick="detailBtn('+messageList[j].message_seq+')" class="cursor_test">';
+				
+				if(messageList[j].message_content.length > 8){
+					addTable+='<span class="message_content">'+messageList[j].message_content.substring(0,7)+'...</span>';
+				}else{
+					addTable+='<span class="message_content">'+messageList[j].message_content+'</span>'
+				}
+				
+				addTable+='</td><td>'+
+						'<button type="button" onclick="deleteBtn('+messageList[j].message_seq+')" id="btnClose" class="close" data-dismiss="modal" aria-label="Close">'+
+							'<span aria-hidden="true" id="spanClose">&times;</span></button ></td></tr>';
+			}else{
+				addTable+='<tr><td>'+messageList[j].m_name+'</td>';
+				addTable+= '<td onclick="detailBtn('+messageList[j].message_seq+')" class="cursor_test">';
+				
+				if(messageList[j].message_content.length > 8){
+					addTable+='<span class="message_content">'+messageList[j].message_content.substring(0,7)+'...</span>';
+				}else{
+					addTable+='<span class="message_content">'+messageList[j].message_content+'</span>'
+				}
+				
+				addTable+= '</td><td>'+
+						'<button type="button" onclick="deleteBtn('+messageList[j].message_seq+')" id="btnClose" class="close" data-dismiss="modal" aria-label="Close">'+
+						'<span aria-hidden="true" id="spanClose">&times;</span></button ></td></tr>'
+			}
+			
+		}
+	}
+	addTable+='</table>';
+	$("#messageDiv").append(addTable);
+}
+
+
+</script>
 

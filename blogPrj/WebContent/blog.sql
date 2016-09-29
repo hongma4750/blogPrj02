@@ -91,6 +91,10 @@ create table bbs_comment(
 	primary key(com_seq)
 );
 
+insert into BBS_COMMENT values (seq_bbscomment.nextval,7,'zz','aa1212','홍마',0,0,0,0,0,sysdate);
+insert into BBS_COMMENT values (seq_bbscomment.nextval,7,'zz','aa1212','홍마',0,0,0,0,0,sysdate);
+insert into BBS_COMMENT values (seq_bbscomment.nextval,5,'zz','aa1212','홍마',0,0,0,0,0,sysdate);
+
 
 create sequence seq_bbscomment
 start with 1 increment by 1;

@@ -253,6 +253,8 @@
 						<c:if test="${blog.bbs_comchk eq 1 }">
 							<a href="#none" class="reple_show${blogvar.count }">댓글쓰기</a>
 						</c:if>
+						
+						
 					<!-- 공감하기 허용했으면 보여라 -->
 						<c:if test="${blog.bbs_likechk eq 1 }">
 							<a href="#none" class="sym${blogvar.count }">공감</a>
@@ -340,9 +342,98 @@
 				
 				<!-- 댓글 -->
 				<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
-				<div class="foot_reple${blogvar.count }" id="foot_reple" style="display:none;">
+				<div class="foot_reple${blogvar.count }" id="foot_reple" ><!-- style="display:none;" -->
 				<!-- 댓글 리스트 -->
-					<div class="r_re">
+					
+					<c:forEach items="${commentList }" var="comment" varStatus ="commentStatus">
+					
+						<c:if test="${blogvar.index eq commentStatus.index}">
+							
+							<c:forEach items="${comment }" var="realyComment">
+								<ul>
+									<li class="re_li">
+										<dl>
+											<dt class="dt1" >
+												<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+											</dt>
+											
+											<dt class="dt2" style="background-color:red;">
+												<a href="blog.do" class="nick">${realyComment.m_id }</a>
+												&nbsp;&nbsp;
+												<span class="re_date"><small>${fn:substring(realyComment.com_date,0,11) }</small></span>
+												
+													<span style="float:right;">
+														&nbsp;&nbsp;
+														<a href="#none" class="re_sh"><small>답글</small></a>
+														<span>&nbsp;|&nbsp;</span>
+														<a href="#" ><small class="comment-toggle">수정</small></a>
+														<span>&nbsp;|&nbsp;</span>
+														<a href="bbsdel.do"><small>삭제</small></a>
+													</span>
+											</dt>
+											
+											<dd style="float:center">${realyComment.com_content }</dd>
+											
+											<div class="modify-comment" style="display:none;">
+							    	
+											    <div style="text-align: right;">
+											      <a href="#" ><small class="modifying" onclick="updateComment()">수정</small></a> |
+											      <a href="#"><small class="cancel" id="${realyComment.com_seq }">취소</small></a>
+											    </div>
+											    
+											    <div>
+											      <textarea class="modify-comment-ta" name="com_content_re" rows="4" cols="50" id="modifyContent">${realyComment.com_content }</textarea>
+											    </div>
+											    
+											  </div>
+							  
+										</dl>
+									</li>
+									
+									<li class="re_hide" style="display:none">		<%--대댓글 쓰는부분 --%>
+										<i class="fa fa-share-square" aria-hidden="true"></i>
+										<table>
+											<tr>
+												<td class="i1">
+													<img src="${login.m_photo }" class="img-responsive" alt="Responsive image" style="width:40px; height:40px;">
+												</td>
+												<td class="i2">
+													<textarea cols="50" rows="2" class="textarea _activeId _commentRosText" 
+													name="comment.contents" maxlength="6000" tabindex="0" 
+													style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+												</td>
+												<td class="i3">
+													<input type="button" class="re_btn" value="덧글입력" />
+												</td>
+											</tr>
+										
+										</table>
+									</li>
+							</ul>
+							</c:forEach>
+							
+							<table>
+								<tr>
+									<td class="i1">
+										<input type="hidden" name="m_id" value="${login.m_id }" id="m_id"/>
+										<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+										<img src="${login.m_photo }" class="img-responsive" alt="Responsive image" style="width:40px; height:40px;">
+									</td>
+									<td class="i2">
+										<textarea cols="50" rows="2" class="com_cont${blogvar.count }" name="com_content" id="commentTextArea" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
+									</td>
+									<td class="i3">
+										<input type="button" class="re_btngo${blogvar.count }" value="덧글입력" onclick="insertComment('${blog.bbs_seq}','${someoneBlog.blog_nickname }')"/>
+									</td>
+								</tr>
+								
+							</table>
+					
+						</c:if>
+					</c:forEach>
+					
+				
+					<%-- <div class="r_re">
 						<ul>
 							<li class="re_li">
 								<dl>
@@ -423,8 +514,8 @@
 							</li>
 						
 						</ul>
-					</div>
-				<form name="replyform" id="replyform" method="post">			
+					</div> --%>
+				<%-- <form name="replyform" id="replyform" method="post">			
 					<table>
 						<tr>
 							<td class="i1">
@@ -442,7 +533,7 @@
 						</tr>
 						
 					</table>
-				</form>	
+				</form>	 --%>
 				</div>
 			</div>
 	</c:forEach>
@@ -843,7 +934,91 @@ function areaheight(obj){
 	
 }
 
+function insertComment(bbs_seq,blog_nickname){
+	location.href="comment.do?com_content="+$("#commentTextArea").val()+"&m_id="+$("#m_id").val()+"&bbs_seq="+bbs_seq+"&blog_nickname="+blog_nickname;
+}
+	
 
+$(document).ready(function() {
+	
+	function updateComment(){
+		alert("sksl?");
+	}
+	
+	 
+	$('.comment-toggle').click(function(e) {
+			alert("일단반응");
+	        var $form = $(e.target).parent().parent().parent().parent().find('.modify-comment');
 
+	        var $p = $(e.target).parent().parent().find('.comment-toggle');
+	        var $o = $(e.target).parent().parent().find('.comment-delete');
+	        var $c = $(e.target).parent().parent().parent().find('.comment-content');
+      
+	        if ($form.is(':hidden') == true) {
+	            $form.show();
+	            $p.hide();
+	        	$o.hide();
+	        	$c.hide();
+	        } else {
+	            $form.hide();
+	            $p.show();
+	            $o.show();
+	            $c.show();
+	        }
+	        return false;
+	});
+	
+	$('.comment-delete').click(function(e) {
+		var chk = confirm("정말로 삭제하시겠습니까?");
+        if (chk == true) {
+            return true;
+        }
+        return false;
+});
+	
+	/* SNS/CommentUpdate.jsp?com_seq=${comment.com_seq }$r_seq=${comment.r_seq }&com_content= */
+	//form 안의 수정하기 링크
+	/* $('.modifying').click(function(e) {
+		
+	   var url="updateComment.do?com_seq="+$('.com_seq_re').val()+"&com_content="+$('.modify-comment-ta').val();
+	   
+	   alert("seq : "+$('.com_seq_re').val() + " , content = "+$('.modify-comment-ta').val());
+	    //$(location).attr('href',url);
+	     
+	    //alert(url);
+	    //location.href="index01.jsp?mode=SNS/ReviewDetail"
+
+	}); */
+	
+	
+	
+	//form 안의 취소 링크
+	$('.cancel').click(function(e) {
+	    var $form = $(e.target).parent().parent().parent().parent().find('.modify-comment');
+	    
+	    var $p = $(e.target).parents().find('.comment-toggle');
+        var $o = $(e.target).parents().find('.comment-delete');
+        var $c = $(e.target).parents().find('.comment-content');
+        
+        
+        /* alert("1 : "+$('#com_seq_check').attr('value'));
+        alert("2 : "+$(e.target).parents().find('.cancel').attr('id')); */
+        
+	    if ($form.is(':hidden') == true) {
+	    	$form.show();
+	        $p.hide();
+        	$o.hide();
+        	$c.hide();
+	    } else {
+	    	
+	    	$form.hide();
+	        $p.show();
+            $o.show();
+            $c.show();
+	    }
+	    return false;
+	});
+
+});
 
 </script>

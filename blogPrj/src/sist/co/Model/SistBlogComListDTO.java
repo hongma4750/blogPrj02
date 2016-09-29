@@ -126,6 +126,14 @@ public class SistBlogComListDTO {
 		this.com_date = com_date;
 	}
 
+	@Override
+	public String toString() {
+		return "SistBlogComListDTO [com_seq=" + com_seq + ", bbs_seq=" + bbs_seq + ", com_content=" + com_content
+				+ ", m_id=" + m_id + ", m_photo=" + m_photo + ", com_ref=" + com_ref + ", com_step=" + com_step
+				+ ", com_depth=" + com_depth + ", com_del=" + com_del + ", com_parent=" + com_parent + ", com_date="
+				+ com_date + "]";
+	}
+
 
 	
 	

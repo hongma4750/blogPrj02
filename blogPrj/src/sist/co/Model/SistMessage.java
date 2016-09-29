@@ -18,6 +18,8 @@ public class SistMessage {
 	private int page01;
 	private int page02;
 	
+	private int current_page;
+	
 	public SistMessage() {
 		// TODO Auto-generated constructor stub
 	}
@@ -112,6 +114,16 @@ public class SistMessage {
 
 	public void setPage02(int page02) {
 		this.page02 = page02;
+	}
+	
+	
+
+	public int getCurrent_page() {
+		return current_page;
+	}
+
+	public void setCurrent_page(int current_page) {
+		this.current_page = current_page;
 	}
 
 	@Override
