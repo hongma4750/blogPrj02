@@ -26,6 +26,11 @@
 <!-- 부트스트랩 링크 -->
 
 
+
+
+
+
+
 <c:if test="${login.m_id ne null }">
 	<div style="background-color:#EFF0F1; " id="temps">
 	
@@ -35,6 +40,10 @@
 		  메세지 접기
 		</button>
 	</div>
+	
+
+
+
 	
 	<!--  페이징 -->
 		<%
@@ -208,6 +217,9 @@
 								%>
 							</ul>
 						</nav>
+						
+						
+						
 
 				</div>		<%--style="width:100%;heigth:10%" --%>
 		</div>		
@@ -266,3 +278,8 @@ $("#myCollapse").click(function(){
 
 
 </script>
+
+
+
+
+

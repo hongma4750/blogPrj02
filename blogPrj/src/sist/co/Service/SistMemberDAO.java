@@ -169,13 +169,40 @@ public class SistMemberDAO {
 		return sqlSession.selectOne(ns+"countChild",ca_seq);
 	}
 	
+	public List<SistCategory> selectAllChildCategory (int ca_seq) throws Exception{
+		return sqlSession.selectList(ns+"selectAllChildCategory",ca_seq);
+	}
+	
+	public void updateParentCategory (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateParentCategory",sc);
+	}
+	
+	public void updateToParentCategory (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateToParentCategory",sc);
+	}
+	
+	public void updateAnotherChild (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateAnotherChild",sc);
+	}
+	
+	public void updateToChildCategory (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateToChildCategory",sc);
+	}
+	
 	
 	//ssunhj: getmember
-		public SistMemberVO getmember(String m_id)throws Exception{
-			//SistMemberVO memvo = new SistMemberVO();
-			return (SistMemberVO) sqlSession.selectOne(ns+"getmember",m_id);
-			
-		}
+	public SistMemberVO getmember(String m_id)throws Exception{
+		//SistMemberVO memvo = new SistMemberVO();
+		return (SistMemberVO) sqlSession.selectOne(ns+"getmember",m_id);
+		
+	}
+	
+	public List<SistMessage> selectMessagePaging (SistMessage sm) throws Exception{
+		return sqlSession.selectList(ns+"selectMessagePaging",sm);
+	}
+		
+
+		
 		
 	
 }

@@ -83,7 +83,21 @@ public interface SistMemberService {
 	
 	int countChild (int ca_seq) throws Exception;
 	
+	List<SistCategory> selectAllChildCategory (int ca_seq) throws Exception;
+	
+	void updateParentCategory (SistCategory sc) throws Exception;
+	
+	void updateToParentCategory (SistCategory sc) throws Exception;
+	
+	void updateAnotherChild (SistCategory sc) throws Exception;
 
+	void updateToChildCategory (SistCategory sc) throws Exception;
+	
+	
 	//ssunhj: getmember
-		SistMemberVO getmember(String m_id)throws Exception;
+	SistMemberVO getmember(String m_id)throws Exception;
+	
+	
+	//ajax paing
+	List<SistMessage> selectMessagePaging (SistMessage sm) throws Exception;
 }

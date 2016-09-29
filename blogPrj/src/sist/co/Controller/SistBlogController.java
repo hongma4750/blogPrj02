@@ -172,8 +172,20 @@ public class SistBlogController {
    
    /*글쓰기 페이지로 이동*/
    @RequestMapping(value="bbswrite.do",method=RequestMethod.GET)
-   public String bbswrite(Model model){
+   public String bbswrite(HttpServletRequest request, Model model) throws Exception{
       logger.info("welcome SistBlogController bbswrite");
+      
+      //블로그 게시판 카테고리 설정
+	  	SistCategory sc = new SistCategory();
+	  	
+	  	String m_id =((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+	  	sc.setM_id(m_id);
+  	
+	  	List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
+  	
+  		request.getSession().setAttribute("blogCategoryList", blogCategoryList);
+  	
+      
       return "bbswrite.tiles";
    }
    
@@ -622,26 +634,86 @@ public class SistBlogController {
 	   SistCategory sc = sistMemberService.selectOneCategory(ca_seq);
 	   
 	   if(sc.getCa_parent() !=0){	//해당 카테고리가 자식인 경우
-		   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제
 		   sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
+		   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제
 	   }else{		//해당 카테고리가 부모인 경우
 		   
 		   int countChild = sistMemberService.countChild(sc.getCa_seq());
 		   
 		   if(countChild>0){		//자식을 가지고 있는 경우
+			   List<SistCategory> childList = sistMemberService.selectAllChildCategory(sc.getCa_seq());
 			   
-		   }else{		//자식이 없는 경우
-			   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제
+			   for(int i =0;i<childList.size();i++){
+				   sistBlogService.deleteAllBbsInCategory(childList.get(i).getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
+				   sistMemberService.deleteOneCategory(childList.get(i).getCa_seq());		//자식 카테고리 삭제
+			   }
+			   
 			   sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
+			   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제   
+ 
+		   }else{		//자식이 없는 경우
+			   sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
+			   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제   
 		   }
 	   }
-	   
-	   
-	   
-	   
 	   return "redirect:categoryHome.do";
    }
    
+   //카테고리 수정시 선택한 카테고리 정보를 가져와 뿌린다
+   //아작스 작업으로 실시간 변화함
+   @RequestMapping(value="choiceUpdateCategory.do",method={RequestMethod.GET, RequestMethod.POST})
+   @ResponseBody
+   public SistCategory choiceUpdateCategory (HttpServletRequest request, Model model) throws Exception{
+	   logger.info("choiceUpdateCategory.do 실행" );
+	   
+	   int ca_seq = Integer.parseInt(request.getParameter("ca_seq"));
+	   
+	   SistCategory sc = sistMemberService.selectOneCategory(ca_seq);
+
+	   return sc;
+   }
    
+   @RequestMapping(value="updateCategory.do",method={RequestMethod.GET, RequestMethod.POST})
+   public String updateCategory (SistCategory sc, Model model) throws Exception{
+	   logger.info("updateCategory.do 실행중");
+	   
+
+	   if(sc.getCa_parent() == 0){		//부모->부모 [단순 값 변경] or 
+		   
+		   if(sc.getCa_depth() ==0){		//부모 -> 부모 [hidden, view_type 만 수정]
+			   sistMemberService.updateParentCategory(sc);
+		   }else {		//자식 -> 부모 [ref,step,depth,hidden,parent,view_type]
+			   sistMemberService.updateToParentCategory(sc);
+		   }
+		   
+	   }else{		//자식 ->부모 [모든값 변경]
+		   if(sc.getCa_depth() == 0){	//부모인 경우
+			   int countChild = sistMemberService.countChild(sc.getCa_seq());
+			   
+			   if(countChild>0){ 	//자식이 있는 경우
+				   List<SistCategory> childList = sistMemberService.selectAllChildCategory(sc.getCa_seq());
+				   
+				   for(int i =0;i<childList.size();i++){
+					   sistMemberService.updateToChildCategory(childList.get(i));
+				   }
+				   
+				   sistMemberService.updateAnotherChild(sc);
+			   }else{		//자식이 없는 경우
+				   sistMemberService.updateAnotherChild(sc);
+			   }
+			   
+		   }else{		//자식인 경우
+			   SistCategory testCate = sistMemberService.selectOneCategory(sc.getCa_seq());
+			   
+			   if(testCate.getCa_parent() == sc.getCa_parent()){
+				   sistMemberService.updateParentCategory(sc);
+			   }else{
+				   sistMemberService.updateAnotherChild(sc);
+			   }
+		   }
+	   }
+	   
+	   return "redirect:categoryHome.do";
+   }
    
 }

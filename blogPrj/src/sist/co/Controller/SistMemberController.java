@@ -68,12 +68,7 @@ public class SistMemberController {
 		SistMemberVO vo = (SistMemberVO) request.getSession().getAttribute("login");
 		
 		if(vo != null){
-			
-			
-			
-			
 
-			
 			SistMessage sm = new SistMessage();
 			
 			sm.setMessage_receiver(vo.getM_id());
@@ -1012,6 +1007,38 @@ public class SistMemberController {
 	  
 	 }
 	 
+	//아작스 페이징 연습
+	@RequestMapping(value="paging.do", method={RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public List<SistMessage> pagin(HttpServletRequest request, Model model) throws Exception{
+		logger.info("페이징");
+		
+		SistMessage sm = new SistMessage();
+		
+		sm.setMessage_receiver(((SistMemberVO)request.getSession().getAttribute("login")).getM_id());
+
+		//페이지 수
+		
+		String pageobj = request.getParameter("page");
+		int currentpage;
+		if (pageobj == null) {
+			currentpage = 1;
+		} else {
+			currentpage = Integer.parseInt(pageobj);
+		}
+		
+		
+		int page01 = (currentpage - 1) * 10 + 1;
+		int page02 = currentpage * 10;
+		
+		sm.setPage01(page01);
+		sm.setPage02(page02);
+
+		List<SistMessage> pageMessageList = sistMemberService.selectMessagePaging(sm);
+		
+		
+		return pageMessageList;
+	}
 	
 	
 	

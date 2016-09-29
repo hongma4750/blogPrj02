@@ -226,6 +226,37 @@ public class SistMemberImpl implements SistMemberService{
 		// TODO Auto-generated method stub
 		return sistMemberDAO.countChild(ca_seq);
 	}
+	
+	@Override
+	public List<SistCategory> selectAllChildCategory(int ca_seq) throws Exception {
+		// TODO Auto-generated method stub
+		return sistMemberDAO.selectAllChildCategory(ca_seq);
+	}
+	
+	@Override
+	public void updateParentCategory(SistCategory sc) throws Exception {
+		sistMemberDAO.updateParentCategory(sc);
+		
+	}
+	
+	@Override
+	public void updateToParentCategory(SistCategory sc) throws Exception {
+		sistMemberDAO.updateToParentCategory(sc);
+		
+	}
+	
+	@Override
+	public void updateAnotherChild(SistCategory sc) throws Exception {
+		sistMemberDAO.updateAnotherChild(sc);
+		
+	}
+	
+	@Override
+	public void updateToChildCategory(SistCategory sc) throws Exception {
+		sistMemberDAO.updateToChildCategory(sc);
+		
+	}
+
 
 
 
@@ -239,11 +270,28 @@ public class SistMemberImpl implements SistMemberService{
 
 	
 	//ssunhj: getmember
-		@Override
-		public SistMemberVO getmember(String m_id) throws Exception {
-			return sistMemberDAO.getmember(m_id);
-		}
+	@Override
+	public SistMemberVO getmember(String m_id) throws Exception {
+		return sistMemberDAO.getmember(m_id);
+	}
 
+	
+	//ajax paging
+	@Override
+	public List<SistMessage> selectMessagePaging(SistMessage sm) throws Exception {
+		
+		return sistMemberDAO.selectMessagePaging(sm);
+	}
+
+		
+
+		
+
+		
+
+		
+
+		
 		
 		
 

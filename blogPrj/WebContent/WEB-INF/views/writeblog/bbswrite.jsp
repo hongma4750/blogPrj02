@@ -32,10 +32,9 @@
 			<!-- 카테고리 -->
 			<select id="cate1" name="bbs_ca_seq" style="width:138px; height: 20px;">
 			<!-- 나중에 카테고리 생기면 여기에 카테고리 리스트 db에서 불러와서 뿌려준다. -->
-			   <option value="1">카테고리1</option>
-			   <option value="2">카테고리2</option>
-			   <option value="3">카테고리3</option>
-			   <option value="4">카테고리4</option>
+			   <c:forEach items="${blogCategoryList }" var="blogCate">
+			   		<option value="${blogCate.ca_seq }">${blogCate.ca_name }</option>
+			   </c:forEach>
 			</select> 
 			
 			<input type="text" name="bbs_title" style="width:754px; height: 20px;"/>

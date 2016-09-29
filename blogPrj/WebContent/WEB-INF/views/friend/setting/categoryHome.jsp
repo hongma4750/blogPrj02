@@ -120,31 +120,34 @@
 					<p class="bg-info">카테고리 수정</p>
 				</div>
 				
-				<form action="ex.do" id="updateForm" method="post">
+				<form action="updateCategory.do"  method="post" >
 				<div id="updateCategory" style="display:none"><!--  -->
 					
 					
 					<div class="row" style="margin:auto; padding:auto;">
 						<label class="col-md-4">카테고리 선택</label>
 						
-						<select class="col-md-8 orm-control" >
-							<option>aaa카테고리</option>
-							<option>bbb카테고리</option>
-							<option>ccc카테고리</option>
+						<select class="col-md-8 orm-control" id="choiceCategory">
+							<option value="noCate">수정할 카테고리 선택</option>
+							<c:forEach items="${blogCategoryList }" var="blogCate">
+								<option value="${blogCate.ca_seq }">${blogCate.ca_name }</option>
+							</c:forEach>
 						</select>
 					</div>
 					
 				
 					<div class="row" style="margin:auto; padding:auto;">
 						<label class="col-md-4">카테고리명</label>
-						<input type="text" class="col-md-8">
+						<input type="text" class="col-md-8" id="update_ca_name" name="ca_name">
+						<input type="hidden" name="ca_depth" id="update_ca_depth">
+						<input type="hidden" name="ca_seq" id="update_ca_seq">
 					</div>
 					
 					<div class="row" style="margin:auto; padding:auto;">
 						<label class="col-md-4">공개설정</label>
 						
-						<input type="radio" name="option" checked>공개
-						<input type="radio" name="option">비공개
+						<input type="radio" name="ca_hidden" id="update_ca_hidden0" value="0">공개
+						<input type="radio" name="ca_hidden" id="update_ca_hidden1" value="1">비공개
 					</div>
 					
 					<div class="row" style="margin:auto; padding:auto;">
@@ -160,17 +163,21 @@
 					<div class="row" style="margin:auto; padding:auto;">
 						<label class="col-md-4">글보기</label>
 						
-						<input type="radio" name="option1" checked>블로그형
-						<input type="radio" name="option1">앨범형
+						<input type="radio" name="ca_view_type" checked id="update_ca_view_type0" value="0">블로그형
+						<input type="radio" name="ca_view_type" id="update_ca_view_type1" value="1">앨범형
 					</div>
 					
 					<div class="row" style="margin:auto; padding:auto;">
 						<label class="col-md-4">부모 카테고리</label>
 						
-						<select class="col-md-8 orm-control" >
-							<option selected>없음</option>
-							<option>aa카테고리</option>
-							<option>bb카테고리</option>
+						<select class="col-md-8 orm-control" id="update_ca_parent" name="ca_parent" >
+							<option value="0">없음</option>
+							
+							<c:forEach items="${blogCategoryList }" var="blogCate">
+								<c:if test="${blogCate.ca_depth eq 0 }">
+									<option value="${blogCate.ca_seq}">${blogCate.ca_name }</option>
+								 </c:if> 
+							</c:forEach>
 						</select>
 					</div>
 					
@@ -228,11 +235,71 @@
 
 
 <script>
+
+$(document).ready(function(){
+	$("#choiceCategory").change(function(){
+		var ca_seq = $("#choiceCategory").val();
+		$.ajax({
+			type:"POST",
+			url:"choiceUpdateCategory.do",
+			data:"ca_seq="+ca_seq,
+			success:function(sc){
+				printCategory(sc);
+			}
+			
+		});
+	});
+});
+
+function printCategory(sc){
+
+	$("#update_ca_name").val(sc.ca_name);
+	
+	if(sc.ca_hidden==0){
+		$("#update_ca_hidden0").prop("checked",true);
+		
+	}else{
+		$("#update_ca_hidden1").prop("checked",true);
+		
+	}
+	
+	if(sc.ca_view_type ==0){
+		$("#update_ca_view_type0").prop("checked",true);
+	}else{
+		$("#update_ca_view_type1").prop("checked",true);
+	}
+	
+	
+	var ca_parent = sc.ca_parent;
+	var ca_depth = sc.ca_depth;
+	var ca_seq = sc.ca_seq;
+	
+	$("#update_ca_parent").val(ca_parent);
+	$("#update_ca_depth").val(ca_depth);
+	$("#update_ca_seq").val(ca_seq);
+	
+	
+	
+
+}
+
+
 function go_submit(a){
 	
 	if(a == 1 ){
-		if($("#id=insert_ca_name").val()==0){
+		if($("#insert_ca_name").val().length ==0){
 			alert("카테고리명을 입력해주세요");
+			return false;
+		}
+	}else if(a==2){
+		if($("#choiceCategory").val()=="noCate"){
+			alert("수정할 카테고리를 선택해주세요");
+			return false;
+		}else if($("#update_ca_name").val().length ==0){
+			alert("카테고리 이름을 입력해주세요");
+			return false;
+		}else if($("#choiceCategory").val() == $("#update_ca_parent").val()){
+			alert("다른 부모 카테고리를 선택하세요");
 			return false;
 		}
 	}else if(a==3){
@@ -284,4 +351,8 @@ var checkprintDelete = true;
 			checkprintDelete = true;
 		}
 	}
+	
+	
+	
+	
 </script>

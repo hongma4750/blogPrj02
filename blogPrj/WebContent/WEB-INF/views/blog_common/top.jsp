@@ -50,7 +50,7 @@
 							
 							
 							<ul class="cat">
-								<li><a href="#none" title="total"><strong>전체보기(20)</strong></a></li>
+								<li><a href="#none" title="total"><strong>전체보기(${fn:length(bloglist) })</strong></a></li>
 								<jsp:useBean id="ubbs" class="sist.co.help.arrowHelp"/>
 								<c:forEach items="${blogCategoryList }" var = "blogCategory">
 									<jsp:setProperty property="depth" name="ubbs" value="${blogCategory.ca_depth }"/>
@@ -98,7 +98,7 @@
 						<strong>카테고리</strong> <br>
 						
 							<ul class="cat">
-								<li><a href="#none" title="total"><strong>전체보기(20)</strong></a></li>
+								<li><a href="#none" title="total"><strong>전체보기(${fn:length(bloglist) })</strong></a></li>
 								
 								<c:forEach items="${blogCategoryList }" var = "blogCategory">
 									<jsp:setProperty property="depth" name="ubbs" value="${blogCategory.ca_depth }"/>
