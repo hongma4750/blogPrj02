@@ -104,6 +104,7 @@ public class SistMemberDAO {
 		return sqlSession.selectList(ns+"selectAllMessage",sm);
 	}
 	
+
 	public void sendMessageAF(SistMessage sm) throws Exception{
 		sqlSession.insert(ns+"sendMessageAF",sm);
 	}
@@ -200,9 +201,5 @@ public class SistMemberDAO {
 	public List<SistMessage> selectMessagePaging (SistMessage sm) throws Exception{
 		return sqlSession.selectList(ns+"selectMessagePaging",sm);
 	}
-		
 
-		
-		
-	
 }

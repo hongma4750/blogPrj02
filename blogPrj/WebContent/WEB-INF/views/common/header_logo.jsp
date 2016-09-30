@@ -67,31 +67,28 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin:0; padding:0;">
-      <form class="navbar-form navbar-left" role="search">
-      
+      <form class="navbar-form navbar-left" role="search" action="search.do">   
         <div class="form-group" style="border-color:#45B914; border-style:solid ;border-width:3px;">
         
-        <select class="form-control" style="width:30%; display:inline-block; float:left; border-color:#45B914;">
-		  <option>1</option>
-		  <option>2</option>
-		  <option>3</option>
-		  <option>4</option>
-		  <option>5</option>
-		</select>
-		
-          <input type="text" class="form-control" placeholder="Search" style="margin:auto; padding:auto;width:70%;border-color:#45B914;">
+        <select name="srh_op" class="form-control" style="width:30%; display:inline-block; float:left; border-color:#45B914;">
+        <option value="post">포스트</option>
+        <option value="blog">블로그</option>
+        <option value="nicknid">별명·아이디</option>
+      </select>
+      
+          <input type="text" name="srh_con" class="form-control" placeholder="Search" style="margin:auto; padding:auto;width:70%;border-color:#45B914;">
           
         </div>
         
+        <!-- 검색 버튼 -->
         <button type="submit" class="btn btn-default" style="background-color:#45B914; 
-        border-color:#45B914; color:white; height:35px;">검색</button>
-        
+        border-color:#45B914; color:white; height:35px;">검색</button>     
       </form>
       
       <ul class="nav navbar-nav navbar-right">
       <c:if test="${login.m_id ne null }">
 
-	      	<li><a href="blogInfo.do">블로그 정보</a></li>
+	      	
 	        
       			<li>
                   	<a href="#" id="userInfo" >

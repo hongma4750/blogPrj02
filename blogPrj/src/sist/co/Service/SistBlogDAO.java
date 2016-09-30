@@ -71,6 +71,7 @@ public class SistBlogDAO {
 		sqlSession.update(ns+"likeminus",bbs_seq);
 	}
 	
+
 	//like list
 	public List<SistBbsLikeDTO> getLikeList() throws Exception{
 		List<SistBbsLikeDTO> likelist = new ArrayList<SistBbsLikeDTO>();

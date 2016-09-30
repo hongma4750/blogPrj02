@@ -10,6 +10,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +41,19 @@ import sist.co.Model.FUpUtil;
 import sist.co.Model.SendEmail;
 import sist.co.Model.SistBlog;
 import sist.co.Model.SistCategory;
+import sist.co.Model.SistBlogDTO;
+import sist.co.Model.SistDblFollowingVO;
+import sist.co.Model.SistFgroupVO;
+import sist.co.Model.SistFriendParamVO;
+import sist.co.Model.SistFriendVO;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
+import sist.co.Model.SistTopicDTO;
+import sist.co.Model.SistTopicPageDTO;
 import sist.co.Model.YesMember;
+import sist.co.Service.SistFriendService;
 import sist.co.Service.SistMemberService;
+import sist.co.Service.SistTopicService;
 
 
 
@@ -54,11 +64,15 @@ public class SistMemberController {
 	 
 	@Autowired
 	SistMemberService sistMemberService;
+	@Autowired
+	SistFriendService sistFriendService;
+	@Autowired
+	SistTopicService sistTopicService;
 
 	@RequestMapping(value="index.do",method=RequestMethod.GET)
-	public String index(HttpServletRequest request , Model model) throws Exception{
+	public String index(HttpServletRequest request, Model model)throws Exception{
 		logger.info("환영합니다. index.do 실행중");
-		
+
 		//메인으로 돌아가면 finfo를 세션에서 지워준다
 	      HttpSession session = request.getSession();
 	      SistMemberVO finfo =(SistMemberVO)session.getAttribute("finfo");
@@ -115,6 +129,110 @@ public class SistMemberController {
 			
 			model.addAttribute("pageList",pageList);
 		}
+
+
+		//bys: 주제별리스트
+		// 최신순 저장
+		request.getSession().setAttribute("likes", 1);
+		
+		// 주제별 글보기
+		SistBlogDTO bdto = new SistBlogDTO();
+		
+		List<SistBlogDTO> blist = sistTopicService.getTopicListAll(bdto);
+		model.addAttribute("blist", blist);
+		
+		//페이지 수
+		String pageobj = request.getParameter("page");
+		int currentpage;
+		if (pageobj == null) {
+			currentpage = 1;
+		} else {
+			currentpage = Integer.parseInt(pageobj);
+		}
+						
+		int page01 = (currentpage - 1) * 5 + 1;
+		int page02 = currentpage * 5;
+								
+		SistTopicPageDTO pageDto = new SistTopicPageDTO();
+		pageDto.setPage01(page01);
+		pageDto.setPage02(page02);
+		
+					
+		List<SistTopicPageDTO> topicPageList = sistTopicService.getPointChargePageListMainAll(pageDto);
+		model.addAttribute("topicPageList",topicPageList);	
+		
+		
+		// 오늘의 top 글
+	
+		logger.info("환영합니다. todaytop.do  오늘의 톱!");
+			
+		//String t_num = request.getParameter("t_seq");
+		//int t_seq = 1;
+		
+		// 음악
+		List<SistTopicDTO> toplist = sistTopicService.getTopList(1);
+		model.addAttribute("toplist", toplist);
+		
+		List<SistTopicDTO> top_mlist = sistTopicService.getTopList(2);
+		model.addAttribute("top_mlist", top_mlist);
+		
+		List<SistTopicDTO> top_slist = sistTopicService.getTopList(3);
+		model.addAttribute("top_slist", top_slist);
+
+		//bomyi
+		if((SistMemberVO)request.getSession().getAttribute("login")!=null){
+			String m_id = ((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+			
+			//bomyi:서로이웃신청받은 수
+			int cnt = sistFriendService.cntR_2Fol(m_id);
+			
+			if(cnt>=0){
+				model.addAttribute("cnt", cnt);
+			}
+			
+			//bomyi:서로이웃 신청 알림 내역
+			List<SistDblFollowingVO> Rfolist = sistFriendService.getReceiveDblFols(m_id);
+			if(Rfolist!=null){
+				model.addAttribute("Rfolist", Rfolist);
+			}
+			
+			//bomyi:이웃목록 div / 검색
+			//그룹조회
+			/*List<SistFgroupVO> glist = new ArrayList<SistFgroupVO>();
+			glist = sistFriendService.getGroups(m_id);
+			if(glist!=null){
+				model.addAttribute("glist", glist);
+			}*/
+			
+			/*List<SistFriendVO> flist = sistFriendService.getFriends(m_id);
+			if(flist!=null){
+				model.addAttribute("flist", flist);
+			}*/
+			
+			/*SistFriendParamVO param = new SistFriendParamVO();
+			System.out.println(param);
+			param.setFnd_myid(m_id);
+			String r_s_category =request.getParameter("s_category");
+			param.setS_category(r_s_category);
+			String r_s_keyword = request.getParameter("s_keyword");
+			param.setS_keyword(r_s_keyword);*/
+			//카테고리, 키워드
+			
+			
+			/*List<SistFriendVO> flist = sistFriendService.getFriendPagingList(param);
+			System.out.println(param);
+			if(flist!=null){
+				model.addAttribute("flist", flist);
+				
+				model.addAttribute("s_category", param.getS_category());
+				model.addAttribute("s_keyword", param.getS_keyword());
+			}*/
+		}
+		//-----------
+				
+				
+		
+
 		return "index.tiles";
 	}
 	
@@ -143,7 +261,6 @@ public class SistMemberController {
 
 		request.setAttribute("publicKeyModulus", publicKeyModulus);
 		request.setAttribute("publicKeyExponent", publicKeyExponent);
-		
 		
 		return "login.tiles";
 	}
@@ -202,7 +319,9 @@ public class SistMemberController {
 				//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
 				request.getSession().setAttribute("myMessageCount", myMessageCount);
 				request.getSession().setAttribute("newMyMessageList", newMyMessageList);
+
 				request.getSession().setAttribute("allMyMessageList", allMyMessageList);
+
 				
 				return "redirect:index.do";
 			}
@@ -1015,7 +1134,31 @@ public class SistMemberController {
 	  }
 	  
 	 }
+	
+	/*//bomyi:이웃블로그 목록 //검색 / 페이징
+	 @RequestMapping(value="friendDiv.do",method={RequestMethod.GET,RequestMethod.POST})
+		public String friendDiv(HttpServletRequest request,SistFriendParamVO param, Model model)throws Exception{
+			logger.info("환영합니다. friendDiv.do 실행중");
+			
+			//이웃목록
+			//'로그인 한 사람' 정보 취득
+			String id = ((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+			
+			//그룹조회
+			List<SistFgroupVO> glist = new ArrayList<SistFgroupVO>();
+			glist = sistFriendService.getGroups(id);
+			model.addAttribute("glist", glist);
+			
+	    	List<SistFriendVO> flist = sistMemberService.getFriendPagingList(param);
+	    	model.addAttribute("flist", flist);
+	    	
+	    	model.addAttribute("s_category", param.getS_category());
+	    	model.addAttribute("s_keyword", param.getS_keyword());
+			
+			return "redirect:index.do";
+		}*/
 	 
+
 	//아작스 페이징 연습
 	@RequestMapping(value="paging.do", method={RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
@@ -1059,7 +1202,4 @@ public class SistMemberController {
 		
 		return pageMessageList;
 	}
-	
-	
-	
 }

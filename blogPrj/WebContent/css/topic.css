@@ -1,0 +1,65 @@
+@CHARSET "UTF-8";
+ 
+	@font-face{
+		font-family: '돋움',Dotum,Helvetica,sans-serif;   
+		font-size: 12px
+		src:url('../font/sae.ttf') format('truetype');
+	}
+	
+body {
+	font-family: '돋움',Dotum,Helvetica,sans-serif;   
+	
+}
+input, select {  vertical-align:middle; font-size:1em; font-family:"돋움", dotum; }	
+
+#topic_menu{
+	font-size: 12px/1.2em Dotum, Helvetica, Sans-serif;
+	color: #767676;
+}
+
+.topic_hr{
+    margin-top: 0px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+.main_topic_title{
+    color: #284e85;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.main_topic_blgname{
+	color: #333;
+    font-size: 13px;
+}
+
+.main_topic_blgdate{
+	color: #333;
+    font-size: 12px;
+}
+
+.main_topic_like{
+	color: #ff6e46;
+	font-size: 11px;
+}
+
+.main_topic_con{
+	color: #7d7d7d;
+    line-height: 1.4;
+    font-size: 12px;
+    margin-right: 10px;
+    padding-top: 0px;
+    
+}
+
+.main_topic_img{
+	margin-top: -50px;
+    margin-right: -75px;
+    width: 90px;
+    height: 90px;
+	
+}
+

@@ -12,7 +12,7 @@
 	</insert>
 	
 	<!-- 블로그 메인에 내용 전부 불러오기 -->
-	<select id="getBlogList" parameterType="sist.co.Model.SistBlogDTO" resultType="sist.co.Model.SistBlogDTO">
+	<select id="getBlogList" resultType="sist.co.Model.SistBlogDTO">
 		SELECT * FROM BLOG_BBS
 		WHERE M_ID=#{m_id}
 		ORDER BY BBS_DATE DESC

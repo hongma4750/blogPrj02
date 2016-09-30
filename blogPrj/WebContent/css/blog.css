@@ -252,8 +252,9 @@
 		float: right;
 	}
 	
-	#foot_reple .i1 , #foot_reple .i2 {
+	.foot_reple .i1 , .foot_reple .i2 {
 		vertical-align: top;
+
 	}
 	#foot_reple .ii1 , #foot_reple .i3 {
 		vertical-align: top;
@@ -265,6 +266,9 @@
 		padding: 13px 25px 20px;
 		font-size: 13px;
 	}
+
+	}	
+
 	
 	.foot_reple , .foot_sym{
 		width: 936px;
@@ -273,14 +277,7 @@
 		font-size: 13px;
 	}
 	
-	#foot_reple , #foot_sym{
-		width: 936px;
-		background: rgb(245, 240, 223);
-		padding: 13px 25px 20px;
-		font-size: 13px;
-	}
-	
-	#foot_reple tr{
+	.foot_reple tr{
 		padding: 20px;
 	}
 	
@@ -376,10 +373,6 @@
 		border-bottom: 1px dashed silver;
 	}
 	
-	#foot_sym h6{
-		padding-bottom: 10px;
-		border-bottom: 1px dashed silver;
-	}
 	.foot_sym h6{
 		padding-bottom: 10px;
 		border-bottom: 1px dashed silver;
@@ -397,7 +390,7 @@
 		vertical-align: top;
 		display: inline-block;
 	}
-	#foot_reple dt, #foot_reple dd{
+	.foot_reple dt, .foot_reple dd{
 		display: inline-table;
 	}
 	

@@ -22,7 +22,7 @@ create table blog_bbs(
 	bbs_likechk number not null, --공감 허용 여부. 공감허용(0), 공감비허용(1)
 	bbs_scrapchk number not null, --스크랩 허용 여부
 	bbs_date date not null,
-	bbs_like_count number not null,
+	bbs_like_count number default 0 not null ,
 	primary key(bbs_seq)
 );
 

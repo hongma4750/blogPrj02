@@ -48,13 +48,14 @@ public interface SistMemberService {
 	
 	List selectNewMessage(SistMessage sm) throws Exception;
 	
-	void sendMessageAF(SistMessage sm) throws Exception;
 	
 	SistMessage detailMessage(int message_seq) throws Exception;
 	
 	void updateMessageRead(int message_seq) throws Exception;
 	
 	void deleteMessage(int message_seq) throws Exception;
+	
+	void sendMessageAF(SistMessage sm) throws Exception;
 	
 	List getPointChargePageList (SistMessage sm) throws Exception;
 	
@@ -63,6 +64,7 @@ public interface SistMemberService {
 	void seeAllMessage (SistMessage sm) throws Exception;
 	
 	List selectAllMessage(SistMessage sm) throws Exception;
+
 	
 	void insertBlog(SistBlog sb) throws Exception;
 	
@@ -100,4 +102,5 @@ public interface SistMemberService {
 	
 	//ajax paing
 	List<SistMessage> selectMessagePaging (SistMessage sm) throws Exception;
+
 }

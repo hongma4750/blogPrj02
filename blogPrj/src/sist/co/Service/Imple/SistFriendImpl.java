@@ -6,9 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import sist.co.Model.SistBlog;
+
+import sist.co.Model.SistBlogDTO;
+
 import sist.co.Model.SistDblFollowingVO;
 import sist.co.Model.SistFgroupVO;
+import sist.co.Model.SistFriendParamVO;
 import sist.co.Model.SistFriendVO;
 import sist.co.Model.SistFsettingVO;
 import sist.co.Model.SistMemberVO;
@@ -20,6 +25,13 @@ public class SistFriendImpl implements SistFriendService {
 	
 	@Autowired
 	SistFriendDAO sistFriendDAO;
+
+	//이웃수
+	@Override
+	@Transactional
+	public int cntfriend(String myid) throws Exception {
+		return sistFriendDAO.cntfriend(myid);
+	}
 
 	//이웃 한명
 	@Override
@@ -81,12 +93,26 @@ public class SistFriendImpl implements SistFriendService {
 		return sistFriendDAO.addGroup(group);
 	}
 
+	//그룹이동
+	@Override
+	@Transactional
+	public boolean moveGroup(SistFriendVO friend) throws Exception {
+		return sistFriendDAO.moveGroup(friend);
+	}
+
 	//친구추가
 	@Override
 	@Transactional
 	public boolean addFriend(SistFriendVO friend) throws Exception {
 
 		return sistFriendDAO.addFriend(friend);
+	}
+	
+	//이웃삭제
+	@Override
+	@Transactional
+	public boolean delFriend(SistFriendVO friend) throws Exception {
+		return sistFriendDAO.delFriend(friend);
 	}
 
 	//서로이웃팔로잉추가
@@ -133,23 +159,41 @@ public class SistFriendImpl implements SistFriendService {
 		return sistFriendDAO.get2fol(seq);
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	//hongma:
 	@Override
 	public SistBlog selectBlog(String m_id) throws Exception {
 		return sistFriendDAO.selectBlog(m_id);
 	}
-	
-	
-
-	
 
 
+	//getGroupbyFriends
+	@Override
+	@Transactional
+	public List<SistFriendVO> getGroupbyFriends(String m_id) throws Exception {
+		return sistFriendDAO.getGroupbyFriends(m_id);
+	}
+	
+	//서로이웃신청 수
+	@Override
+	@Transactional
+	public int cntR_2Fol(String m_id) throws Exception {
+		return sistFriendDAO.cntR_2Fol(m_id);
+	}
+
+	//모든블로그리스트
+	@Override
+	@Transactional
+	public List<SistBlogDTO> getAllBlogList() throws Exception {
+		
+		return sistFriendDAO.getAllBlogList();
+	}
+	
+	//검색 / 페이징
+	@Override
+	@Transactional
+	public List<SistFriendVO> getFriendPagingList(SistFriendParamVO param) throws Exception {
+		return sistFriendDAO.getFriendPagingList(param);
+	}
+	
 	
 }

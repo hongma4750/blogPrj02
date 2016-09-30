@@ -366,24 +366,24 @@ String url = String.format("%s?year=%s&month=%s", "calendar3.do", year, month);
 	<col width="100px"/>
 	
 <thead>
-<tr height="100px">
-	<td colspan="7" class="days2">
-		<%=prev_year %><%=prev_month %>	
-		<font color="red" style="font-size:20">
+<tr height="49px" align="left">
+	<td colspan="7" class="days2" >
+		<%-- <%=prev_year %> --%>	
+		<font color="black" style="font-size:18px">
 			<%=String.format("%d년&nbsp;&nbsp;%d월", year, month) %>
 		</font>
-		<%=next_year %><%=next_month %>
+		<%-- <%=next_year %> --%><%=prev_month %><%=next_month %>
 	</td>
 </tr>
 
-<tr height="100px">
-	<th class="days3">일</th>
-	<th class="days3">월</th>
-	<th class="days3">화</th>
-	<th class="days3">수</th>
-	<th class="days3">목</th>
-	<th class="days3">금</th>
-	<th class="days3">토</th>
+<tr height="29px" style="">
+	<th class="days3" style="color: red; font-size: 12px; background-color: #f8f8f8">일</th>
+	<th class="days3" style="color: #555; font-size: 12px; background-color: #f8f8f8">월</th>
+	<th class="days3" style="color: #555; font-size: 12px; background-color: #f8f8f8">화</th>
+	<th class="days3" style="color: #555; font-size: 12px; background-color: #f8f8f8">수</th>
+	<th class="days3" style="color: #555; font-size: 12px; background-color: #f8f8f8">목</th>
+	<th class="days3" style="color: #555; font-size: 12px; background-color: #f8f8f8">금</th>
+	<th class="days3" style="color: red; font-size: 12px; background-color: #f8f8f8">토</th>
 </tr>
 </thead>	
 

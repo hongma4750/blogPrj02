@@ -6,74 +6,82 @@
 
 <!-- 메인 달력 뿌리기 -->
 <select id="getCalendarList"
-   parameterType="sist.co.Model.SistCalendarDTO"
-   resultType="sist.co.Model.SistCalendarDTO">   
+	parameterType="sist.co.Model.SistCalendarDTO"
+	resultType="sist.co.Model.SistCalendarDTO">	
 
-   SELECT sch_writenum, sch_id, 
-         sch_star, sch_title, 
-         sch_startdate, sch_starttime,
-         sch_enddate, sch_endtime,
-         sch_sticker
-   FROM 
-   (SELECT ROW_NUMBER() OVER
-      (PARTITION BY SUBSTR(sch_startdate, 1, 8) ORDER BY sch_startdate ASC) RN,
-      sch_writenum,  sch_id, 
-         sch_star, sch_title, 
-         sch_startdate, sch_starttime,
-         sch_enddate, sch_endtime,
-         sch_sticker
-      FROM SCHWRITE
-      WHERE sch_id=#{sch_id} AND SUBSTR(sch_startdate, 1, 6)=#{sch_startdate}
-   )
-WHERE RN BETWEEN 1 AND 5   
+	SELECT sch_writenum, sch_id, 
+		   sch_star, sch_title, 
+		   sch_startdate, sch_starttime,
+		   sch_enddate, sch_endtime,
+		   sch_sticker
+	FROM 
+	(SELECT ROW_NUMBER() OVER
+		(PARTITION BY SUBSTR(sch_startdate, 1, 8) ORDER BY sch_startdate ASC) RN,
+		sch_writenum,  sch_id, 
+		   sch_star, sch_title, 
+		   sch_startdate, sch_starttime,
+		   sch_enddate, sch_endtime,
+		   sch_sticker
+		FROM SCHWRITE
+		WHERE sch_id=#{sch_id} AND SUBSTR(sch_startdate, 1, 6)=#{sch_startdate}
+	)
+WHERE RN BETWEEN 1 AND 5	
 </select>
 
 <!--  퀵 뷰 상세보기 -->
 <select id="getSchQuickView" parameterType="sist.co.Model.SistCalendarDTO"
-   resultType="sist.co.Model.SistCalendarDTO">   
-   SELECT * FROM SCHWRITE
-   WHERE SCH_ID=#{sch_id} and SCH_WRITENUM=#{sch_writenum}
+	resultType="sist.co.Model.SistCalendarDTO">	
+	SELECT * FROM SCHWRITE
+	WHERE SCH_ID=#{sch_id} and SCH_WRITENUM=#{sch_writenum}
 </select>
 
 
 <!-- 일정 상세보기 -->
 <select id="getSch" parameterType="sist.co.Model.SistCalendarDTO"
-   resultType="sist.co.Model.SistCalendarDTO">   
-   SELECT * FROM SCHWRITE
-   WHERE SCH_WRITENUM=#{sch_writenum}
+	resultType="sist.co.Model.SistCalendarDTO">	
+	SELECT * FROM SCHWRITE
+	WHERE SCH_WRITENUM=#{sch_writenum}
 </select>
 
 <!-- 일정 쓰기 -->
 <insert id="writeSchedule" parameterType="sist.co.Model.SistCalendarDTO">
-   INSERT INTO SCHWRITE
-      (sch_writenum, 
-      sch_id, sch_title, sch_star, sch_location,
-       sch_startdate, sch_starttime, sch_enddate, sch_endtime,
-       sch_rdate, sch_allday, sch_public, sch_sticker, sch_content,
-       sch_docname, sch_alarm)
-   VALUES(SEQ_SIST_SCHWRITE.NEXTVAL, 
-      #{sch_id}, #{sch_title}, #{sch_star}, #{sch_location}, 
-      #{sch_startdate}, #{sch_starttime}, #{sch_enddate}, #{sch_endtime}, 
-      SYSDATE, #{sch_allday}, #{sch_public}, #{sch_sticker}, #{sch_content}, 
-      #{sch_docname}, #{sch_alarm}
-      )
+	INSERT INTO SCHWRITE
+		(sch_writenum, 
+		sch_id, sch_title, sch_star, sch_location,
+		 sch_startdate, sch_starttime, sch_enddate, sch_endtime,
+		 sch_rdate, sch_allday, sch_public, sch_sticker, sch_content,
+		 sch_docname, sch_alarm)
+	VALUES(SEQ_SIST_SCHWRITE.NEXTVAL, 
+		#{sch_id}, #{sch_title}, #{sch_star}, #{sch_location}, 
+		#{sch_startdate}, #{sch_starttime}, #{sch_enddate}, #{sch_endtime}, 
+		SYSDATE, #{sch_allday}, #{sch_public}, #{sch_sticker}, #{sch_content}, 
+		#{sch_docname}, #{sch_alarm}
+		)
 </insert>
 
 <!-- 일정 수정 -->
 <update id="updateSchedule" parameterType="sist.co.Model.SistCalendarDTO">
-   UPDATE SCHWRITE SET
-      SCH_TITLE=#{sch_title}, SCH_STAR=#{sch_star}, 
-      SCH_LOCATION=#{sch_location}, SCH_STARTDATE=#{sch_startdate}, 
-      SCH_STARTTIME=#{sch_starttime}, SCH_ENDDATE=#{sch_enddate}, 
-      SCH_ENDTIME=#{sch_endtime},  SCH_RDATE= SYSDATE, 
-      SCH_ALLDAY=#{sch_allday}, SCH_PUBLIC=#{sch_public}, 
-      SCH_STICKER=#{sch_sticker}, SCH_CONTENT=#{sch_content},
-      SCH_DOCNAME=#{sch_docname}, SCH_ALARM=#{sch_alarm}, SCH_FINISH=#{sch_finish}
-   WHERE SCH_WRITENUM=#{sch_writenum}
+	UPDATE SCHWRITE SET
+		SCH_TITLE=#{sch_title}, SCH_STAR=#{sch_star}, 
+		SCH_LOCATION=#{sch_location}, SCH_STARTDATE=#{sch_startdate}, 
+		SCH_STARTTIME=#{sch_starttime}, SCH_ENDDATE=#{sch_enddate}, 
+		SCH_ENDTIME=#{sch_endtime},  SCH_RDATE= SYSDATE, 
+		SCH_ALLDAY=#{sch_allday}, SCH_PUBLIC=#{sch_public}, 
+		SCH_STICKER=#{sch_sticker}, SCH_CONTENT=#{sch_content},
+		SCH_DOCNAME=#{sch_docname}, SCH_ALARM=#{sch_alarm}, SCH_FINISH=#{sch_finish}
+	WHERE SCH_WRITENUM=#{sch_writenum}
 </update>
 
 <!-- 일정 삭제 -->
 <delete id="deleteSchedule" parameterType="java.lang.Integer">
-   DELETE SCHWRITE WHERE SCH_WRITENUM=#{sch_writenum}
+	DELETE SCHWRITE WHERE SCH_WRITENUM=#{sch_writenum}
 </delete>
+
+<!-- 이웃목록 불러오기 -->
+<select id="getSch_invitee" parameterType="java.lang.String"
+	resultType="sist.co.Model.SistFriendVO">	
+	SELECT * FROM FRIEND 
+	WHERE FND_MYID=#{fnd_myid}
+</select>
+
 </mapper>

@@ -133,6 +133,7 @@ public class SistMemberImpl implements SistMemberService{
 		return sistMemberDAO.selectAllMessage(sm);
 	}
 
+
 	@Override
 	public void sendMessageAF(SistMessage sm) throws Exception {
 		sistMemberDAO.sendMessageAF(sm);
@@ -257,18 +258,6 @@ public class SistMemberImpl implements SistMemberService{
 		
 	}
 
-
-
-
-	
-	
-	
-	
-	
-	
-	
-
-	
 	//ssunhj: getmember
 	@Override
 	public SistMemberVO getmember(String m_id) throws Exception {
@@ -283,43 +272,4 @@ public class SistMemberImpl implements SistMemberService{
 		return sistMemberDAO.selectMessagePaging(sm);
 	}
 
-		
-
-		
-
-		
-
-		
-
-		
-		
-		
-
-		
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-		
-
-		
-
-		
-
-		
-
-	
-	
-	
 }

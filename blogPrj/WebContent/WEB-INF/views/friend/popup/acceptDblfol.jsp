@@ -30,6 +30,10 @@ String seq=request.getParameter("seq");%>
 <hr/>
 
 	<form action="acceptSucs.do?blogId=<%=blogId %>&seq=<%=seq%>" method="post" id="_myform" name="myform">
+		<input type="hidden" name="gname" value="${gl.fnd_groupname }" /> 
+		<input type="hidden" name="fnd_fndid" value="<%=blogId%>" /> 
+		<input type="hidden" name="fnd_myid" value="${login.m_id }" /> 
+		<input type="hidden" name="fnd_chk" value="1" />
 
 		<div style="margin: 20px;">
 			<span style="color: #2eaa08;"><b><%=blogId%></b></span> 님의 서로이웃 신청을
@@ -40,9 +44,7 @@ String seq=request.getParameter("seq");%>
 			<select id="_selgroup" name="fnd_groupname"
 				class="form-control input-sm" style="width: 200px; float: left;">
 				<c:forEach items="${glist }" var="gl">
-					<option value="${gl.fg_groupname }">${gl.fg_groupname }</option>
-					<input type="hidden" name="gname" value="${gl.fg_groupname }"/>
-
+					<option value="${gl.fnd_groupname }">${gl.fnd_groupname }</option>
 				</c:forEach>
 			</select> &nbsp;<a id="_addG" class="btn btn-default btn-xs"
 				onclick="newgroup();">그룹추가</a> <br>
@@ -96,6 +98,23 @@ function newgroup(){
 	}
 }
 
+
+//그룹추가 버튼, 체크박스 클릭시
+$("#_addG").click(function(){
+	$("input:checkbox[id='_chkg']").click(function(){
+
+	    if(this.checked){//checked 처리된 항목의 값
+	    	alert(this.value);
+	    	//기존 그룹 name값을 변경하고
+			$("#_selgroup").attr('name','');
+			alert($("#_selgroup").attr('name'));
+
+			//input type=text의 name을 넘기기
+			$("#_gname").attr('name','fnd_groupname');
+			alert($("#_gname").attr('name'));
+	    }
+	});
+}); 
 </script>
 
 

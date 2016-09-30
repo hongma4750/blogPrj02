@@ -70,6 +70,8 @@ public class SistBlogDTO {
 	private String bbs_date;
 	private int bbs_like_count;
 	
+	// 공감 사용
+	private int bbs_likes;
 	
 	public SistBlogDTO(){}
 	
@@ -87,6 +89,7 @@ public class SistBlogDTO {
 		this.bbs_scrapchk = bbs_scrapchk;	
 		this.bbs_date = bbs_date;
 		this.bbs_like_count = bbs_like_count;
+
 	}
 	
 	public int getBbs_seq() {
@@ -166,6 +169,13 @@ public class SistBlogDTO {
 	}
 	public void setBbs_date(String bbs_date) {
 		this.bbs_date = bbs_date;
+	}
+
+	public int getBbs_likes() {
+		return bbs_likes;
+	}
+	public void setBbs_likes(int bbs_likes) {
+		this.bbs_likes = bbs_likes;
 	}
 
 	public int getBbs_like_count() {
