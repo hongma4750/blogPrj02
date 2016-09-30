@@ -23,7 +23,7 @@ public class SendEmail {
         // 메일 내용
         String recipient = m_email;
         String subject = "꽃보다 블로그 활성화 이메일";
-        String body = "클릭 : http://211.238.142.18:8090/blogPrj/sendemail.do?m_id="+m_id;
+        String body = "클릭 : http://localhost:8090/TeamProject03/sendemail.do?m_id="+m_id;
          
         Properties props = System.getProperties();
          

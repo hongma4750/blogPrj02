@@ -17,45 +17,7 @@
 <!-- 부트스트랩 링크 -->
 
 
-
-앙 블로그띠
-
-        <div ng-app="myApp">
-    <div class="inbox" ng-controller="EmailsCtrl">
-        My Inbox:
-        <ul>
-            <li ng-repeat="message in emails.messages">
-                <p>From: {{ message.from }}</p>
-                <p>Subject: {{ message.subject }}</p>
-                <p>{{ message.sent | date:'MMM d, y h:mm:ss a' }}</p>
-            </li>
-        </ul>
-    </div>
-</div>
+앙기모띠
 
 
 
-
-
-<script>
-	 
-	 var m_id = '${login.m_id}';
-	 if(m_id != " "){
-		 var myApp = angular.module('myApp', []);
-		 myApp.controller('EmailsCtrl', ['$scope', function ($scope) {
-			    $scope.emails = {};
-			    $scope.emails.messages = [
-					<c:forEach items="${newMyMessageList}" var="item1">
-					    {
-					    	
-					    	
-					        "from": "${item1.message_sender}",
-					        "subject": "${item1.message_receiver}",
-					        "sent": "${item1.message_content}"
-					    },
-			    	</c:forEach>
-			    ];
-			    
-			}]);
-	 }
-	 </script>

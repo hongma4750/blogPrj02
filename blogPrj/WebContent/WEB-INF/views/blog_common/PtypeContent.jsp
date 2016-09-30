@@ -36,7 +36,7 @@
 				<td>
 					<dl>
 						<dd>
-							<p class="list_img"><img src="image/1.jpg"></p>
+							<p class="list_img"><img src="image/55.png"></p>
 							<p class="list_txt"><a href="PbbsDetail.do">2016년 9월 7일 오전 10시 46분에 저장한 글입니다.</a></p>
 							<p class="list_date">2016.09.07.</p>
 						</dd>
@@ -46,7 +46,7 @@
 				<td>
 					<dl>
 						<dd>
-						<p class="list_img"><img src="image/2.jpg"></p>
+						<p class="list_img"><img src="image/4.jpg"></p>
 						<p class="list_txt"><a href="PbbsDetail.do">2016년 9월 7일 오전 10시 38분에 저장한 글입니다.</a></p>
 						<p class="list_date">2016.09.07.</p>
 						</dd>
@@ -56,7 +56,7 @@
 				<td>
 					<dl>
 						<dd>
-							<p class="list_img"><img src="image/3.jpg"></p>
+							<p class="list_img"><img src="image/22.png"></p>
 							<p class="list_txt"><a href="PbbsDetail.do">2016년 9월 7일 오전 10시37분에 저장한 글입니다.</a></p></p>
 							<p class="list_date">2016.09.07.</p>
 						</dd>
@@ -66,7 +66,7 @@
 				<td>
 					<dl>
 						<dd>
-						<p class="list_img"><img src="image/4.jpg"></p>
+						<p class="list_img"><img src="image/33.png"></p>
 						<p class="list_txt"><a href="PbbsDetail.do">2016년 9월 7일 오전 9시 32분에 저장한 글입니다.</a></p>
 						<p class="list_date">2016.09.07.</p>
 						</dd>
@@ -80,7 +80,7 @@
 				<td>
 					<dl>
 						<dd>
-							<p class="list_img"><img src="image/5.jpg"></p>
+							<p class="list_img"><img src="image/2.jpg"></p>
 							<p class="list_txt"><a href="PbbsDetail.do">2016년 9월 7일 오전 9시 30분에 저장한 글입니다.</a></p>
 							<p class="list_date">2016.09.07.</p>
 						</dd>
@@ -90,7 +90,7 @@
 				<td>
 					<dl>
 						<dd>
-							<p class="list_img"><img src="image/6.jpg"></p>
+							<p class="list_img"><img src="image/11.jpg"></p>
 							<p class="list_txt"><a href="PbbsDetail.do">아 졸려</a></p>
 							<p class="list_date">2016.09.07.</p>
 						</dd>
@@ -100,7 +100,7 @@
 				<td>	
 					<dl>
 						<dd>
-							<p class="list_img"><img src="image/7.jpg"></p>
+							<p class="list_img"><img src="image/3.jpg"></p>
 							<p class="list_txt"><a href="PbbsDetail.do">2016년 9월 7일 오전 9시 02분에 저장한 글입니다.</a></p>
 							<p class="list_date">2016.09.07.</p>	
 						</dd>
@@ -110,7 +110,7 @@
 				<td>
 					<dl>
 						<dd>
-							<p class="list_img"><img src="image/8.jpg"></p>
+							<p class="list_img"><img src="image/5.jpg"></p>
 							<p class="list_txt"><a href="PbbsDetail.do">아 진짜 졸리다</a></p>
 							<p class="list_date">2016.09.07.</p>
 						</dd>

@@ -32,11 +32,11 @@
 					    <div class="thumbnail">
 					      <img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 					      <div class="caption">
-					      	<p style="font-weight: bold; font-size: 9pt;">${login.m_id }</p>
-					        <span>...자기소개</span>
+					      	<p style="font-weight: bold; font-size: 9pt;">${someoneBlog.blog_nickname }[${someoneBlog.m_id }]</p>
+					        <span>${someoneBlog.blog_introduce }</span>
 					         <!-- 마이페이지로 갈때 아이디 전달해줘야함 -->
 			        		<span><button class="btn btn-warning" style="font-size:7px; width:25px; height:13px; padding:0;" onclick="location.href='myPage.do'">EDIT</button></span>
-					        <p><a href="bbswrite.do">포스트쓰기</a> &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; <a href="#none">관리</a></p>
+					        <p><a href="bbswrite.do">포스트쓰기</a> &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; <a href="settingmain.do?m_id=${login.m_id }">관리</a></p>
 					      </div>
 					    </div>
 					  </div>
@@ -47,12 +47,18 @@
 					<!-- 카테고리 -->
 					<div class="category" style="display:inline-block;">
 						<strong>카테고리</strong> <br>
+							
+							
 							<ul class="cat">
-								<li><a href="#none" title="total"><strong>전체보기(20)</strong></a></li>
-								<li><a href="#none" title="mymy">내블로그야</a></li>
-								<li><a href="#none" title="hi">안녕</a></li>
-								<li><a href="#none" title="spring">spring</a></li>
-								<li><a href="#none" title="summber">summber</a></li>
+								<li><a href="#none" title="total"><strong>전체보기(${fn:length(bloglist) })</strong></a></li>
+								<jsp:useBean id="ubbs" class="sist.co.help.arrowHelp"/>
+								<c:forEach items="${blogCategoryList }" var = "blogCategory">
+									<jsp:setProperty property="depth" name="ubbs" value="${blogCategory.ca_depth }"/>
+									<li><a href="#"><jsp:getProperty property="arrow" name="ubbs"/>${blogCategory.ca_name }</a></li>
+								</c:forEach>
+							</ul>
+							
+							<ul>
 							<hr>
 								<li><a href="pictype.do" title="pictype">앨범형</a></li>
 								<li><a href="#none" title="sin">신촌</a></li>
@@ -69,6 +75,7 @@
 					</div>
 				</div>
 			</c:if>
+			
 			<c:if test="${login.m_id ne finfo.m_id}"> <!-- 다르면 다른사람 블로그. -->
 				<div class="topwrap">
 					<!-- 프사 -->
@@ -77,8 +84,8 @@
 					    <div class="thumbnail">
 					      <img src="${finfo.m_photo }" class="img-responsive" alt="Responsive image">
 					      <div class="caption">
-					      	<p style="font-weight: bold; font-size: 9pt;">${finfo.m_id }</p>
-					        <p>...자기소개</p>
+					      	<p style="font-weight: bold; font-size: 9pt;">${someoneBlog.blog_nickname }[${someoneBlog.m_id }]</p>
+					        <p>${someoneBlog.blog_introduce }</p>
 					      </div>
 					    </div>
 					  </div>
@@ -89,12 +96,17 @@
 					<!-- 카테고리 -->
 					<div class="category" style="display:inline-block;">
 						<strong>카테고리</strong> <br>
+						
 							<ul class="cat">
-								<li><a href="#none" title="total"><strong>전체보기(10)</strong></a></li>
-								<li><a href="#none" title="other">other</a></li>
-								<li><a href="#none" title="winter">winter</a></li>
-								<li><a href="#none" title="hello">hello</a></li>
-								<li><a href="#none" title="ha">ha</a></li>
+								<li><a href="#none" title="total"><strong>전체보기(${fn:length(bloglist) })</strong></a></li>
+								
+								<c:forEach items="${blogCategoryList }" var = "blogCategory">
+									<jsp:setProperty property="depth" name="ubbs" value="${blogCategory.ca_depth }"/>
+									<li><a href="#"><jsp:getProperty property="arrow" name="ubbs"/>${blogCategory.ca_name }</a></li>
+								</c:forEach>
+							</ul>
+							
+							<ul>
 							<hr>
 								<li><a href="pictype.do" title="pictype">앨범형</a></li>
 								<li><a href="#none" title="md">명동</a></li>

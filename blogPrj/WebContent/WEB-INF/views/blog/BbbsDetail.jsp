@@ -145,6 +145,9 @@ $(document).one("ready",function(){
 
 <!-- 상세페이지 -->
 <div class="Bdetailcon">
+
+<jsp:useBean id="addhand" class="sist.co.help.BBSDepth"/>
+
 	<form name="bfrmform" id="bfrmform" action="" method="post">
 		<p><strong style="color:#20A524; font-size:15px;">${blogdto.bbs_title }</strong> &nbsp;&nbsp;&nbsp;&nbsp;| study </p>
 		<p class="view2">
@@ -167,11 +170,21 @@ $(document).one("ready",function(){
 				<br><br>
 				<div class="write_reple">
 						<c:if test="${blogdto.bbs_comchk eq 1 }">
-							<a href="#none" class="reple_show">댓글쓰기</a>
+							<c:choose>
+								<c:when test="${empty replylist }">
+									<a href="#none" class="reple_show">댓글쓰기</a>
+								</c:when>
+								<c:otherwise>
+									<a href="#none" class="reple_show" style="color:green;">댓글
+										<c:out value="${comcount}"/>
+									</a>
+								</c:otherwise>
+							</c:choose>
 						</c:if>
 						<input type="hidden" name="log_id" class="log_id" value="${login.m_id }"/>
 						<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blogdto.bbs_seq }"/>
 						<c:if test="${blogdto.bbs_likechk eq 1 }">
+							<span>&nbsp;|&nbsp;</span>
 							<a href="#none" class="sym">공감</a>
 							<form method="post">
 								<a href="javascript:likeajax();" class="sym_pic">
@@ -231,90 +244,162 @@ $(document).one("ready",function(){
 				</div>
 			</c:if>
 
-		<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
 			<div id="foot_reple" style="display:none;">
+
+				<!-- 댓글목록 없을때 -->
+				<c:if test="${empty replylist }">
+					<form name="dereplyform" id="dereplyform" method="post">			
+						<table>
+							<tr>
+								<td class="i1">
+									<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blogdto.bbs_seq }"/>
+									<input type="hidden" name="m_id" value="${login.m_id }"/>
+									<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+									<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
+								</td>
+								<td class="i2">
+									<textarea cols="50" rows="2" class="com_cont" name="com_content" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
+								</td>
+								<td class="i3">
+									<input type="button" class="re_btngo" value="덧글입력"/>
+								</td>
+							</tr>
+							
+						</table>
+					</form>	
+				</c:if>
+				
 			<!-- 댓글 리스트 -->
 				<div class="r_re">
-					<ul>
-					<!-- 댓글 -->
-						<li class="re_li">
-							<dl>
-								<dt class="dt1">
-									<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
-								</dt>
-								<dt class="dt2">
-									<a href="blog.do" class="nick">hisun</a>
-									<span class="re_date"><small>2016.08.31. 18:16</small></span>
-									<div class="re_re" style="float: right;">
-										<a href="#none" class="re_sh"><small>답글</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsupdate.do"><small>수정</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsdel.do"><small>삭제</small></a>
-									</div>
-								</dt>
-								<dd>댓글 내용</dd>
-							</dl>
-						</li>
+				<c:if test="${not empty replylist }">
+					<c:forEach items="${replylist }" var="replist" varStatus="replistvar">
+						<ul>
+						<!-- 댓글 -->
+							<li id="re_li${replistvar.count}" class="re_li" >
+							<jsp:setProperty property="depth" name="addhand" value="${replist.com_depth }"/>
+							<!-- 부모글 삭제됐을때 -->
+							<c:if test="${replist.com_del eq 1 && replist.com_parent eq 0 }">
+								<dl>
+									<dt class="dt2">
+										<!-- 댓글 리스트 포문 돌리기 -->
+										<span>삭제된 댓글입니다.</span>
+										<span class="re_date"><small>${replist.com_date }</small></span>
+	
+									</dt>
+								
+								</dl>
+							</c:if>
+							<!-- 부모글 삭제 안됐을때 -->
+							<c:if test="${replist.com_del eq 0}">
+								<dl>
+									<dt class="dt1" style="vertical-align: top;">
+										<jsp:getProperty property="hand" name="addhand"/>
+									</dt>
+									<dt class="dt1">
+										<img src="${replist.m_photo }" class="img-responsive" alt="Responsive image">
+									</dt>
+									<dt class="dt2">
+										<a href="blog.do?fid=${replist.m_id }" class="nick">${replist.m_id }</a>
+										<!-- 댓글 리스트 포문 돌리기 -->
+										<span class="re_date"><small>${replist.com_date }</small></span>
+										<div class="re_re" style="float: right;">
+											<c:if test="${login.m_id ne null }">
+												<a href="#none" id="toggle_rere${replistvar.count }" class="${replist.com_seq }"><small>대댓글</small></a>
+												<c:if test="${login.m_id eq replist.m_id}">
+													<span>&nbsp;|&nbsp;</span>
+													<a href="#none" class="modicom_su${replistvar.count }"><small>수정</small></a>
+													<span>&nbsp;|&nbsp;</span>
+													<a href="delcomment.do?com_seq=${replist.com_seq }"><small>삭제</small></a>
+												</c:if>
+												<c:if test="${login.m_id eq finfo.m_id &&finfo.m_id ne replist.m_id}">
+													<span>&nbsp;|&nbsp;</span>
+													<a href="delcomment.do?com_seq=${replist.com_seq }"><small>삭제</small></a>
+												</c:if>
+											</c:if>
+										</div>
+									</dt>
+									<dd>${replist.com_content }</dd>
+									<!-- 수정 폼 -->
+									<dd class="_modicom_frm${replistvar.count }" style="display:none;">
+										<form name="com_modifyfrm" id="com_modifyfrm" method="post">
+											<table>
+												<tr>
+													<td class="i1">
+														<input type="hidden" id="${replist.com_seq }" class="modicom_seq${replistvar.count }"/>
+													</td>
+													<td class="i2">
+														<textarea cols="50" rows="2" class="modicom_cont${replistvar.count }" style="display: flex; text-align:left;" maxlength="6000" onkeyup="areaheight(this)">
+															${replist.com_content }
+														</textarea>
+													</td>
+													<td class="i3">
+														<input type="button" class="modire_btn${replistvar.count }" value="덧글입력"/>
+													</td>
+												</tr>
+											</table>
+										</form>
+											
+										
+									</dd>
+								</dl>
+								</c:if>
+
+							</li>
+							
+							
+					<!-- 대댓글 다는 폼(숨겨져있음)-->
+						<form name="rereform" id="rereform" method="post">	
+							<li id="rere_insert${replistvar.count}" class="rere_insert" style="display:none;">
+								<table>
+									<tr>
+										<td class="ii1">
+											<i class="fa fa-hand-o-right" aria-hidden="true"></i>
+										</td>
+										<td class="i1">
+											<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
+											<input type="hidden" id="${replist.com_seq }" class="com_seq${replistvar.count }"/>
+											<input type="hidden" class="bbs_seq${replistvar.count }" value="${blogdto.bbs_seq }"/>
+											<input type="hidden" class="m_id${replistvar.count }" value="${login.m_id }"/>
+											<input type="hidden" class="blog_nickname${replistvar.count }" value="${login.m_name }">						
+										</td>
+										<td class="rerei2">
+											<textarea cols="50" rows="2" class="rrecom${replistvar.count }" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
+										</td>
+										<td class="i3">
+											<input type="button" class="rere_btngo${replistvar.count }" value="덧글입력"/>
+										</td>
+									</tr>
+								
+								</table>
+							</li>
+						</form>
 						
-						<li class="re_hide" style="display:none;">
-							<i class="fa fa-share-square" aria-hidden="true"></i>
+						</ul>
+					</c:forEach>
+					
+					<!-- 하단 댓글다는 폼 -->
+						<form name="replyform" id="replyform" method="post">			
 							<table>
 								<tr>
 									<td class="i1">
-										<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+										<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blogdto.bbs_seq }"/>
+										<input type="hidden" name="m_id" value="${login.m_id }"/>
+										<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+										<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 									</td>
 									<td class="i2">
-										<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+										<textarea cols="50" rows="2" class="com_cont" name="com_content" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
 									</td>
 									<td class="i3">
-										<input type="button" class="re_btn" value="덧글입력"/>
+										<input type="button" class="re_btngo" value="덧글입력"/>
 									</td>
 								</tr>
-							
+								
 							</table>
-						</li>
-						
-						
-					<!-- 댓글에 댓글 -->	
-						<li class="re_re_li">
-							<dl>
-								<dt class="dt1">
-									<i class="fa fa-hand-o-right" aria-hidden="true"></i>
-									<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
-								</dt>
-								<dt class="dt2">
-									<a href="blog.do" class="nick">hisun</a>
-									<span class="re_date"><small>2016.08.31. 18:16</small></span>
-									<div class="re_re" style="float: right;">
-										<a href="#none"><small>답글</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsupdate.do"><small>수정</small></a>
-										<span>&nbsp;|&nbsp;</span>
-										<a href="bbsdel.do"><small>삭제</small></a>
-									</div>
-								</dt>
-								<dd>대댓글</dd>
-							</dl>
-						</li>
-					
-					</ul>
+						</form>	
+					</c:if>
+				
 				</div>
-			
-				<table>
-					<tr>
-						<td class="i1">
-							<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
-						</td>
-						<td class="i2">
-							<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
-						</td>
-						<td class="i3">
-							<input type="button" class="re_btn" value="덧글입력"/>
-						</td>
-					</tr>
-					
-				</table>
 			</div>
 		</form>
 </div>
@@ -349,6 +434,123 @@ $(document).one("ready",function(){
 
 
 <script type="text/javascript">
+$(document).ready(function(){
+//댓글 개수
+var replyleng = '${fn:length(replylist)}';
+
+//대댓글 다는 창 띄우기
+for(var i =1; i<=replyleng; i++){ 
+	
+	//var check_rere = 0;
+
+	$("#toggle_rere"+i.toString()).click(function(){ //show
+		var i_class=$(this).attr('id');
+		var icom_seq=$(this).attr('class');
+		
+		var ilen = i_class.length;
+		var ii = i_class.substring(11,ilen);
+
+		if($(this).text() =="대댓글"){
+			$("#rere_insert"+ii).show();
+			$("#toggle_rere"+ii).html("답글취소");
+			$("#toggle_rere"+ii).css({"color":"green","font-size":"11px"});
+		}else if($(this).text() =="답글취소"){
+			$("#rere_insert"+ii).hide();
+			$("#toggle_rere"+ii).html("대댓글");
+			$("#toggle_rere"+ii).css({"color":"black","font-size":"11px"});
+		}
+		
+		
+
+	})
+	
+}
+
+
+
+//대댓글 달기(메인과 마찬가지로 뿌려진 리스트에서 com_seq떼어와야함)
+for(var c=1; c<=replyleng; c++){
+	$(".rere_btngo"+c.toString()).click(function(){
+		var c_class=$(this).attr('class');
+		alert(c_class);
+		
+		var clen = c_class.length;
+		var cc = c_class.substring(10,clen);
+		
+		var c_seq = $(".com_seq"+cc).attr('id');
+		var b_seq = $(".bbs_seq"+cc).val();
+		//alert("b_seq:"+b_seq);
+		var c_content =$(".rrecom"+cc).val();
+		//alert("c_content:"+c_content);
+		var c_mid =$(".m_id"+cc).val();
+		//alert("c_mid:"+c_mid);
+		var c_nick =$(".blog_nickname"+cc).val();
+		//alert("c_nick:"+c_nick);
+		
+		var com_con ="recomment.do?com_seq="+c_seq+"&bbs_seq="+b_seq+"&com_content="+c_content+"&m_id="+c_mid+"&blog_nickname="+c_nick; //내용 가져오기
+		$(location).attr('href',com_con);
+		
+	})
+	
+}
+
+
+//댓글 수정창 띄우기
+for(var e =1; e<=replyleng; e++){ 
+	$(".modicom_su"+e.toString()).click(function(){ //show
+		var e_class=$(this).attr('class');
+		
+		var elen = e_class.length;
+		var ee = e_class.substring(10,elen);
+
+		if($(this).text() =="수정"){
+			$("._modicom_frm"+ee).show();
+			$(this).html("수정취소");
+			$(this).css({"color":"green","font-size":"11px"});
+		}else if($(this).text() =="수정취소"){
+			$("._modicom_frm"+ee).hide();
+			$(this).html("수정");
+			$(this).css({"color":"black","font-size":"11px"});
+		}
+		
+		
+
+	})
+	
+}
+
+
+//댓글 수정
+for(var d=1; d<=replyleng; d++){
+	$(".modire_btn"+d.toString()).click(function(){
+		var d_class=$(this).attr('class');
+		alert(d_class);
+		
+		var dlen = d_class.length;
+		var dd = d_class.substring(10,dlen);
+		
+		var c_seq = $(".modicom_seq"+dd).attr('id');
+		//alert("b_seq:"+b_seq);
+		var c_content =$(".modicom_cont"+dd).val();
+		//alert("c_content:"+c_content);
+		
+		var modicom_con ="modicomment.do?com_seq="+c_seq+"&com_content="+c_content; //내용 가져오기
+		$(location).attr('href',modicom_con);
+		
+	})
+	
+}
+
+	
+});
+
+/* 
+$(".rere_btngo").click(function(){
+	alert("대댓글 달거다");
+	$("#rereform").attr({"target":"_self","action":"recomment.do"}).submit();
+}); */
+
+
 	var check_openList = 0;
 	
 	$("#total_show,#open_list").click(function(){
@@ -399,19 +601,6 @@ $(document).one("ready",function(){
 		
 	});
 	
-	//댓글 내부 댓글 창 열기
-	var check_re_relist = 0;
-	$(".re_sh").click(function(){
-		if(check_re_relist==0){
-			check_re_relist = 1;
-			$(".re_hide").show();
-		}else{
-			check_re_relist = 0;
-			$(".re_hide").hide();
-			
-		}
-		
-	})
 
 	//공감 창 열기
 	var check_sym = 0;
@@ -429,6 +618,14 @@ $(document).one("ready",function(){
 		}
 		
 	})
+	
+	
+	
+$(".re_btngo").click(function(){
+	alert("댓글 달거다");
+	$("#replyform").attr({"target":"_self","action":"comment.do"}).submit();
+});
+	
 	
 $("._btnupdate").click(function(){
 	alert("수정하러간다");
@@ -479,4 +676,13 @@ function likeajax(){
  	
  	
 };
+
+
+//textarea높이 늘어나게
+function areaheight(obj){
+	obj.style.height="1px";
+	obj.style.height=(20+obj.scrollHeight)+"px";
+	
+};
+
 </script>

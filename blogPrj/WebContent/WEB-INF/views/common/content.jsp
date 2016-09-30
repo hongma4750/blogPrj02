@@ -18,7 +18,7 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
 
-
+<!-- 주제별 포스트 사용시 사용하는 content2 -->
 
 <!-- 로그인시 -->
 <c:if test="${login.m_id ne null}" >
@@ -27,8 +27,8 @@
 
 <ul class="nav nav-tabs" role="tablist" id="myTab">
   <li rel="ftottab" role="presentation" class="active"><a href="fnewslist.do" id="friendnews">이웃소식보기</a></li>
-  <li rel="ttottab" role="presentation"><a href="#topiclist" id="topic" aria-controls="presentation" role="tab" data-toggle="tab">주제별 글보기</a></li>
-  <br><div id="right_side_set" align="right"><a href="openfriend.do">이웃관리</a>&nbsp;&nbsp;<a href="#none">관심주제설정</a></div>
+  <li rel="ttottab" role="presentation"><a href="topiclist.do" id="topic" aria-controls="presentation" role="tab" data-toggle="tab">주제별 글보기</a></li>
+  <br><div id="right_side_set" align="right"><a class="glyphicon glyphicon-cog" href="openfriend.do">이웃관리</a>&nbsp;&nbsp;<!-- <a href="#none">관심주제설정</a> --></div>
 </ul>
 
   

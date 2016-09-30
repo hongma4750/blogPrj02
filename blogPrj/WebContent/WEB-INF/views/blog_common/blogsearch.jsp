@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+    <%@ page import="java.util.*" %>
+    <%@ page import="sist.co.Model.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <!-- tag들 필요하면 Ctrl+c  /   Ctrl+v -->
@@ -22,6 +24,30 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/blog_srch.css"/>
 <!-- css  -->
 
+<!--  페이징 -->
+		  <%
+			String pageobj = request.getParameter("page");
+			int currentpage;
+			if (pageobj == null) {
+				currentpage = 1;
+			} else {
+				currentpage = Integer.parseInt(pageobj);
+			}
+			
+			List<SistBlogPageDTO> plist = (List<SistBlogPageDTO>)request.getAttribute("blogSearPageList");
+			List<SistBlogDTO> reList = (List<SistBlogDTO>)request.getAttribute("searchList");
+			
+			int pnum;
+			int pageblock = 20;
+			int block = (int) Math.ceil((double) currentpage / pageblock);
+			int bstartpage = (block - 1) * pageblock + 1;
+			int bendpage = bstartpage + pageblock - 1;
+			pnum = (int) Math.ceil((double) reList.size() / 5);
+		%>
+	<!--  페이징 -->
+	
+	
+
 
 <div id="scon">
 	 <div class="navbar-form navbar-left" role="search">
@@ -35,7 +61,7 @@
 	<div class="search_con">
 		<div class="s_top">
 			<strong>검색결과</strong>
-			<strong style="color: #FF7700;">0건</strong>
+			<strong style="color: #FF7700;">[ ${fn:length(searchList)} ]건</strong>
 			<div class="right_cat">
 				<span style="color: #FF7700; font-weight: bold;">전체</span>&nbsp;
 				<span class="sp2">|</span>
@@ -44,6 +70,8 @@
 				<span>안부</span>
 			</div>
 		</div>
+		
+		<c:forEach items="${searchList }" var="searchItem">
 		<div class="srch_result">
 			<div class="s_con">
 				<a href="#none">정확도</a>&nbsp;&nbsp; |
@@ -58,17 +86,95 @@
 			
 			<div class="srch_content">
 				<span class="s1">
-					<a href="BbbsDetail.do">안녕 네이버 검색기준 왜 자기 멋대로?</a>
+					<a href="BbbsDetail.do">${searchItem.bbs_title}</a>
 				</span>
 				<span class="s2">&nbsp;|&nbsp;신촌</span>
-				<span class="s3">2016.08.31. 17:49</span>
-				<span class="s4">내용이 여기룽우 들어온당^^</span>
+				<span class="s3">${fn:substring(searchItem.bbs_date,0,12)}</span>
+				<span class="s4">${searchItem.bbs_content }</span>
 			</div>
 		</div>
+		</c:forEach>
+		
+		
 	</div>
 	
+	
+	
+	
 	<div class="srch_paginglist">
-		<span class="sp1">1</span>&nbsp;
-		<span class="sp2">|</span>
+		  <nav>
+							<ul class="pagination">
+								<%
+									if (currentpage <= 1) {
+								%>
+								<li class="disabled"><span aria-hidden="true">처음</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blogsearch.do?page=1">처음</a></li>
+								<%
+									}
+								%>
+			
+								<%
+									if (currentpage <= 1) {
+								%>
+								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;" aria-lable="Previous"
+									href="blogsearch.do?page=<%=currentpage - 1%>"><span
+										aria-hidden="true">&laquo;</span></a></li>
+								<%
+									}
+								%>
+			
+								<%
+									if (bendpage > pnum) {
+										bendpage = pnum;
+									}
+									for (int i = bstartpage; i <= bendpage; i++) {
+										if (currentpage == i) {
+								%>
+								<li class='active'><a href="#"><%=i%></a></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blogsearch.do?page=<%=i%>"><%=i%></a></li>
+								<%
+									}
+									}
+								%>
+			
+								<%
+									if (currentpage >= pnum) {
+								%>
+								<li class="disabled"><span aria-hidden="true">&raquo;</span></a></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;" aria-lable="Next"
+									href="blogsearch.do?page=<%=currentpage + 1%>"><span
+										aria-hidden="true">&raquo;</span></a></li>
+								<%
+									}
+								%>
+								<%
+									if (currentpage >= pnum) {
+								%>
+								<li class="disabled"><span aria-hidden="true">끝</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blogsearch.do?page=<%=pnum%>">끝</a></li>
+								<%
+									}
+								%>
+							</ul>
+						</nav> 
 	</div>
 </div>

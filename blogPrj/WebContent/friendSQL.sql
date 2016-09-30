@@ -3,30 +3,7 @@
 
 --1. 이웃 맺기 테이블(일방적으로 이루어짐)
 --2016.09.18 following table삭제
-select * from dblfollowing
-delete FRIEND where fnd_seq=7
 
-drop table following
-cascade constraint;
-
-drop sequence seq_following;
-
-create table following(
-	fol_seq number(8) primary key, 		
-	fol_send varchar2(50) not null, 	
-	fol_receive varchar2(50) not null, 	
-	fol_date date not null			
-);
-create sequence seq_following 
-start with 1 increment by 1; 
-
-alter table following
-add constraint fk_fol_send foreign key(fol_send)
-references member(m_id);
-
-alter table following
-add constraint fk_fol_receive foreign key(fol_receive)
-references member(m_id);
 
 --2. 서로 이웃 맺기 테이블(수락 여부에 따라 맺어짐)
 --2016.9.18 추가 컬럼 df_groupname varchar2(50),-- 그룹명
@@ -35,10 +12,10 @@ references member(m_id);
 
 select * from dblfollowing
 
+drop sequence seq_dblfollowing;
+
 drop table dblfollowing
 cascade constraint;
-
-drop sequence seq_dblfollowing;
 
 create table dblfollowing(
 	df_seq number primary key,		-- seq
@@ -65,12 +42,12 @@ references member(m_id);
 --2016.09.18 fnd_foldate date not null --이웃,서로이웃 추가일  추가?
 
 select * from friend
-delete friend where fnd_myid='chloevergreen' and fnd_fndid='bbb123'
+delete friend where fnd_seq=16
+
+drop sequence seq_friend;
 
 drop table friend
 cascade constraint;
-
-drop sequence seq_friend;
 
 create table friend(
 	fnd_seq number primary key, 		-- seq
@@ -92,14 +69,17 @@ alter table friend
 add constraint fk_fnd_fndid foreign key(fnd_fndid)
 references member(m_id);
 
+--alter table friend
+--add constraint fk_fnd_groupname foreign key(fnd_groupname)
+--references fgroup(fg_seq);
 --4. 이웃 기본 설정 테이블
 --2016.09.18 fset_dblfolmsg varchar2(200) --서로이웃 안내메시지 추가?
 select * from fsetting
 
+drop sequence seq_fsetting;
+
 drop table fsetting
 cascade constraint;
-
-drop sequence seq_fsetting;
 
 create table fsetting(
 	fset_seq number primary key,		-- seq 
@@ -115,47 +95,74 @@ add constraint fk_fset_myid foreign key(fset_myid)
 references member(m_id);
 
 --5. 이웃 그룹 테이블
+--컬럼명수정 fg_groupname -> fnd_groupname
+--fg_myid -> fnd_myid
 select * from fgroup
+
+drop sequence seq_fgroup;
 
 drop table fgroup
 cascade constraint;
 
-drop sequence seq_fgroup;
-
 create table fgroup(
 	fg_seq number primary key,		-- seq
-	fg_groupname varchar2(50),		-- 그룹명
-	fg_myid varchar2(50),		-- 내 아이디
+	fnd_groupname varchar2(50),		-- 그룹명
+	fnd_myid varchar2(50),		-- 내 아이디
 	fg_openchk number default 0 -- 공개0 / 비공개1
 );
 create sequence seq_fgroup 
 start with 1 increment by 1; 
 
 alter table fgroup
-add constraint fk_fg_myid foreign key(fg_myid)
+add constraint fk_fg_fnd_myid foreign key(fnd_myid)
 references member(m_id);
+
+
+--6.주제별글
+drop table topic
+cascade constraint;
+
+drop sequence seq_topic;
+
+create table topic(
+	t_seq number primary key,		-- seq
+	t_name varchar2(50)		    -- 주제명
+);
+create sequence seq_topic 
+start with 1 increment by 1; 
+
+insert into topic values(seq_topic.NEXTVAL,'전체');
+insert into topic values(seq_topic.NEXTVAL,'음악');
+insert into topic values(seq_topic.NEXTVAL,'영화');
+insert into topic values(seq_topic.NEXTVAL,'스포츠');
+insert into topic values(seq_topic.NEXTVAL,'세계여행');
+
 
 ------------------------------------------------------------
 ------------------------------------------------------------
 ------------------------------------------------------------
+--chloevergreen
+--aa1212
+
+delete from member where m_id='lovley4750'
 update member set m_action=1 where m_id='ccdd55'
 select*from friend
 --회원가입 아이디 ★시연아이디★
 
 --그룹명
-insert into fgroup values(seq_fgroup.NEXTVAL, '내친구들', 'lovely4750',0);
+insert into fgroup values(seq_fgroup.NEXTVAL, '내친구들', 'chloevergreen',0);
 insert into fgroup values(seq_fgroup.NEXTVAL, 'friends', 'lovely4750',0);
 
-insert into fgroup values(seq_fgroup.NEXTVAL, '내친구들', 'aa1212',0);
+insert into fgroup values(seq_fgroup.NEXTVAL, '친구들', 'summer123',0);
 insert into fgroup values(seq_fgroup.NEXTVAL, 'friends', 'ccdd55',0);
 
 --★시연아이디★ 기존 이웃 spring123
 insert into friend
-values(seq_friend.NEXTVAL, 'spring123', 'summer123', '친구들', 1,sysdate,0); 
+values(seq_friend.NEXTVAL, 'chloevergreen', 'summer123', '내친구들', 1, sysdate,0); 
 
 
 insert into friend
-values(seq_friend.NEXTVAL, 'lovely4750', 'spring123', '친구들', 1,sysdate,0); 
+values(seq_friend.NEXTVAL, 'aa1212', 'summer123', '친구들', 1,sysdate,0); 
 
 insert into friend
 values(seq_friend.NEXTVAL, 'ccdd55', 'spring123', '친구들', 1,sysdate,0); 
@@ -172,7 +179,7 @@ select* from friend
 --insert into FOLLOWING values (seq_following.NEXTVAL, 'bom', 'summer', '20160912' );
 
 insert into friend
-values(seq_friend.NEXTVAL, 'aa1212', 'summer123', '친구들', 1,sysdate,0); 
+values(seq_friend.NEXTVAL, 'aa1212', 'lovely4750', '친구들', 1,sysdate,0); 
 
 insert into fsetting values(seq_fsetting.NEXTVAL, 'bom', 0);
 
@@ -200,3 +207,35 @@ values(seq_friend.NEXTVAL, 'summer', 'c', 'myg', 1,sysdate,0);
 insert into fsetting values(seq_fsetting.NEXTVAL, 'c', 0);
 
 insert into fgroup values(seq_fgroup.NEXTVAL, 'myg', 'c',0);
+
+
+
+--1. 이웃 맺기 테이블(일방적으로 이루어짐)
+--2016.09.18 following table삭제
+/*
+select * from dblfollowing
+delete FRIEND where fnd_seq=7
+
+drop table following
+cascade constraint;
+
+drop sequence seq_following;
+
+create table following(
+	fol_seq number(8) primary key, 		
+	fol_send varchar2(50) not null, 	
+	fol_receive varchar2(50) not null, 	
+	fol_date date not null			
+);
+create sequence seq_following 
+start with 1 increment by 1; 
+
+alter table following
+add constraint fk_fol_send foreign key(fol_send)
+references member(m_id);
+
+alter table following
+add constraint fk_fol_receive foreign key(fol_receive)
+references member(m_id);
+*/
+

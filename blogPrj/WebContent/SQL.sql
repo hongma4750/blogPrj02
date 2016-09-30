@@ -25,6 +25,7 @@ insert into member values('aa1212','aa1212','aaaaa','m','20190705','aa','1001010
 select * from member;
 
 update member set m_action = 1 where m_id = 'aa1212';
+update member set m_action = 1 where m_id = 'lovely4750';
 update member set m_action = 1 where m_id = 'b';
 
 
@@ -66,6 +67,8 @@ values
 (select m_name from MEMBER where m_id = 'lovely4750'),
 (select m_photo from MEMBER where m_id = 'lovely4750'));
 
+update message set message_read = 1;
+
 
 insert into message 
 values
@@ -85,5 +88,83 @@ values
 (select m_name from MEMBER where m_id = 'lovely4750'),
 (select m_photo from MEMBER where m_id = 'lovely4750'));
 
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요5',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요6',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요7',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
+insert into message 
+values
+(seq_message.nextval,'lovely4750','aa1212','안녕하세요8김홍민입니다여러분은 지금 세상최그이쇼 김홍민쇼를보고계십니다는',sysdate,0,0,
+(select m_name from MEMBER where m_id = 'lovely4750'),
+(select m_photo from MEMBER where m_id = 'lovely4750'));
+
 
 select * from message where message_receiver = 'aa1212' and message_read != 1;
+
+
+--블로그
+
+DROP TABLE BLOG
+CASCADE CONSTRAINT;
+
+create table BLOG(
+	blog_seq number primary key,
+	m_id varchar2(50),
+	blog_title varchar2(50),
+	blog_nickname varchar2(50),
+	blog_introduce varchar2(500)
+);
+
+DROP SEQUENCE SEQ_BLOG;
+
+CREATE SEQUENCE SEQ_BLOG
+START WITH 1 INCREMENT BY 1; 
+
+select * from blog;
+
+INSERT INTO BLOG (blog_seq,m_id,blog_title,blog_nickname,blog_introduce) 
+  		VALUES (seq_blog.nextval,'aa1212','aa1212'+'블로그','aa1212','...')
+  		
+  		
+  		
+--블로그 게시판 카테고리	
+  		
+DROP TABLE category
+CASCADE CONSTRAINT;
+
+
+create table category(
+	ca_seq number primary key,
+	m_id varchar2(50),
+	ca_ref number,
+	ca_step number,
+	ca_depth number,
+	ca_name varchar2(50),
+	ca_hidden number,
+	ca_parent number,
+	ca_view_type number
+);
+
+
+DROP SEQUENCE SEQ_category;
+
+CREATE SEQUENCE SEQ_category
+START WITH 1 INCREMENT BY 1; 
+
+select * from category;
+
+insert into CATEGORY values (seq_category.nextval,'aa1212',1,1,1,'aa두번째',0,1,0);

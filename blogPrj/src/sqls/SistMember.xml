@@ -14,7 +14,7 @@
   	
   	<insert id="insertMember" parameterType="sist.co.Model.SistMemberVO">
   		INSERT INTO MEMBER VALUES (#{m_id},#{m_pw},#{m_name},#{m_gender},#{m_birthday},#{m_email},#{m_phone},
-  		'\blogPrj\upload/no_image.gif',0,3)
+  		'\TeamProject03\upload/no_image.gif',0,3)
   	</insert>
   	
   	<select id="getId" parameterType="sist.co.Model.SistMemberVO" 	resultType="java.lang.Integer">
@@ -81,22 +81,145 @@
   	</select>
   	
   	<select id="selectNewMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
-  		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_READ != 1 AND MESSAGE_DEL != 1
+  		ORDER BY MESSAGE_SEQ DESC
   	</select>
   	
   	
   	<select id="selectAllMessage" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
-  		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1 
+  		ORDER BY MESSAGE_SEQ DESC
   	</select>
   	
+  	<insert id="sendMessageAF" parameterType="sist.co.Model.SistMessage">
+  		INSERT INTO MESSAGE VALUES (seq_message.nextval,#{message_sender},#{message_receiver},
+  		#{message_content},sysdate,0,0,
+  		(select m_name from member where m_id=#{message_sender}),
+  		(select m_photo from member where m_id=#{message_sender}))
+  	</insert>
   	
+  	<select id="detailMessage" parameterType="int" resultType="sist.co.Model.SistMessage">
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM MESSAGE WHERE MESSAGE_SEQ = #{message_seq}
+  	</select>
   	
+  	<update id="updateMessageRead" parameterType="int">
+  		UPDATE MESSAGE SET MESSAGE_READ = 1 WHERE MESSAGE_SEQ = #{message_seq}
+  	</update>
   	
+  	<update id="deleteMessage" parameterType="int">
+  		UPDATE MESSAGE SET MESSAGE_DEL = 1 WHERE MESSAGE_SEQ = #{message_seq}
+  	</update>
+  	
+  	<select id="getPointChargePageList" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
+  		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM 
+  		 (SELECT sub.MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO, ROWNUM AS RNUM FROM 
+  		 	( SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1 ORDER BY MESSAGE_SEQ DESC)
+  		  sub)
+		WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+  	</select>
+  	
+  	<update id="allDelteMessage" parameterType="sist.co.Model.SistMessage">
+  		UPDATE MESSAGE SET MESSAGE_DEL = 1 WHERE MESSAGE_RECEIVER = #{message_receiver}
+  	</update>
+  	
+  	<update id="seeAllMessage" parameterType="sist.co.Model.SistMessage">
+  		UPDATE MESSAGE SET MESSAGE_READ = 1 WHERE MESSAGE_RECEIVER = #{message_receiver}
+  	</update>
+  	
+  	<insert id="insertBlog" parameterType="sist.co.Model.SistBlog">
+  		INSERT INTO BLOG (blog_seq,m_id,blog_title,blog_nickname,blog_introduce) 
+  		VALUES (seq_blog.nextval,#{m_id},#{blog_title},#{blog_nickname},#{blog_introduce})
+  	</insert>
+  	
+  	<update id="updateBlog" parameterType="sist.co.Model.SistBlog">
+  		UPDATE BLOG SET BLOG_TITLE = #{blog_title}, BLOG_NICKNAME = #{blog_nickname}, BLOG_INTRODUCE = #{blog_introduce}
+  		 WHERE M_ID = #{m_id}
+  	</update>
+  	
+  	<!-- hongma : cateogry -->
+  	<insert id="insertCategory" parameterType="sist.co.Model.SistCategory">
+  		INSERT INTO CATEGORY VALUES (seq_category.nextval,#{m_id},
+									(SELECT NVL(max(ca_ref),0)+1 from CATEGORY),0,0,
+									#{ca_name},0,0,0)
+  	</insert>
+  	
+  	<select id="selectCategory" parameterType="sist.co.Model.SistCategory" resultType="sist.co.Model.SistCategory">
+  		SELECT * FROM CATEGORY WHERE M_ID = #{m_id} ORDER BY CA_REF DESC, CA_STEP ASC
+  	</select>
+  	
+  	<insert id="insertElseCategory" parameterType="sist.co.Model.SistCategory">
+  		INSERT INTO CATEGORY VALUES (seq_category.nextval,#{m_id},
+  									(SELECT NVL(max(ca_ref),0)+1 from CATEGORY),0,0,
+  									#{ca_name},#{ca_hidden},#{ca_parent},#{ca_view_type})
+  	</insert>
+  	
+  	<insert id="insertChildCategory" parameterType="sist.co.Model.SistCategory">
+  		INSERT INTO CATEGORY VALUES (seq_category.nextval,#{m_id},
+  										(select ca_ref from CATEGORY where ca_seq=#{ca_parent}),
+										(select ca_step from CATEGORY where ca_seq=#{ca_parent})+1,
+										(select ca_depth from CATEGORY where ca_seq=#{ca_parent})+1,
+									#{ca_name},#{ca_hidden},#{ca_parent},#{ca_view_type})
+  	</insert>
+  	
+  	<select id="selectOneCategory" parameterType="int" resultType="sist.co.Model.SistCategory">
+  		SELECT * FROM CATEGORY WHERE CA_SEQ = #{ca_seq}
+  	</select>
+  	
+  	<delete id="deleteOneCategory" parameterType="int">
+  		DELETE FROM CATEGORY WHERE CA_SEQ = #{ca_seq}
+  	</delete>
+  	
+  	<select id="countChild" parameterType="int" resultType="int">
+  		SELECT NVL(COUNT(*), 0) FROM CATEGORY WHERE CA_PARENT = #{ca_seq}
+  	</select>
+  	
+  	<select id="selectAllChildCategory" parameterType="int" resultType="sist.co.Model.SistCategory">
+  		SELECT * FROM CATEGORY WHERE CA_PARENT = #{ca_seq}
+  	</select>
+  	
+  	<update id="updateParentCategory" parameterType="sist.co.Model.SistCategory">
+  		UPDATE CATEGORY SET CA_HIDDEN = #{ca_hidden} , CA_VIEW_TYPE=#{ca_view_type}, CA_NAME = #{ca_name} WHERE CA_SEQ = #{ca_seq}
+  	</update>
+  	
+  	<update id="updateToParentCategory" parameterType="sist.co.Model.SistCategory">
+  		UPDATE CATEGORY SET CA_REF=(SELECT NVL(max(ca_ref),0)+1 from CATEGORY), CA_STEP=0, CA_DEPTH=0,
+  							CA_HIDDEN=#{ca_hidden}, CA_PARENT=#{ca_parent}, CA_VIEW_TYPE=#{ca_view_type}, CA_NAME = #{ca_name}
+  							WHERE CA_SEQ = #{ca_seq}
+  	</update>
+  	
+  	<update id="updateAnotherChild" parameterType="sist.co.Model.SistCategory">
+  		UPDATE CATEGORY SET CA_REF = (select ca_ref from CATEGORY where ca_seq=#{ca_parent}),
+  							CA_STEP = (select ca_step from CATEGORY where ca_seq=#{ca_parent})+1,
+  							CA_DEPTH = (select ca_depth from CATEGORY where ca_seq=#{ca_parent})+1,
+  							CA_NAME=#{ca_name}, CA_HIDDEN = #{ca_hidden}, CA_PARENT=#{ca_parent}, CA_VIEW_TYPE=#{ca_view_type}
+  							WHERE CA_SEQ = #{ca_seq}
+  	</update>
+  	
+  	<update id="updateToChildCategory" parameterType="sist.co.Model.SistCategory">
+  		UPDATE CATEGORY SET CA_REF=(SELECT NVL(max(ca_ref),0)+1 from CATEGORY), CA_STEP=0, CA_DEPTH=0,
+  							CA_HIDDEN=#{ca_hidden}, CA_PARENT=0, CA_VIEW_TYPE=#{ca_view_type}, CA_NAME = #{ca_name}
+  							WHERE CA_SEQ = #{ca_seq}
+  	</update>
+
   	<!-- ssunhj: getmember -->
   	<select id="getmember" parameterType="java.lang.String" resultType="sist.co.Model.SistMemberVO">
 		SELECT * FROM MEMBER 
 		WHERE M_ID = #{m_id}
 	</select>
+	
+	<select id="selectMessagePaging" parameterType="sist.co.Model.SistMessage" resultType="sist.co.Model.SistMessage">
+		SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO
+  		 FROM 
+  		 (SELECT sub.MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO, ROWNUM AS RNUM FROM 
+  		 	( SELECT MESSAGE_SEQ, MESSAGE_SENDER, MESSAGE_RECEIVER, MESSAGE_CONTENT, MESSAGE_DATE, MESSAGE_READ, MESSAGE_DEL, M_NAME, M_PHOTO FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1 ORDER BY MESSAGE_SEQ DESC)
+  		  sub)
+		WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+	</select>
+
   	
   	
   	

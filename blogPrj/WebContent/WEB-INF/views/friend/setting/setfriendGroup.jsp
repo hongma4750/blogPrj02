@@ -144,6 +144,11 @@ $("#btnSearch").click(function(){
 	
 });
 
+$("#btnSearch").click(function(){
+	$("#_frmFormSearch").attr({"target":"_self","action":"setFriendGroup.do"}).submit();
+	document.all.friendlist.style.display = "block";
+});
+
 //첫번째 탭 열린이웃 클릭시
 $("#tab1").click(function(){
 	location.href="openfriend.do";

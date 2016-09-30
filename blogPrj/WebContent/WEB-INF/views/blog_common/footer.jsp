@@ -30,21 +30,37 @@
 
 
  <div class="navbar-form navbar-left" role="search">
-   <div class="form-group">
-     <input type="text" class="form-control" placeholder="Search">
-   </div>
-   <button type="submit" class="btn btn-default">Submit</button>
+ 	<form action="blogsearch.do" method="get">
+	   <div class="form-group">
+	     
+	     <c:if test="${blogSearch ne null }">
+	     	<input type="text" class="form-control" placeholder="Search" id="blogSearch" name="blogSearch" value="${blogSearch }">
+	   	</c:if>
+	   	
+	   	<c:if test="${blogSearch eq null }">
+	   		<input type="text" class="form-control" placeholder="Search" id="blogSearch" name="blogSearch">
+	   	</c:if>
+	   </div>
+	   <button type="submit" class="btn btn-default" id="searchBtn" onclick="return searchB()">검색</button>
+   </form>
  </div>
  
  
  
  <script type="text/javascript">
-$(function(){
-	/* 작성취소버튼 누르면 블로그 홈으로 이동 */
-	$(".btn-default").click(function(){
-		location.href="blogsearch.do";
-	});
-});
+/* 작성취소버튼 누르면 블로그 홈으로 이동 */
+	
+function searchB(){
+
+	if($("#blogSearch").val() == 0 ){
+		alert("검색어를 입력 해주세요");
+		return false;
+	}
+	
+	return true;
+
+}
+
 </script>
  
  

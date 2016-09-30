@@ -83,7 +83,7 @@ function sendMessage(a){
 	   var TopPosition=(screen.height-h)/2;		//화면의 세로
 	   
 	   
-	   var popOption = "width=370, height=400, resizable=no, scrollbars=no, status=no,top="+TopPosition+",left="+LeftPosition;    //팝업창 옵션(optoin)
+	   var popOption = "width=370, height=455, resizable=no, scrollbars=no, status=no,top="+TopPosition+",left="+LeftPosition;    //팝업창 옵션(optoin)
 	   
 	      window.open(popUrl,"메세지보내기",popOption);
 	}
