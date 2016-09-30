@@ -51,24 +51,9 @@
   &nbsp;&nbsp;&nbsp;&nbsp;<a href="topiclist1.do?t_seq=2">영화</a>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href="topiclist1.do?t_seq=3">스포츠</a>
   &nbsp;&nbsp;&nbsp;&nbsp;<a href="topiclist1.do?t_seq=4">세계여행</a>
-  &nbsp;&nbsp;&nbsp;&nbsp;<a href="topiclist1.do?t_seq=5">일상·생각</a>
-
-<script type="text/javascript">
-$(function(){
-	 $(".latest").click(function(){
-		location.href="topiclist.do?likes=1";
-	});
-	
-});
-
-$(function(){
-	 $(".likes").click(function(){
-		location.href="topiclistlike.do?likes=2";
-	});
-	
-});
-</script>
-
+  &nbsp;&nbsp;&nbsp;&nbsp;<a href="topiclist1.do?t_seq=5">일상·생각</a> 
+  
+  
 <c:if test="${likes ne null }">
 <c:out value="${likes }"></c:out>
 </c:if>
@@ -97,8 +82,25 @@ $(function(){
 </select>
 
 </div>
-<hr class="topic_hr">
+<!-- 주제별 글보기 세부 메뉴(전체, 음악, 영화, 세계여행, 스포츠, 일상·생각) 끝 -->
 
+<script type="text/javascript">
+$(function(){
+	 $(".latest").click(function(){
+		location.href="topiclist.do?likes=1";
+	});
+	
+});
+
+$(function(){
+	 $(".likes").click(function(){
+		location.href="topiclistlike1.do?likes=2";
+	});
+	
+});
+</script>
+
+<hr class="topic_hr">
 
 <c:if test="${empty topicPageList }">
 	작성된 게시글 목록이 없습니다.
@@ -161,7 +163,8 @@ $(function(){
 <!-- 주제별글보기 리스트 끝 -->
 <br>
 <br>
-
+<br>
+<br>
 <div class="row" style="margin:auto; padding:auto; text-align:center;">
 	<nav>
 		<ul class="pagination">
@@ -175,12 +178,12 @@ $(function(){
 				
 				<c:if test="${likes eq 1 }">
 				<li><a style="color: black;"
-					href="topiclist.do?page=1">처음</a></li>
+					href="topiclist1.do?page=1">처음</a></li>
 				</c:if>	
 					
 				<c:if test="${likes eq 2 }">
 					<li><a style="color: black;"
-					href="topiclistlike.do?page=1">처음</a></li>
+					href="topiclistlike1.do?page=1">처음</a></li>
 				</c:if>
 				<%
 					}
@@ -196,13 +199,13 @@ $(function(){
 				
 				<c:if test="${likes eq 1 }">
 				<li><a style="color: black;" aria-lable="Previous"
-					href="topiclist.do?page=<%=currentpage - 1%>"><span
+					href="topiclist1.do?page=<%=currentpage - 1%>"><span
 					aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
 				
 				<c:if test="${likes eq 2 }">
 					<li><a style="color: black;" aria-lable="Previous"
-					href="topiclistlike.do?page=<%=currentpage - 1%>"><span
+					href="topiclistlike1.do?page=<%=currentpage - 1%>"><span
 					aria-hidden="true">&laquo;</span></a></li>
 				</c:if>
 				<%
@@ -223,12 +226,12 @@ $(function(){
 					
 					<c:if test="${likes eq 1 }">
 					<li><a style="color: black;"
-							href="topiclist.do?page=<%=i%>"><%=i%></a></li>
+							href="topiclist1.do?page=<%=i%>"><%=i%></a></li>
 					</c:if>
 					
 					<c:if test="${likes eq 2 }">
 						<li><a style="color: black;"
-						   href="topiclistlike.do?page=<%=i%>"><%=i%></a></li>
+						   href="topiclistlike1.do?page=<%=i%>"><%=i%></a></li>
 					</c:if>	
 					
 					
@@ -249,13 +252,13 @@ $(function(){
 										
 					<c:if test="${likes eq 1 }">
 					<li><a style="color: black;" aria-lable="Next"
-								href="topiclist.do?page=<%=currentpage + 1%>"><span
+								href="topiclist1.do?page=<%=currentpage + 1%>"><span
 								aria-hidden="true">&raquo;</span></a></li>
 					</c:if>
 					
 					<c:if test="${likes eq 2 }">
 						<li><a style="color: black;" aria-lable="Next"
-								href="topiclistlike.do?page=<%=currentpage + 1%>"><span
+								href="topiclistlike1.do?page=<%=currentpage + 1%>"><span
 								aria-hidden="true">&raquo;</span></a></li>
 					</c:if>				
 								
@@ -273,12 +276,12 @@ $(function(){
 				
 					<c:if test="${likes eq 1 }">
 					<li><a style="color: black;"
-								href="topiclist.do?page=<%=pnum%>">끝</a></li>
+								href="topiclist1.do?page=<%=pnum%>">끝</a></li>
 					</c:if>			
 								
 					<c:if test="${likes eq 2 }">
 						<li><a style="color: black;"
-								href="topiclistlike.do?page=<%=pnum%>">끝</a></li>
+								href="topiclistlike1.do?page=<%=pnum%>">끝</a></li>
 					</c:if>
 				<%
 				}
@@ -286,6 +289,7 @@ $(function(){
 		</ul>
 	</nav>
 </div>
+
 
 
 

@@ -14,7 +14,6 @@
 	<!-- 블로그 메인에 내용 전부 불러오기 -->
 	<select id="getBlogList" resultType="sist.co.Model.SistBlogDTO">
 		SELECT * FROM BLOG_BBS
-		WHERE M_ID=#{m_id}
 		ORDER BY BBS_DATE DESC
 	</select>
 	
@@ -24,12 +23,12 @@
 	</select>
 	
 	<!-- 게시판 내용 수정 -->
-	<update id="updateBBS" parameterType="sist.co.Model.SistBlogDTO">
-		UPDATE BLOG_BBS SET 
-			BBS_CA_SEQ=#{bbs_ca_seq}, BBS_TITLE=#{bbs_title}, BBS_CONTENT=#{bbs_content},
-			BBS_HID=#{bbs_hid},  BBS_COMCHK=1, BBS_LIKECHK=1,BBS_SCRAPCHK=#{bbs_scrapchk}
-		WHERE BBS_SEQ=#{bbs_seq}
-	</update> 
+   <update id="updateBBS" parameterType="sist.co.Model.SistBlogDTO">
+      UPDATE BLOG_BBS SET 
+         BBS_CA_SEQ=#{bbs_ca_seq}, BBS_TITLE=#{bbs_title}, BBS_CONTENT=#{bbs_content},
+         BBS_HID=#{bbs_hid},  BBS_COMCHK=1, BBS_LIKECHK=1,BBS_SCRAPCHK=#{bbs_scrapchk}
+      WHERE BBS_SEQ=#{bbs_seq}
+   </update> 
 
 	<!-- 게시물 삭제 -->
 	<delete id="delBBS" parameterType="java.lang.Integer">
@@ -63,6 +62,20 @@
 			WHERE M_ID=#{m_id} AND BBS_SEQ=#{bbs_seq}
 	</delete>	
 	
+	<!-- bbs게시판의 공감수 증가 -->
+	<update id="likeplus" parameterType="java.lang.Integer">
+		UPDATE BLOG_BBS SET 
+			BBS_LIKE_COUNT=BBS_LIKE_COUNT+1
+		WHERE BBS_SEQ=#{bbs_seq}
+	</update> 
+	
+	<!-- bbs게시판의 공감수 감소 -->
+	<update id="likeminus" parameterType="java.lang.Integer">
+		UPDATE BLOG_BBS SET 
+			BBS_LIKE_COUNT=BBS_LIKE_COUNT-1
+		WHERE BBS_SEQ=#{bbs_seq}
+	</update> 	
+	
 	<!-- 공감 리스트 전부 불러오기 -->
 	<select id="getLikeList" resultType="sist.co.Model.SistBbsLikeDTO">
 		SELECT * FROM BBS_LIKE
@@ -77,7 +90,7 @@
 	
 	<!-- 특정 게시물의 공감 리스트 전부 불러오기. bbs_like테이블과 member테이블 조인 -->
 	<select id="getLikePeople" parameterType="java.lang.Integer" resultType="sist.co.Model.SistLikePeopleDTO">
-		SELECT  BLIKE.LIKE_DATE,MEM.M_ID,MEM.M_NAME FROM BBS_LIKE BLIKE, MEMBER MEM
+		SELECT BLIKE.LIKE_DATE,MEM.M_ID,MEM.M_NAME FROM BBS_LIKE BLIKE, MEMBER MEM
 		WHERE BBS_SEQ=#{bbs_seq} AND BLIKE.M_ID=MEM.M_ID
 	</select>
 	

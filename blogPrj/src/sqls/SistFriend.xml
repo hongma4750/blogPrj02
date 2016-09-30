@@ -19,17 +19,6 @@
     SELECT * FROM FRIEND WHERE FND_MYID=#{fnd_myid}
     </select>
     
-    <select id="get1FolFriends" parameterType="java.lang.String" 
-    resultType="sist.co.Model.SistFriendVO">
-    SELECT * FROM FRIEND WHERE FND_MYID=#{fnd_myid} AND FND_CHK=1
-    </select>
-    
-    <select id="get2FolFriends" parameterType="java.lang.String" 
-    resultType="sist.co.Model.SistFriendVO">
-    SELECT * FROM FRIEND WHERE FND_MYID=#{fnd_myid} AND FND_CHK=2
-    </select>
-    
-    
     <select id="gettheFofFriends" parameterType="sist.co.Model.SistFriendVO" 
     resultType="sist.co.Model.SistFriendVO">
     SELECT * FROM FRIEND WHERE FND_MYID IN (SELECT #{fnd_fndid} FROM FRIEND WHERE FND_MYID=#{fnd_myid})
@@ -60,24 +49,6 @@
     <select id="getReceiveDblFols" parameterType="java.lang.String" 
     resultType="sist.co.Model.SistDblFollowingVO">
     SELECT * FROM DBLFOLLOWING WHERE DF_RECEIVE=#{df_receive}
-    </select>
-    
-    <select id="getSendDblFols" parameterType="java.lang.String" 
-    resultType="sist.co.Model.SistDblFollowingVO">
-    SELECT * FROM DBLFOLLOWING WHERE DF_SEND=#{df_send}
-    </select>
-    
-    <delete id="delsendfol" parameterType="java.lang.Integer">
-    DELETE DBLFOLLOWING WHERE DF_SEQ=#{df_seq}
-    </delete>
-    
-    <update id="acceptDblFols" parameterType="java.lang.Integer">
-    UPDATE DBLFOLLOWING SET DF_ACCEPT=1, DF_ACCEPTDATE=SYSDATE WHERE DF_SEQ=#{df_seq}
-    </update>
-    
-    <select id="get2fol" parameterType="java.lang.Integer"
-    resultType="sist.co.Model.SistDblFollowingVO">
-    SELECT * FROM DBLFOLLOWING WHERE DF_SEQ=#{df_seq}
     </select>
     
   </mapper>

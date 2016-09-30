@@ -15,12 +15,6 @@ public interface SistFriendService {
 
 	//이웃들 정보가져오기
 	public List<SistFriendVO> getFriends(String myid) throws Exception;
-	
-	//이웃목록만
-	public List<SistFriendVO> get1FolFriends(String myid) throws Exception;
-	
-	//서로이웃목록만
-	public List<SistFriendVO> get2FolFriends(String myid) throws Exception;
 
 	//해당 이웃의 이웃 정보 가져오기
 	public List<SistFriendVO> gettheFofFriends(SistFriendVO fnd) throws Exception;
@@ -41,16 +35,4 @@ public interface SistFriendService {
 	
 	//내가받은 서로이웃신청 조회
 	public List<SistDblFollowingVO> getReceiveDblFols(String myid) throws Exception;
-	
-	//내가 보낸 서로이웃팔로잉
-	public List<SistDblFollowingVO> getSendDblFols(String myid) throws Exception;
-	
-	//서로이웃신청 취소
-	public boolean delsendfol(int seq) throws Exception;
-	
-	//서로이웃팔로잉 수락
-	public boolean acceptDblFols(int seq) throws Exception;
-	
-	//팔로잉조회
-	public SistDblFollowingVO get2fol(int seq) throws Exception;
 }

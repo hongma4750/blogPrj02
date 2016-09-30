@@ -28,25 +28,14 @@ public class SistFriendImpl implements SistFriendService {
 		return sistFriendDAO.getFriend(myid);
 	}
 
-	//전체 이웃들 정보가져오기	
+	//이웃들 정보가져오기	
 	@Override
 	@Transactional
 	public List<SistFriendVO> getFriends(String myid) throws Exception {
 
 		return sistFriendDAO.getFriends(myid);
 	}
-	
-	//이웃만 
-	@Override
-	public List<SistFriendVO> get1FolFriends(String myid) throws Exception {
-		return sistFriendDAO.get1FolFriends(myid);
-	}
-	
-	//서로이웃만 
-	@Override
-	public List<SistFriendVO> get2FolFriends(String myid) throws Exception {
-		return sistFriendDAO.get2FolFriends(myid);
-	}
+
 
 	//해당 이웃의 이웃
 	@Override
@@ -101,40 +90,6 @@ public class SistFriendImpl implements SistFriendService {
 	public List<SistDblFollowingVO> getReceiveDblFols(String myid) throws Exception {
 		return sistFriendDAO.getReceiveDblFols(myid);
 	}
-
-	//내가 보낸 서로이웃신청 조회
-	@Override
-	@Transactional
-	public List<SistDblFollowingVO> getSendDblFols(String myid) throws Exception {
-		return sistFriendDAO.getSendDblFols(myid);
-	}
-
-	//서로이웃 신청 취소
-	@Override
-	@Transactional
-	public boolean delsendfol(int seq) throws Exception {
-		
-		return sistFriendDAO.delsendfol(seq);
-	}
-
-	//서로이웃 수락
-	@Override
-	@Transactional
-	public boolean acceptDblFols(int seq) throws Exception {
-		return sistFriendDAO.acceptDblFols(seq);
-	}
-
-	//팔로잉조회
-	@Override
-	@Transactional
-	public SistDblFollowingVO get2fol(int seq) throws Exception {
-	
-		return sistFriendDAO.get2fol(seq);
-	}
-	
-	
-
-	
 
 
 	

@@ -26,12 +26,12 @@ public class SistBlogImpl implements SistBlogService {
 		return sistBlogDao.writeBBS(blog);
 	}
 
-	//블로그bbs 전체리스트(아이디별)
+	//블로그bbs 전체리스트
 	@Override
 	@Transactional(readOnly=true)
-	public List<SistBlogDTO> getBlogList(String m_id) throws Exception {
+	public List<SistBlogDTO> getBlogList() throws Exception {
 		// TODO Auto-generated method stub
-		return sistBlogDao.getBlogList(m_id);
+		return sistBlogDao.getBlogList();
 	}
 
 	//seq에 맞는 블로그 bbs게시물 가져오기
@@ -79,6 +79,17 @@ public class SistBlogImpl implements SistBlogService {
 	public void delBbsLike(SistBbsLikeDTO like) {
 		sistBlogDao.delBbsLike(like);
 		
+	}
+	
+	@Override
+	public void likeplus(int bbs_seq) {
+		sistBlogDao.likeplus(bbs_seq);
+		
+	}
+
+	@Override
+	public void likeminus(int bbs_seq) {
+		sistBlogDao.likeminus(bbs_seq);
 	}
 
 	@Override

@@ -104,7 +104,30 @@ public class SistCalendarDTO implements Serializable  {
 		this.sch_docname = sch_docname;
 		this.sch_alarm = sch_alarm;
 	}
-		
+	
+	/* 스케쥴 수정해서 넣을 때 */
+	public SistCalendarDTO(int sch_writenum, String sch_id, String sch_title, int sch_star, String sch_location,
+			String sch_startdate, String sch_starttime, String sch_enddate, String sch_endtime,
+			int sch_allday, int sch_public, String sch_sticker, String sch_content, String sch_docname,
+			String sch_alarm, int sch_finish) {
+		super();
+		this.sch_writenum = sch_writenum;
+		this.sch_id = sch_id;
+		this.sch_title = sch_title;
+		this.sch_star = sch_star;
+		this.sch_location = sch_location;
+		this.sch_startdate = sch_startdate;
+		this.sch_starttime = sch_starttime;
+		this.sch_enddate = sch_enddate;
+		this.sch_endtime = sch_endtime;
+		this.sch_allday = sch_allday;
+		this.sch_public = sch_public;
+		this.sch_sticker = sch_sticker;
+		this.sch_content = sch_content;
+		this.sch_docname = sch_docname;
+		this.sch_alarm = sch_alarm;
+		this.sch_finish = sch_finish;
+	}
 
 
 	/* 달력 모양에서 칸안에 보여주는 것 */

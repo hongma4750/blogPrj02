@@ -25,7 +25,7 @@
 	
 	<c:choose>
 		<c:when test="${login.m_id ne null }">
-			<a href="blog.do?fid=${login.m_id }"" title="내 블로그 가기">내 블로그 가기</a>
+			<a href="blog.do" title="내 블로그 가기">내 블로그 가기</a>
 			
 			<ul class="nav nav-tabs" role="tablist" id="myTab">
   <li role="presentation" class="active" data-target="#layerpop" data-toggle="modal"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">내 블로그 소식</a></li>

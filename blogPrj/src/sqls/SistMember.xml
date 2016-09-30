@@ -14,7 +14,7 @@
   	
   	<insert id="insertMember" parameterType="sist.co.Model.SistMemberVO">
   		INSERT INTO MEMBER VALUES (#{m_id},#{m_pw},#{m_name},#{m_gender},#{m_birthday},#{m_email},#{m_phone},
-  		'\blogPrj\upload/no_image.gif',0,3)
+  		'\TeamProject03\upload/no_image.gif',0,3)
   	</insert>
   	
   	<select id="getId" parameterType="sist.co.Model.SistMemberVO" 	resultType="java.lang.Integer">
@@ -89,14 +89,6 @@
   		SELECT * FROM MESSAGE WHERE MESSAGE_RECEIVER = #{message_receiver} AND MESSAGE_DEL != 1
   	</select>
   	
-  	
-  	
-  	
-  	<!-- ssunhj: getmember -->
-  	<select id="getmember" parameterType="java.lang.String" resultType="sist.co.Model.SistMemberVO">
-		SELECT * FROM MEMBER 
-		WHERE M_ID = #{m_id}
-	</select>
   	
   	
   	

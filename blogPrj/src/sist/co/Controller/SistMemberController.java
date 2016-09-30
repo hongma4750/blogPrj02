@@ -9,6 +9,7 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.crypto.Cipher;
@@ -36,10 +37,14 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import nl.captcha.text.producer.DefaultTextProducer;*/
 import sist.co.Model.FUpUtil;
 import sist.co.Model.SendEmail;
+import sist.co.Model.SistBlogDTO;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
+import sist.co.Model.SistTopicDTO;
+import sist.co.Model.SistTopicPageDTO;
 import sist.co.Model.YesMember;
 import sist.co.Service.SistMemberService;
+import sist.co.Service.SistTopicService;
 
 
 
@@ -50,10 +55,62 @@ public class SistMemberController {
 	 
 	@Autowired
 	SistMemberService sistMemberService;
+	
+	@Autowired
+	private SistTopicService sistTopicService;
 
 	@RequestMapping(value="index.do",method=RequestMethod.GET)
-	public String index(Model model){
+	public String index(Model model, HttpServletRequest request) throws Exception{
 		logger.info("환영합니다. index.do 실행중");
+		
+		// 최신순 저장
+		request.getSession().setAttribute("likes", 1);
+		
+		// 주제별 글보기
+		SistBlogDTO bdto = new SistBlogDTO();
+		
+		List<SistBlogDTO> blist = sistTopicService.getTopicListAll(bdto);
+		model.addAttribute("blist", blist);
+		
+		//페이지 수
+		String pageobj = request.getParameter("page");
+		int currentpage;
+		if (pageobj == null) {
+			currentpage = 1;
+		} else {
+			currentpage = Integer.parseInt(pageobj);
+		}
+						
+		int page01 = (currentpage - 1) * 5 + 1;
+		int page02 = currentpage * 5;
+								
+		SistTopicPageDTO pageDto = new SistTopicPageDTO();
+		pageDto.setPage01(page01);
+		pageDto.setPage02(page02);
+		
+					
+		List<SistTopicPageDTO> topicPageList = sistTopicService.getPointChargePageListMainAll(pageDto);
+		model.addAttribute("topicPageList",topicPageList);	
+		
+		
+		// 오늘의 top 글
+	
+		logger.info("환영합니다. todaytop.do  오늘의 톱!");
+			
+		String t_num = request.getParameter("t_seq");
+		int t_seq = 1;
+		
+		// 음악
+		List<SistTopicDTO> toplist = sistTopicService.getTopList(t_seq);
+		model.addAttribute("toplist", toplist);
+		
+		List<SistTopicDTO> top_mlist = sistTopicService.getTopList(2);
+		model.addAttribute("top_mlist", top_mlist);
+		
+		List<SistTopicDTO> top_slist = sistTopicService.getTopList(3);
+		model.addAttribute("top_slist", top_slist);
+
+		
 		return "index.tiles";
 	}
 	
@@ -671,58 +728,6 @@ public class SistMemberController {
 		return checkMyNewMessage;
 
 	}
-	
-	
-	@RequestMapping(value="sendMessage.do",method={RequestMethod.GET,RequestMethod.POST})
-	public String sendMessage(HttpServletRequest request, Model model) throws Exception {
-		logger.info("sendMessage.do 실행중");
-		
-		String fndid = request.getParameter("fndid");
-		
-		System.out.println("fndid : "+fndid);
-		
-		SistMemberVO vo = new SistMemberVO();
-		vo.setM_id(fndid);
-		
-		SistMemberVO fndInfo = sistMemberService.selectId(vo);
-		
-		
-		model.addAttribute("fndInfo",fndInfo);
-		return "sendMessage.tiles";
-	}
-	
-	@RequestMapping(value="sendMessageAF.do",method={RequestMethod.GET,RequestMethod.POST})
-	public void sendMessageAF(SistMessage sm, Model model) throws Exception {
-		logger.info("sendMessageAF.do 실행중");
-		
-		System.out.println("sender : "+sm.getMessage_sender()+" , receiver : "+sm.getMessage_receiver());
-		
-		
-		sistMemberService.sendMessageAF(sm);
-		
-	}
-	
-	@RequestMapping(value="changeNewMessage.do", method=RequestMethod.GET)
-	@ResponseBody
-	public void changeNewMessage(HttpServletRequest request, SistMemberVO vo , Model model) throws Exception{
-		logger.info("checkNewMessage.do 이동중");
-		
-		SistMessage sm = new SistMessage();
-		sm.setMessage_receiver(request.getParameter("m_id"));
-		
-		System.out.println("id = "+vo.getM_id());
-		
-		int myMessageCount = sistMemberService.countMyMessage(sm);
-		//메세지 리스트
-		List<SistMessage> newMyMessageList = sistMemberService.selectNewMessage(sm);
-		
-		//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
-		request.getSession().setAttribute("myMessageCount", myMessageCount);
-		request.getSession().setAttribute("newMyMessageList", newMyMessageList);
-	}
-	
-	
-	
 	
 
 	

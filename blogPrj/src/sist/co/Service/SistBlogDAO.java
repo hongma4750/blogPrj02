@@ -23,9 +23,9 @@ public class SistBlogDAO {
 		return true;
 	}
 	
-	public List<SistBlogDTO> getBlogList(String m_id) throws Exception{
+	public List<SistBlogDTO> getBlogList() throws Exception{
 		List<SistBlogDTO> bloglist = new ArrayList<SistBlogDTO>();
-		bloglist = sqlSession.selectList(ns+"getBlogList",m_id);
+		bloglist = sqlSession.selectList(ns+"getBlogList");
 		return bloglist;
 	}
 	
@@ -61,6 +61,14 @@ public class SistBlogDAO {
 	public void delBbsLike(SistBbsLikeDTO like){
 		sqlSession.delete(ns+"delBbsLike",like);
 	}
+	
+	public void likeplus(int bbs_seq){
+		sqlSession.update(ns+"likeplus",bbs_seq);
+	}
+	public void likeminus(int bbs_seq){
+		sqlSession.update(ns+"likeminus",bbs_seq);
+	}
+	
 	
 	//like list
 	public List<SistBbsLikeDTO> getLikeList() throws Exception{

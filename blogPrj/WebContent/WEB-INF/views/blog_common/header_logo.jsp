@@ -33,26 +33,13 @@
 
 <!-- 블로그 제목 -->
 <div class="head_logo">
-<%-- 	<c:choose>
+	<c:choose>
 		<c:when test="${login.m_id ne null }">
 			<a class="navbar-brand" href="blog.do">${login.m_id }님의 블로그임</a>
 		</c:when>
 		<c:otherwise>
 			<a class="navbar-brand" href="blog.do">아이디 안들어왔으</a>
 		</c:otherwise>
-	</c:choose> --%>
-	<!-- 아이디 있으면 -->
-	<c:if test="${login.m_id ne null }">
-		<c:if test="${login.m_id eq finfo.m_id}"> <!-- 같으면 내 블로그. -->
-			<a class="navbar-brand" href="blog.do?fid=${login.m_id }">${login.m_id }님의 블로그임</a>
-		</c:if>
-		<c:if test="${login.m_id ne finfo.m_id}"> <!-- 다르면 다른사람 블로그. -->
-			<a class="navbar-brand" href="blog.do?fid=${finfo.m_id }">${finfo.m_id }님의 블로그임</a>
-		</c:if>  
-	</c:if>
-	
-	<c:if test="${login.m_id eq null }">
-		<a class="navbar-brand" href="index.do">아이디 안들어왔으.블로그 홈으로</a>
-	</c:if>
+	</c:choose>
     
 </div>

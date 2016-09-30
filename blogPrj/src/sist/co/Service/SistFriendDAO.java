@@ -27,31 +27,13 @@ public class SistFriendDAO {
 			return f;
 		}
 
-		//나의 전체 이웃들 정보 가져오기
+		//나의 이웃들 정보 가져오기
 		public List<SistFriendVO> getFriends(String myid) throws Exception{
 			
 			List<SistFriendVO> flist = new ArrayList<SistFriendVO>();
 			flist = sqlsession.selectList(ns+"getFriends", myid);
 			
 			return flist;
-		}
-		
-		//나의 이웃들만 정보 가져오기
-		public List<SistFriendVO> get1FolFriends(String myid) throws Exception{
-
-			List<SistFriendVO> flistF1 = new ArrayList<SistFriendVO>();
-			flistF1 = sqlsession.selectList(ns+"get1FolFriends", myid);
-
-			return flistF1;
-		}
-		
-		//나의 서로이웃들 정보 가져오기
-		public List<SistFriendVO> get2FolFriends(String myid) throws Exception{
-
-			List<SistFriendVO> flistF2 = new ArrayList<SistFriendVO>();
-			flistF2 = sqlsession.selectList(ns+"get2FolFriends", myid);
-
-			return flistF2;
 		}
 		
 		//해당 이웃의 이웃 정보 가져오기
@@ -100,32 +82,6 @@ public class SistFriendDAO {
 			List<SistDblFollowingVO> dblfols = new ArrayList<SistDblFollowingVO>();
 			dblfols = sqlsession.selectList(ns+"getReceiveDblFols", myid);
 			return dblfols;
-		}
-		
-		//서로이웃팔로잉 수락
-		public boolean acceptDblFols(int seq) throws Exception{
-			//팔로잉 변경
-			sqlsession.update(ns+"acceptDblFols", seq);
-			return true;
-		}
-		
-		//내가 보낸 서로이웃팔로잉
-		public List<SistDblFollowingVO> getSendDblFols(String myid) throws Exception{
-			List<SistDblFollowingVO> dblfols = new ArrayList<SistDblFollowingVO>();
-			dblfols = sqlsession.selectList(ns+"getSendDblFols", myid);
-			return dblfols;
-		}
-		
-		//서로이웃신청 취소
-		public boolean delsendfol(int seq) throws Exception{
-			sqlsession.delete(ns+"delsendfol", seq);
-			return true;
-		}
-		
-		//팔로잉조회
-		public SistDblFollowingVO get2fol(int seq) throws Exception{
-			SistDblFollowingVO fvo= sqlsession.selectOne(ns+"get2fol", seq);
-			return fvo;
 		}
 	
 

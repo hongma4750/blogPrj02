@@ -102,16 +102,4 @@ public class SistMemberDAO {
 		return sqlSession.selectList(ns+"selectAllMessage",sm);
 	}
 	
-	public void sendMessageAF(SistMessage sm) throws Exception{
-		sqlSession.insert(ns+"sendMessageAF",sm);
-	}
-	
-	//ssunhj: getmember
-		public SistMemberVO getmember(String m_id)throws Exception{
-			//SistMemberVO memvo = new SistMemberVO();
-			return (SistMemberVO) sqlSession.selectOne(ns+"getmember",m_id);
-			
-		}
-		
-	
 }

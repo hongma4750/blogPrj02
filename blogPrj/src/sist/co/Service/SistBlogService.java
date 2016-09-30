@@ -10,10 +10,12 @@ public interface SistBlogService {
 	
 	//blog bbs
 	boolean writeBBS(SistBlogDTO blog)throws Exception;
-	List<SistBlogDTO> getBlogList(String m_id)throws Exception;
+	List<SistBlogDTO> getBlogList()throws Exception;
 	SistBlogDTO getBBS(SistBlogDTO blog)throws Exception;
 	void updateBBS(SistBlogDTO blog);
 	void delBBS(int bbs_seq);
+	public void likeplus(int bbs_seq);
+	public void likeminus(int bbs_seq);
 	
 	/*blog_like/////////////////*/
 	public boolean addBbsLike(SistBbsLikeDTO like); //add blog_like

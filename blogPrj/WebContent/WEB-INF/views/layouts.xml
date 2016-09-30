@@ -69,9 +69,7 @@
   	
   	<definition name="userInfo.tiles" template="/WEB-INF/views/member/userInfo.jsp"></definition>
   	<definition name="blogInfo.tiles" template="WEB-INF/views/member/blogInfo.jsp"></definition>
-	<!-- 메세지 -->
-	<definition name="sendMessage.tiles" template="/WEB-INF/views/message/sendMessage.jsp"></definition>
-	
+
 
 
 
@@ -135,8 +133,8 @@
 	<definition name="poll_pop.tiles" template="/WEB-INF/views/pop/poll_pop.jsp">
 	</definition> 
 	
-<!-- 일정 시작 -->
-<!-- calendar -->
+	
+	<!-- calendar -->
 	<definition name="calendar.tiles"  template="/WEB-INF/views/callayouts-tiles.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
 	    <put-attribute name="header_logo" value="/WEB-INF/views/common/header_logo.jsp"/>
@@ -188,7 +186,47 @@
 	<definition name="search_cal.tiles" extends="calendar.tiles">
 		<put-attribute name="section_cen" value="/WEB-INF/views/calendar/search/search_cal.jsp"/>
 	</definition>
-<!-- 일정 끝 -->
+	
+	
+	
+<!-- 주제별 글보기 -->
+	<definition name="topic.tiles"  template="/WEB-INF/views/topic-tiles.jsp">
+  	  	<put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
+	    <put-attribute name="header_logo" value="/WEB-INF/views/common/header_logo.jsp"/>
+	    <put-attribute name="header_nav" value="/WEB-INF/views/common/header_nav.jsp"/>
+	    
+	    <put-attribute name="content" value="/WEB-INF/views/common/content2.jsp"/>
+	    <put-attribute name="login_box" value="/WEB-INF/views/common/login_box.jsp"/>
+	    <put-attribute name="noticeArea" value="/WEB-INF/views/common/noticeArea.jsp"/>
+	    <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
+	    <put-attribute name="main" value="/WEB-INF/views/topic/main/hot_topic.jsp"/>
+  	</definition>
+  	
+  	
+  	
+  	<definition name="topicall.tiles" extends="topic.tiles">
+	    <put-attribute name="main" value="/WEB-INF/views/topic/main/topic_all.jsp"/>
+  	</definition>
+  	
+  	<!-- 주제별포스트_메인 -->
+  	<!-- 메뉴_전체 -->
+  	<definition name="topiclist.tiles" extends="index.tiles">
+  	  <put-attribute name="main" value="/WEB-INF/views/topic/topiclist.jsp"/>
+  	</definition>
+  	
+  	<definition name="topiclist1.tiles" extends="index.tiles">
+  	  <put-attribute name="main" value="/WEB-INF/views/topic/topiclist1.jsp"/>
+  	</definition>
+<!-- 주제별 끝 -->
+
+<!-- 메인 검색 -->
+	
+<definition name="search.tiles" extends="topic.tiles">
+	<put-attribute name="content" value="/WEB-INF/views/common/content3_srh.jsp"/>
+	<put-attribute name="main" value="/WEB-INF/views/common/search/search.jsp"/>
+</definition>
+<!-- 메인 검색 끝 -->
+
 
 <!-- 이웃 -->
   	<!-- 이웃소식_메인 -->
@@ -221,11 +259,7 @@
   	</definition>
   	
   	
-  	<!-- 주제별포스트_메인 -->
-  	<!-- 메뉴_전체 -->
-  	<definition name="topiclist.tiles" extends="index.tiles">
-  	  <put-attribute name="main" value="/WEB-INF/views/topic/topiclist.jsp"/>
-  	</definition>
+  	
   	
   	
   	<!-- 관리홈_메인 -->
@@ -233,7 +267,7 @@
 	    <put-attribute name="header" value="/WEB-INF/views/common/header.jsp"/>
 	    <put-attribute name="header_logo" value="/WEB-INF/views/common/header_logo.jsp"/>
 	    <put-attribute name="header_nav" value="/WEB-INF/views/common/header_nav.jsp"/>
-	    
+	    <put-attribute name="blogArea" value="/WEB-INF/views/common/blogArea.jsp"/>
 	    <put-attribute name="content" value="/WEB-INF/views/friend/setting/settinghome.jsp"/>
 	    <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp"/>
   	</definition>

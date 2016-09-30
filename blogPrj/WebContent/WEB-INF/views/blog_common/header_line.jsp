@@ -24,6 +24,6 @@
 
 <div class="head_line">
 	<a href="#none" title="prologue" class="prologue" style="color: white;"><strong>prologue</strong> | </a> | 
-	<a href="blog.do?fid=${finfo.m_id }" title="blog" class="blog" style="color: orange;"><strong>blog</strong></a> 
+	<a href="blog.do" title="blog" class="blog" style="color: orange;"><strong>blog</strong></a> 
 	<a href="#none" title="hello" class="hello"  style="color: white;"> | <strong>guest</strong></a> 
 </div>
