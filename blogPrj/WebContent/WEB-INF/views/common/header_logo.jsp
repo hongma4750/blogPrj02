@@ -17,7 +17,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
-<script src="js/angular/angular.js"></script>
+
 
 
 <!-- asset CSS -->
@@ -43,9 +43,11 @@
     margin-right: 4px;
     width: 40px;
 }
+
  .subject {
     display: block;
 }
+
 .dropdown-menu.inbox li a .subject .from {
     font-size: 12px;
     font-weight: 600;
@@ -61,30 +63,28 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header" >
-      <a class="navbar-brand" href="index.do"><p style="color:black; font-style: solid ;font-weight: 30px; font-size: 30px;">꽃밭에 홍미니</p></a>
+      <a class="navbar-brand" href="#"><p style="color:black; font-style: solid ;font-weight: 30px; font-size: 30px;">꽃밭에 홍미니</p></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="margin:0; padding:0;">
-      <form class="navbar-form navbar-left" role="search">
-      
+     
+      <form class="navbar-form navbar-left" role="search" action="search.do">   
         <div class="form-group" style="border-color:#45B914; border-style:solid ;border-width:3px;">
         
-        <select class="form-control" style="width:30%; display:inline-block; float:left; border-color:#45B914;">
-		  <option>1</option>
-		  <option>2</option>
-		  <option>3</option>
-		  <option>4</option>
-		  <option>5</option>
+        <select name="srh_op" class="form-control" style="width:30%; display:inline-block; float:left; border-color:#45B914;">
+		  <option value="post">포스트</option>
+		  <option value="blog">블로그</option>
+		  <option value="nicknid">별명·아이디</option>
 		</select>
 		
-          <input type="text" class="form-control" placeholder="Search" style="margin:auto; padding:auto;width:70%;border-color:#45B914;">
+          <input type="text" name="srh_con" class="form-control" placeholder="Search" style="margin:auto; padding:auto;width:70%;border-color:#45B914;">
           
         </div>
         
+        <!-- 검색 버튼 -->
         <button type="submit" class="btn btn-default" style="background-color:#45B914; 
-        border-color:#45B914; color:white; height:35px;">검색</button>
-        
+        border-color:#45B914; color:white; height:35px;">검색</button>     
       </form>
       
       <ul class="nav navbar-nav navbar-right">
@@ -95,7 +95,7 @@
       			<li>
                   	<a href="#" id="userInfo" >
                   		<img src="${login.m_photo }" alt="..." class="img-circle" style="width:30px; height:30px;">
-                  		<span>${login.m_name } 님</span>
+                  		<span>김홍민 님</span>
                   	</a>
                   </li>
                   
@@ -157,7 +157,7 @@
 			<div class="row" style="padding:auto; margin:auto; width:100%; height:25px;">
 			
 				<div>
-					<h3 style="float:left; display:inline-block;"><a href="myProfile.do" style="color:black;">${login.m_name }</a> <small>님</small></h3>
+					<h3 style="float:left; display:inline-block;"><a href="myProfile.do" style="color:black;">김홍민</a> <small>님</small></h3>
 				</div>
 				
 				<div  style="padding:auto; margin:auto; margin-top:25px;vertical-align: text-bottom; text-align:center; ">
@@ -166,7 +166,7 @@
 			</div>
 			
 			<div class="row" style="margin:auto; padding:auto;">
-				<h4>${login.m_email }</h4>
+				<h4>lovely4750@naver.com</h4>
 			</div>
 			
 			<div class="row" style="margin:auto; padding:auto;">
@@ -212,43 +212,30 @@
 		
 		
 		<!-- 메세지 -->
-		<div id="temps">
-			<div style="width:100%; height:80%; " id="mymynoticeMessage" class="mymynoticeMessage">
+		<div style="width:100%; height:80%; ">
+		
+			<c:forEach items="${newMyMessageList }" var="myMessage">
 			
-				<c:forEach items="${newMyMessageList }" var="myMessage"> 
-
-					<div class="list-group" style="margin:auto; padding:auto;">
-					  <a href="#" class="list-group-item ">
-					  	<span class="photo" style="maring:auto; padding:auto;">
-					  		<img alt="avatar" src="${myMessage.m_photo }" style="width:35px;height:40px;">
-					  	</span>
-					  	
-					  	<span class="subject">
-						    <span class="from">${myMessage.m_name } </span>
-			             </span>
-			             <span class="message">${myMessage.message_content}</span>
-					  </a>
-					</div>
-
+				<div class="list-group" style="margin:auto; padding:auto;">
+				  <a href="#" class="list-group-item ">
+				  	<span class="photo" style="maring:auto; padding:auto;">
+				  		<img alt="avatar" src="${myMessage.m_photo }" style="width:35px;height:40px;">
+				  	</span>
+				  	
+				  	<span class="subject">
+					    <span class="from">${myMessage.m_name } </span>
+		             </span>
+		             <span class="message">${myMessage.message_content }</span>
+				  </a>
+				</div>
 				
-				</c:forEach>
-				
-				
- 
+			</c:forEach>
 
-	
-			</div>
 		</div>
-
-	
-	
-	
-	
-	
 		
 	</div>
 	
-
+	
 	<div style="width:100%; height:20%; background-color:skyblue">
 		<div class="row" style="width:100%; height:100%; padding:auto; margin:auto;">
 			<button class="btn btn-default" style="width:100%; height:100%;">see all message</button>
@@ -272,7 +259,6 @@ $('#userInfo').click(function(){
  /* 팝업 사라지는 자바 스크립트*/
  $(document).ready(function(){
 	 var myMessageCount = '${myMessageCount}';
-	 
 		var m_id = '${login.m_id}';
 		var checkNewMessage = false;
 		var checkNewMessageFiveCount = 0;
@@ -284,6 +270,8 @@ $('#userInfo').click(function(){
 	             var l_position = $(this).offset();
 	             l_position.right = parseInt(l_position.left) + ($(this).width());
 	             l_position.bottom = parseInt(l_position.top) + parseInt($(this).height());
+
+
 	             if( ( l_position.left <= e.pageX && e.pageX <= l_position.right )
 	                 && ( l_position.top <= e.pageY && e.pageY <= l_position.bottom ) )
 	             {
@@ -319,17 +307,7 @@ $('#userInfo').click(function(){
 				       			//기존 메세지 카운수랑 새로 체크해본 결과가 다르다
 				       			myMessageCount = checkMyNewMessage;
 				       			$("#messageCount").text(myMessageCount);
-				       			checkNewMessage = true;
-				       			
-				       			$.ajax({
-				       				type:"GET",
-				       				url:"changeNewMessage.do",
-				       				data:"m_id="+m_id,
-				       				
-				       				success : function(){
-				       					printNewNoticeMessage();
-				       				}
-				       			})
+				       			checkNewMessage = true;;
 				       		}
 				       		
 				       		
@@ -361,11 +339,9 @@ $('#userInfo').click(function(){
  
  /* 팝업 사라지는 자바 스크립트*/
  
- function printNewNoticeMessage(){
-	 $("#mymynoticeMessage").remove();
- }
  
-          
+
+ 
  
 </script>
 

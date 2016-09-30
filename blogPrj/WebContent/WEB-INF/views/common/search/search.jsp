@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="sist.co.Model.*" %>
@@ -20,7 +19,7 @@
 <!-- 부트스트랩 링크 -->
 
 
-<!--  페이징 -->
+<%-- <!--  페이징 -->
 <%
 	String pageobj = request.getParameter("page");
 	int currentpage;
@@ -40,37 +39,31 @@
 	int bendpage = bstartpage + pageblock - 1;
 	pnum = (int) Math.ceil((double) toList.size() / 5);
 %>
-<!--  페이징 -->
+<!--  페이징 --> --%>
 
 <!-- 여기는 전체 메뉴 영역 -->
 <script type="text/javascript">
 $(function () {
-    $('#myTab a:first').tab('show')
+    $('#myTab a:first').tab('show');
 });
 </script>
-
-
-
-</div> 
   
-  
-<c:if test="${empty topicPageList }">
-	작성된 게시글 목록이 없습니다.
+<c:if test="${empty sblist }">
+	검색된 내용이 없습니다.
 </c:if>  
 
-<c:forEach items="${topicPageList }" var="blog" varStatus="blogvar">
+<c:forEach items="${sblist }" var="blog" varStatus="blogvar">
 <div style="height: 124px; width: 713xp;" >
 <table style="width:713px; " >
 <col width="100px;"><col width="464x;">
-	<tr><c:if test="${blog.bbs_title ne null}  ">
-		<td rowspan="3">
-		
+	<tr>
+	<c:if test="${blog.bbs_title ne null}  ">
+		<td rowspan="3">		
 		<a href="#">
 			<img class="main_topic_img" src="./image/나의영화.jpg" alt="이미지없음" />
-		</a>
-		
+		</a>		
 		</td>
-		</c:if>
+	</c:if>	
 		<td height="20px;">
 		<!-- 제목[댓글수] -->
 			<h5>
@@ -120,7 +113,7 @@ $(function () {
 <br>
 <br>
 
-<div class="row" style="margin:auto; padding:auto; text-align:center;">
+<%-- <div class="row" style="margin:auto; padding:auto; text-align:center;">
 	<nav>
 		<ul class="pagination">
 			<%
@@ -195,7 +188,7 @@ $(function () {
 			%>
 		</ul>
 	</nav>
-</div>
+</div> --%>
 
 
 <script type="text/javascript">

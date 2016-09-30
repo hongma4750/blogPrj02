@@ -29,7 +29,7 @@
 <%@page import="sist.co.help.myCal"%>
 <%@page import="java.util.Calendar"%>
 
-<!-- 자동완성.. -->
+<!-- 자동완서 -->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/jquery-1.9.1.js" type="text/javascript"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js" type="text/javascript"></script>
@@ -384,92 +384,8 @@ $(function(){
     <!-- 참석자 목록 시작 -->
     <tr id="invitee_list"> 
     	<td colspan="9">
-    		<!-- <form runat="server"> -->
-        <input id="test" type="text" onclick="invitee(${login.m_id })" />
-    		<!-- </form> -->
-    <script type="text/javascript">
-        $(function () {
-        	alert("되니");
-           /*  var availableTags = [
-              "ActionScript",
-              "AppleScript",
-              "Asp",
-              "BASIC",
-              "C",
-              "C++",
-              "Clojure",
-              "COBOL",
-              "ColdFusion",
-              "Erlang",
-              "Fortran",
-              "Groovy",
-              "Haskell",
-              "Java",
-              "JavaScript",
-              "Lisp",
-              "Perl",
-              "PHP",
-              "Python",
-              "Ruby",
-              "Scala",
-              "Scheme"
-            ]; */
-            
-
-            $(function invitee(id){
-            	 $('#test').autocomplete({
-                	
-                    source : function( id ) {
-                         $.ajax({
-                                type: 'post',
-                                url: "<%=application.getContextPath() %>/sch_invitee.do?m_id="+id+"",
-                                //dataType: "json",
-                                //request.term = $("#autocomplete").val()
-                                async:true,
-                                data: id,
-                                success: function(fdto) {
-                                    //서버에서 json 데이터 response 후 목록에 뿌려주기 위함
-                                     response( 
-                                        $.map(data, function(fdto) {
-                                            return {
-                                                label: fdto.data,
-                                                value: fdto.data
-                                            }
-                                        })
-                                    ); 
-                                	alert(성공1);
-                                    alert(fdto.get(0).getFnd_fndid()); 
-                                }
-                           });
-                        },
-                    //조회를 위한 최소글자수
-                    minLength: 1,
-                    select: function( event, ui ) {
-                        // 만약 검색리스트에서 선택하였을때 선택한 데이터에 의한 이벤트발생
-                    },
-                    selectFirst: true,
-                    open: function () {
-                        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-                    },
-                    close: function () {
-                        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-                    }
-                       
-                      
-                });
-            })
-           /*  $('#test').autocomplete({
-                source: availableTags,
-                select: function (event, ui) {
-                    //아이템 선택시 처리 코드
-                },
-                selectFirst: true,
-                minLength: 1,
-               
-            }); */
-        });
-        
-    </script>
+    		<span class="blind">참석자</span>
+			<input type="text" class="input_txt" autocomplete="off" data-default="이름 또는 이메일주소, 아이디를 입력하세요.">
 		</td>
 		
     </tr>

@@ -78,7 +78,6 @@ $(document).ready(function(){
 <h4>포스트 수정하는 페이지</h4> <br><br><br>
 	<div class="writecon2">
 	<form name="ufrmform" id="ufrmform" action="" method="post">
-	<input type="hidden" name="m_id" value="${login.m_id}">
 		<!-- 카테고리 -->
 			<input type="hidden" id="sel_ca_seq" value="${d_blog.bbs_ca_seq }"/>
 			<select id="cate1" name="bbs_ca_seq" style="width:138px; height: 20px;">

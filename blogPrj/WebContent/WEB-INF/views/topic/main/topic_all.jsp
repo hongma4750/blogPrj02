@@ -1,4 +1,7 @@
+
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="sist.co.Model.*" %>
 <!DOCTYPE html>
 <!-- tag들 필요하면 Ctrl+c  /   Ctrl+v -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -16,13 +19,37 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
 
-<div id="topic_menu" class="topic_menu" style="position:relative; z-index:110; margin: 0; padding-top: 10px;">
-<p style="vertical-align: middle;">최신글 순으로 보실 수 있습니다.&nbsp;</p>
+<!--  페이징 -->
+<%
+	String pageobj = request.getParameter("page");
+	int currentpage;
+	if (pageobj == null) {
+	currentpage = 1;
+	} else {
+	currentpage = Integer.parseInt(pageobj);
+	}
+			
+	List<SistTopicPageDTO> plist = (List<SistTopicPageDTO>)request.getAttribute("topicPageList");
+	List<SistBlogDTO> toList = (List<SistBlogDTO>)request.getAttribute("blist");
+			
+	int pnum;
+	int pageblock = 20;
+	int block = (int) Math.ceil((double) currentpage / pageblock);
+	int bstartpage = (block - 1) * pageblock + 1;
+	int bendpage = bstartpage + pageblock - 1;
+	pnum = (int) Math.ceil((double) toList.size() / 5);
+%>
+<!--  페이징 -->
  
-</div>
-  
+<div id="topic_menu" class="topic_menu" style="position:relative; z-index:110; margin: auto 0; padding-top: 10px;">
+<p style="vertical-align: middle;">최신글 순으로 보실 수 있습니다.&nbsp;</p>
+</div> 
+ 
+<c:if test="${empty topicPageList }">
+	작성된 게시글 목록이 없습니다.
+</c:if>  
 
-<c:forEach items="${blist }" var="blog" varStatus="blogvar">
+<c:forEach items="${topicPageList }" var="blog" varStatus="blogvar">
 <div style="height: 124px; width: 713xp;" >
 <table style="width:713px; " >
 <col width="100px;"><col width="464x;">
@@ -76,40 +103,87 @@
 	</table>
 </div>
 </c:forEach>
-
-<!-- 주제별글보기 리스트 -->
-
-
-
-
-
-<!-- 페이징 -->
-<div align="center">
-<nav aria-label="Page navigation">
-  <ul class="pagination pagination-sm">
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li><a href="#">1</a></li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">5</a></li>
-    <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+<!-- 주제별글보기 리스트 끝-->
+<br>
+<br>
+<br>
+<br>
+<div class="row" style="margin:auto; padding:auto; text-align:center;">
+	<nav>
+		<ul class="pagination">
+			<%
+				if (currentpage <= 1) {
+			%>
+				<li class="disabled"><span aria-hidden="true">처음</span></li>
+				<%
+				} else {
+				%>
+				<li><a style="color: black;"
+					href="topicall.do?page=1">처음</a></li>
+				<%
+					}
+				%>
+			
+				<%
+					if (currentpage <= 1) {
+				%>
+				<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;" aria-lable="Previous"
+					href="topicall.do?page=<%=currentpage - 1%>"><span
+				aria-hidden="true">&laquo;</span></a></li>
+				<%
+					}
+				%>
+			
+				<%
+					if (bendpage > pnum) {
+						bendpage = pnum;
+					}
+					for (int i = bstartpage; i <= bendpage; i++) {
+						if (currentpage == i) {
+					%>
+					<li class='active'><a href="#"><%=i%></a></li>
+					<%
+						} else {
+					%>
+					<li><a style="color: black;"
+							href="topicall.do?page=<%=i%>"><%=i%></a></li>
+					<%
+						}
+					}
+					%>
+			
+				<%
+					if (currentpage >= pnum) {
+				%>
+					<li class="disabled"><span aria-hidden="true">&raquo;</span></a></li>
+					<%
+						} else {
+					%>
+						<li><a style="color: black;" aria-lable="Next"
+								href="topicall.do?page=<%=currentpage + 1%>"><span
+								aria-hidden="true">&raquo;</span></a></li>
+					<%
+					}
+				%>
+				<%
+				if (currentpage >= pnum) {
+				%>
+					<li class="disabled"><span aria-hidden="true">끝</span></li>
+				<%
+				} else {
+				%>
+					<li><a style="color: black;"
+								href="topicall.do?page=<%=pnum%>">끝</a></li>
+				<%
+				}
+			%>
+		</ul>
+	</nav>
 </div>
-<!-- 페이징 -->
-
-
-
-
 
 <script type="text/javascript">
 

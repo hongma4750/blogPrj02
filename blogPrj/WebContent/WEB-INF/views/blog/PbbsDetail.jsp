@@ -163,7 +163,7 @@
 			<br><br><br>
 						
 		<div class="foot_content">
-					<img src="image/2.jpg"/>
+					<img src="image/55.png"/>
 				<br><br>
 				<div class="write_reple">
 					<a href="#none" class="reple_show">댓글쓰기</a>

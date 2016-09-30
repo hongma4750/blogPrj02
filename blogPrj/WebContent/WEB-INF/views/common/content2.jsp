@@ -18,45 +18,19 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
 
-<!-- 주제별 포스트 사용시 사용하는 content2 -->
 
-<!-- 로그인시 -->
-<c:if test="${login.m_id ne null}" >
-<div id="con">
-<div role="tabpanel">
 
-<ul class="nav nav-tabs" role="tablist" id="myTab">
-  <li rel="ftottab" role="presentation" class="active"><a href="fnewslist.do" id="friendnews">이웃소식보기</a></li>
-  <li rel="ttottab" role="presentation"><a href="topiclist.do" id="topic" aria-controls="presentation" role="tab" data-toggle="tab">주제별 글보기</a></li>
-  <br><div id="right_side_set" align="right"><a href="openfriend.do">이웃관리</a>&nbsp;&nbsp;<a href="#none">관심주제설정</a></div>
-</ul>
 
-  
-   
-  <%-- <div id="others">
-    <div role="tab_con" class="tab_con" id="ftottab">
-		<!-- 이웃소식 탭 클릭시_include -->
-		<jsp:include page="../friend/news/fnewslist.jsp" flush="true" />
-	</div>
-	<div role="tab_con" class="tab_con" id="ttottab">
-		<!-- 주제별포스트 탭 클릭시_include -->
-		<jsp:include page="../topic/topiclist.jsp" flush="true" />
-	</div>
-  </div> --%>
-  
-</div>
-</div>
-</c:if>
-<!-- 로그인시 -->
   
 <!-- 비로그인시 -->
-<c:if test="${login.m_id eq null}" >
+
 <div id="con">
 <div role="tabpanel">
 <ul class="nav nav-tabs" role="tablist" id="myTab">
-  <li rel="ttottab"><a href="#" id="friendnews">이웃소식보기</a></li>
-  <li rel="ttottab" role="presentation" class="active"><a href="#" id="topic" aria-controls="home" role="tab" data-toggle="tab">주제별 글보기</a></li>
-  
+  <li rel="ttottab"><a href="topic1.do" id="hot">주목받는 글</a></li>
+  <li rel="ttottab" role="presentation" class="active">
+  	<a href="topicall.do" id="topic" aria-controls="home" role="tab" data-toggle="tab">전체 글</a>
+  </li>
 </ul>
 <%-- 
   <div id="others">
@@ -68,11 +42,11 @@
 
 </div>
 </div>
-</c:if>
+
 <!-- 비로그인시 -->  
 
 
-<!-- 비로그인시 로그인 안내창 -->
+<%-- <!-- 비로그인시 로그인 안내창 -->
 <c:if test="${login.m_id eq null}" >
 <div id="sign_in" style="position:absolute; top:40px; z-index:3; 
      background-color: #fff; border:1px solid #000;width:300px; display: none;">
@@ -82,7 +56,7 @@
      에서 로그인 후 사용해 주세요.
   </p>
 </div>
-</c:if>
+</c:if> --%>
 
 
 
@@ -104,33 +78,31 @@ $(function (){
 		$("#"+actTab).show();
 	});
 });
-  
-//이웃소식보기 탭 클릭
-$('#friendnews').click(function(){
+
+
+/* //이웃소식보기 탭 클릭
+$('#hot').click(function(){
 	//alert('이웃소식');
 	 
 	//비로그인시 로그인 안내 div태그
 	if("${login.m_id eq null}"){
 	    document.all.sign_in.style.display = "block";
 	}
-});
+}); */
 
-//로그인시 이웃소식보기 옆 설정 링크
-function right_side_set(){
-	document.all.right_side_set.style.display = "block";
-}
+
   
-//주제별 글보기 탭 클릭
+// 전체별
 $('#topic').click(function(){
     //alert('topic');
-    location.href="topiclist.do";
-	//document.all.right_side_set.style.display = "none";
+    location.href="topicall.do";
+	
 	
 });
   
 $('#btnClose').click(function(){
 	document.all.sign_in.style.display = "none";
 });
-  
-  
-</script>
+</script>  
+
+

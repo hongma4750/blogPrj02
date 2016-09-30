@@ -56,86 +56,99 @@ $(document).one("ready",function(){
 				</span>
 			</div>
 			
-		<div class="total_view_list">
-				<table class="table table-hover">
-					<col style="width:15%">
-					<col style="width:auto">
-					<col style="width:40px">
-					<col style="width:100px">
-					
-				<c:if test="${empty bloglist }">
-					<tr valign="top">
-						<td colspan="4">작성된 게시글 목록이 없습니다.</td>
-					</tr>
-				</c:if>
-				<c:forEach items="${bloglist }" var="total_blist" varStatus="totalvar">
-					<tr valign="top">
-						<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
-						<td class="t2"><a href="BbbsDetail.do?bbs_seq=${total_blist.bbs_seq }&log_id=${login.m_id }">${total_blist.bbs_title }</a></td>
-						<td class="t3">12</td>
-						<td><small>${total_blist.bbs_date }</small></td>
-					</tr>
-				</c:forEach>
-					
-					
-					<!-- 글 관리 부분   리스트 맨아래 -->
-					<tr>
-						<td colspan="4">
-							
-							<div class="row" style="padding:auto; margin:auto;">
-								<span class="list_checkbox" style="display:none;">
-									<input type="checkbox" name="total_chk" >
-									<small>전체선택</small>
-								</span>
+				<div class="total_view_list">
+					<table class="table table-hover">
+						<col style="width:15%">
+						<col style="width:auto">
+						<col style="width:25px">
+						<col style="width:20px">
+						
+						<tr valign="top">
+							<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
+							<td class="t2">2016년 9월 8일 오전 10시 44분에 저장한 글입니다.11111</td>
+							<td class="t3">12</td>
+							<td>2015.08.09</td>
+						</tr>
+						
+						<tr valign="top">
+							<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
+							<td class="t2">2016년 9월 8일 오전 10시 44분에 저장한 글입니다.11111</td>
+							<td class="t3">12</td>
+							<td>2015.08.09</td>
+						</tr>
+						
+						<tr valign="top">
+							<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
+							<td class="t2">2016년 9월 8일 오전 10시 44분에 저장한 글입니다.11111</td>
+							<td class="t3">12</td>
+							<td>2015.08.09</td>
+						</tr>
+						
+						<tr valign="top">
+							<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
+							<td class="t2">2016년 9월 8일 오전 10시 44분에 저장한 글입니다.11111</td>
+							<td class="t3">12</td>
+							<td>2015.08.09</td>
+						</tr>
+						
+						
+						<!-- 글 관리 부분   리스트 맨아래 -->
+						<tr>
+							<td colspan="4">
 								
-								
-								<span style="float:right;">
-									<span style="display:none" class="post_setting">
-										<a href="#"><small>포스트 설정 변경</small></a>
-										<a href="#"><small>이동</small></a>
-										<a href="#"><small>삭제</small></a>
+								<div class="row" style="padding:auto; margin:auto;">
+									<span class="list_checkbox" style="display:none;">
+										<input type="checkbox" name="total_chk" >
+										<small>전체선택</small>
 									</span>
-									<c:if test="${blogdto.m_id eq login.m_id }">
-										<input type="button" id="list_manageBtn" value="글관리 열기">
-									</c:if>
-									<select>
-										<option>5줄 보기</option>
-										<option>10줄 보기</option>
-										<option>15줄 보기</option>
-										<option>20줄 보기</option>
-									</select>
-								</span>
-							</div>
-							
-						</td>
-					</tr>
+									
+									
+									<span style="float:right;">
+										<span style="display:none" class="post_setting">
+											<a href="#"><small>포스트 설정 변경</small></a>
+											<a href="#"><small>이동</small></a>
+											<a href="#"><small>삭제</small></a>
+										</span>
+										<c:if test="${blogdto.m_id eq login.m_id }">
+											<input type="button" id="list_manageBtn" value="글관리 열기">
+										</c:if>
+										<select>
+											<option>5줄 보기</option>
+											<option>10줄 보기</option>
+											<option>15줄 보기</option>
+											<option>20줄 보기</option>
+										</select>
+									</span>
+								</div>
+								
+							</td>
+						</tr>
+					</table>
 					
-				</table>
-				
-				<div class="row" style="margin:auto; padding:auto; text-align:center;">
-					<nav>
-					  <ul class="pagination">
-					    <li>
-					      <a href="#" aria-label="Previous">
-					        <span aria-hidden="true">&laquo;</span>
-					      </a>
-					    </li>
-					    <li><a href="#">1</a></li>
-					    <li><a href="#">2</a></li>
-					    <li><a href="#">3</a></li>
-					    <li><a href="#">4</a></li>
-					    <li><a href="#">5</a></li>
-					    <li>
-					      <a href="#" aria-label="Next">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
-					  </ul>
-					</nav>
-				</div>
-				
-				
-		</div>
+					<div class="row" style="margin:auto; padding:auto; text-align:center;">
+						<nav>
+						  <ul class="pagination">
+						    <li>
+						      <a href="#" aria-label="Previous">
+						        <span aria-hidden="true">&laquo;</span>
+						      </a>
+						    </li>
+						    <li><a href="#">1</a></li>
+						    <li><a href="#">2</a></li>
+						    <li><a href="#">3</a></li>
+						    <li><a href="#">4</a></li>
+						    <li><a href="#">5</a></li>
+						    <li>
+						      <a href="#" aria-label="Next">
+						        <span aria-hidden="true">&raquo;</span>
+						      </a>
+						    </li>
+						  </ul>
+						</nav>
+					</div>
+					
+					
+			</div>
 			
 			
 			</div>
@@ -151,7 +164,7 @@ $(document).one("ready",function(){
 			${blogdto.bbs_date }&nbsp;&nbsp;&nbsp;
 			<c:if test="${blogdto.m_id eq login.m_id }">
 				<a href="#none" class="_btnupdate">수정</a> | 
-				<a href="bbsdel.do?bbs_seq=${blogdto.bbs_seq }&m_id=${login.m_id }" class="_btndel"><small>삭제</small></a>
+				<a href="#none" class="_btndel">삭제</a>
 			</c:if>
 		</p>
 		
@@ -232,7 +245,7 @@ $(document).one("ready",function(){
 			</c:if>
 
 		<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
-			<div id="foot_reple" style="display:none;">
+			<div class="foot_reple" style="display:none;">
 			<!-- 댓글 리스트 -->
 				<div class="r_re">
 					<ul>
@@ -383,17 +396,14 @@ $(document).one("ready",function(){
 	})
 	
 	
-	//댓글창 열기
 	var check_reList = 0;
 	$(".reple_show").click(function(){
 		if(check_reList == 0){
 			check_reList = 1;
-			$("#foot_reple").show();
-			$(".foot_sym").hide();
+			$(".foot_reple").show();
 		}else{
-			check_reList = 0;
-			$("#foot_reple").hide();
-			$(".foot_sym").show();
+			check_reList = 0
+			$(".foot_reple").hide();
 		}
 		
 		
@@ -412,19 +422,21 @@ $(document).one("ready",function(){
 		}
 		
 	})
-
+	
+	
 	//공감 창 열기
 	var check_sym = 0;
 	$(".sym").click(function(){
 		if(check_sym==0){
 			check_sym = 1;
 			$(".foot_sym").show();
-			$("#foot_reple").hide();
+		}else if(check_sym==1 && check_reList==1){
+			check_reList = 0;
+			$(".foot_reple").hide();
 		}
 		else{
 			check_sym = 0;
 			$(".foot_sym").hide();
-			$("#foot_reple").show();
 			
 		}
 		

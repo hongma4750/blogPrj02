@@ -58,6 +58,11 @@
 	color:yellow;
 	text-decoration: underline;
 }
+
+.topic_menu{
+	font: 12px Dotum;
+	/* font-weight: bold; */
+}
 </style>
 
 
@@ -72,13 +77,13 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="navs navbar-nav">
       	
-      		<li><a href="#">Link</a></li>
-        	<li><a href="#">Link</a></li>
+      		<li><a href="topic.do?cate=1" class="topic_menu">음악</a></li>
+        	<li><a href="topic.do?cate=2" class="topic_menu">영화</a></li>
+        	<li><a href="topic.do?cate=3" class="topic_menu">스포츠</a></li>
+        	<li><a href="topic.do?cate=4" class="topic_menu">세계여행</a></li>
+        	<li><a href="topic.do?cate=5" class="topic_menu">일상·생각</a></li>
         	
-        	<c:if test="${login.m_id ne null}">
         	
-        	<li role="presentation"><a href="#settings" onclick="url_calendar()" aria-controls="settings" role="tab" data-toggle="tab">cal</a></li>
-        	</c:if>
       </ul>
 
     </div><!-- /.navbar-collapse -->

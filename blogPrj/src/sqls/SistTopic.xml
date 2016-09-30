@@ -2,15 +2,11 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="SistTopic">
 
 <!-- 메인 전체 -->
 <select id="getTopicListAll" resultType="sist.co.Model.SistBlogDTO">
-<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, NVL(COUNT(B.BBS_SEQ),0) AS BBS_LIKES
-FROM BLOG_BBS A, BBS_LIKE B
-WHERE A.BBS_SEQ = B.BBS_SEQ
-GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE -->
-
 SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, A.bbs_like_count
 FROM BLOG_BBS A
 WHERE bbs_hid=0
@@ -18,21 +14,6 @@ WHERE bbs_hid=0
 
 <!-- 메인 항목별 -->
 <select id="getTopicList" parameterType="java.lang.Integer" resultType="sist.co.Model.SistTopicDTO">
-<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, NVL(COUNT(B.BBS_SEQ),0) AS BBS_LIKES
-FROM BLOG_BBS A, BBS_LIKE B, TOPIC C
-WHERE A.BBS_SEQ = B.BBS_SEQ AND C.TOPIC_SEQ=#{t_seq}
-GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE
--->
-<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, NVL(COUNT(B.BBS_SEQ),0) AS BBS_LIKES
-FROM BLOG_BBS A, BBS_LIKE B
-WHERE A.TOPIC_SEQ=#{t_seq}  OR A.BBS_SEQ = B.BBS_SEQ AND B.BBS_SEQ=NULL
-GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE -->
-
-<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, COUNT(B.BBS_SEQ) AS BBS_LIKES
-FROM BLOG_BBS A, BBS_LIKE B
-WHERE A.TOPIC_SEQ=#{t_seq}
-GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE -->
-
 SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, bbs_like_count
 FROM BLOG_BBS 
 WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
@@ -55,5 +36,107 @@ FROM BLOG_BBS
 WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
 ORDER BY BBS_DATE DESC
 </select>
+
+
+
+
+	
+<!-- 페이징 메인 항목별 -->
+<!-- <select id="getPointChargePageListMain" parameterType="sist.co.Model.SistTopicPageDTO" resultType="sist.co.Model.SistTopicPageDTO">
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM 
+ (SELECT sub.BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT, ROWNUM AS RNUM FROM 
+ (SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT FROM blog_bbs WHERE TOPIC_SEQ=#{t_seq} ANDBBS_HID=0
+  ORDER BY BBS_DATE DESC)
+  sub)
+WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+</select>  -->
+
+<!-- 페이징 메인 전체 글 공감순-->
+<select id="getPointChargePageListMainAllLike" parameterType="sist.co.Model.SistTopicPageDTO" resultType="sist.co.Model.SistTopicPageDTO">
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM 
+ (SELECT sub.BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT, ROWNUM AS RNUM FROM 
+ (SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT FROM blog_bbs WHERE BBS_HID=0
+  ORDER BY BBS_LIKE_COUNT DESC)
+  sub)
+WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+</select>
+
+
+
+
+<!-- 메인 전체 페이징 -->
+<select id="getPointChargePageListMainAll" parameterType="sist.co.Model.SistTopicPageDTO" resultType="sist.co.Model.SistTopicPageDTO">
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM 
+ (SELECT sub.BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT, ROWNUM AS RNUM FROM 
+ (SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT FROM blog_bbs WHERE BBS_HID=0
+  ORDER BY BBS_DATE DESC)
+  sub)
+WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+</select>
+
+
+<!-- nav 페이징 -->
+<select id="getPointChargePageList" parameterType="sist.co.Model.SistTopicPageDTO" resultType="sist.co.Model.SistTopicPageDTO">
+SELECT BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM 
+ (SELECT sub.BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT, ROWNUM AS RNUM FROM 
+ (SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT FROM blog_bbs WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
+  ORDER BY BBS_LIKE_COUNT DESC)
+  sub)
+WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+</select>
+	
+
+<!-- nav 페이징 전체 -->
+<select id="getPointChargePageListAll" parameterType="sist.co.Model.SistTopicPageDTO" resultType="sist.co.Model.SistTopicPageDTO">
+SELECT BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM 
+ (SELECT sub.BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT, ROWNUM AS RNUM FROM 
+ (SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT FROM blog_bbs WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
+  ORDER BY BBS_DATE DESC)
+  sub)
+WHERE RNUM >= #{page01} AND #{page02} >=RNUM
+</select>	
+	
+
+<!-- 스팟 -->
+<!-- 오늘의 top글 보기 -->
+<select id="getTopList" parameterType="java.lang.Integer" resultType="sist.co.Model.SistTopicDTO">
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM BLOG_BBS 
+WHERE TOPIC_SEQ=#{t_seq} AND SUBSTR(BBS_DATE,1,10)=SUBSTR(SYSDATE,1,10) AND BBS_HID=0 AND ROWNUM BETWEEN 1 AND 6
+ORDER BY BBS_LIKE_COUNT DESC
+</select>
+
+
+
+
+<!-- 검색 -->
+<!-- 포스트 검색 -->
+<select id="getSearchPost" parameterType="sist.co.Model.SistTopicDTO" resultType="sist.co.Model.SistTopicDTO">
+SELECT DISTINCT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM BLOG_BBS
+WHERE 
+BBS_TITLE LIKE '%'||#{searchval}||'%' AND BBS_CONTENT LIKE '%'||#{searchval}||'%' OR  BBS_TITLE LIKE '%'||#{searchval}||'%' OR BBS_CONTENT LIKE '%'||#{searchval}||'%'
+ORDER BY BBS_LIKE_COUNT DESC
+</select>
+
+<!-- 블로그 검색 -->
+<select id="getSearchBlog" parameterType="sist.co.Model.SistTopicDTO" resultType="sist.co.Model.SistTopicDTO">
+SELECT DISTINCT BLOG_SEQ, M_ID, BLOG_TITLE, BLOG_NICKNAME, BLOG_INTRODUCE
+FROM BLOG
+WHERE BLOG_TITLE LIKE '%'||#{searchval}||'%' AND BLOG_INTRODUCE LIKE '%'||#{searchval}||'%' OR  BLOG_TITLE LIKE '%'||#{searchval}||'%' OR BLOG_INTRODUCE LIKE '%'||#{searchval}||'%'
+ORDER BY BLOG_TITLE DESC
+</select>
+
+
+<!-- 아이디 닉네임 검색 -->
+<!-- SELECT DISTINCT blog_seq, m_id, blog_title, blog_nickname
+FROM BLOG
+WHERE m_id LIKE '%'||#{searchval}||'%' OR blog_nickname LIKE '%'||#{searchval}||'%'
+ORDER BY blog_title DESC; -->
 
 </mapper>

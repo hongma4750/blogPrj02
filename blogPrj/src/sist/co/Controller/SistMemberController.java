@@ -68,10 +68,52 @@ public class SistMemberController {
 		logger.info("환영합니다. index.do 실행중");
 
 		//bys: 주제별리스트
+		// 최신순 저장
+		request.getSession().setAttribute("likes", 1);
+		
+		// 주제별 글보기
 		SistBlogDTO bdto = new SistBlogDTO();
-
+		
 		List<SistBlogDTO> blist = sistTopicService.getTopicListAll(bdto);
 		model.addAttribute("blist", blist);
+		
+		//페이지 수
+		String pageobj = request.getParameter("page");
+		int currentpage;
+		if (pageobj == null) {
+			currentpage = 1;
+		} else {
+			currentpage = Integer.parseInt(pageobj);
+		}
+						
+		int page01 = (currentpage - 1) * 5 + 1;
+		int page02 = currentpage * 5;
+								
+		SistTopicPageDTO pageDto = new SistTopicPageDTO();
+		pageDto.setPage01(page01);
+		pageDto.setPage02(page02);
+		
+					
+		List<SistTopicPageDTO> topicPageList = sistTopicService.getPointChargePageListMainAll(pageDto);
+		model.addAttribute("topicPageList",topicPageList);	
+		
+		
+		// 오늘의 top 글
+	
+		logger.info("환영합니다. todaytop.do  오늘의 톱!");
+			
+		String t_num = request.getParameter("t_seq");
+		int t_seq = 1;
+		
+		// 음악
+		List<SistTopicDTO> toplist = sistTopicService.getTopList(t_seq);
+		model.addAttribute("toplist", toplist);
+		
+		List<SistTopicDTO> top_mlist = sistTopicService.getTopList(2);
+		model.addAttribute("top_mlist", top_mlist);
+		
+		List<SistTopicDTO> top_slist = sistTopicService.getTopList(3);
+		model.addAttribute("top_slist", top_slist);
 
 		//bomyi
 		if((SistMemberVO)request.getSession().getAttribute("login")!=null){

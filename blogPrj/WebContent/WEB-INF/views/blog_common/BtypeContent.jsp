@@ -162,7 +162,7 @@
 						${blog.bbs_date }&nbsp;&nbsp;&nbsp;
 						<c:if test="${blog.m_id eq login.m_id }">
 							<a href="bbsupdate.do?bbs_seq=${blog.bbs_seq }" class="_btnupdate">수정</a> | 
-							<a href="bbsdel.do?bbs_seq=${blog.bbs_seq }&m_id=${login.m_id }" class="_btndel">삭제</a>
+							<a href="bbsdel.do?bbs_seq=${blog.bbs_seq }" class="_btndel">삭제</a>
 						</c:if>
 					</p>
 				</div>
@@ -177,11 +177,11 @@
 					<div class="write_reple">
 					<!-- 댓글달기 허용했으면 보여라 -->
 						<c:if test="${blog.bbs_comchk eq 1 }">
-							<a href="#none" class="reple_show${blogvar.count }">댓글쓰기</a>
+							<a href="#none" class="reple_show">댓글쓰기</a>
 						</c:if>
 					<!-- 공감하기 허용했으면 보여라 -->
 						<c:if test="${blog.bbs_likechk eq 1 }">
-							<a href="#none" class="sym${blogvar.count }">공감</a>
+							<a href="#none" class="sym">공감</a>
 							<!-- 공감버튼 클릭하면 ajax 함수 호출 -->
 								<input type="hidden" name="log_id" class="log_id" value="${login.m_id }"/>
 								<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blog.bbs_seq }"/>
@@ -209,64 +209,19 @@
 						
 				</div>
 				
-			
-<!-- --------------------------------------------------------------------------------------------------- -->			
-				
-				
-				
-				
-				<!-- 공감한 사람 리스트 -->
-			<!-- 공감 수 0이면  -->
-<%-- 				<div class="foot_sym${blogvar.count }" id="foot_sym" style="display:none;">
-					<h6>이 포스트에 공감한  사람이 없습니다.</h6>
-				</div>	
-			 --%>
-			
-			<!-- 공감 수가 1이상이면 -->
-				<input type="hidden" id="symsucheck${blogvar.count }" class="symsucheck"/>
-				
-				
-<%--  				<c:if test="${symsscheck eq 0}"> 
-					<div class="foot_sym${blogvar.count }" id="foot_sym" style="display:none;">
-					<h6>이 포스트에 공감한  사람이 없습니다.</h6>
-				</div>	
-				</c:if>
-				<c:if test="${symsscheck ne 0}"> --%>
-					<div class="foot_sym${blogvar.count }" id="foot_sym" style="display:none;">
-						<%-- <h6>이 포스트에 공감한 블로거</h6>
-						<table>
-						<colgroup>
-							<col>
-							<col width="160">
-						</colgroup>
-						<tbody>
-							<tr>
-							<th>
-								<a href="#none" id="pp_id${blogvar.count }">${people.m_id }</a>
-								<span class="sym_likedate" id="pp_date${blogvar.count }"><small>${people.like_date }</small></span>
-								<span>&nbsp;&nbsp;</span>
-								<span style="color:green;"><small>x</small></span>
-							</th>
-							<td class="sym_name_right">
-								<small><a href="#none" id="pp_name${blogvar.count }">${people.m_name }</a></small>
-							</td>
-							</tr>
-					
-						</tbody>
-						</table> --%>
-					</div>
-			<%-- 	</c:if>
-				 --%>
-				
-				
-				
-				
-					
-<!-- --------------------------------------------------------------------------------------------------- -->			
+				<!-- 공감한 사람 리스트 -->	
+				<div class="foot_sym" style="display:none;">
+					<h6>이 포스트에 공감한 블로거</h6>
+					<span>퐁당</span>
+					<span style="color:silver;"><small>2016.09.09.</small></span> &nbsp;&nbsp;
+					<span style="color:silver;"><small>13:52</small></span>
+					<span style="color:silver;"><small>x</small></span>
+					<span style="float:right"><small>bee</small></span>
+				</div>
 				
 				
 				<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
-				<div class="foot_reple${blogvar.count }" id="foot_reple" style="display:none;">
+				<div class="foot_reple" style="display:none;">
 				<!-- 댓글 리스트 -->
 					<div class="r_re">
 						<ul>
@@ -411,11 +366,9 @@ $(document).ready(function(){
 	//ajax
 	var url = "<%=application.getContextPath() %>/likecount.do"; //컨트롤러 호출
 	var hurl = "<%=application.getContextPath() %>/likeheart.do";
-	var lpeopleurl = "<%=application.getContextPath() %>/likepeople.do";
 	
 	var likesu = "";
 	var hsu = "";
-	var likepeoseq = "";
 	
 	//좋아요 수
 	for(var j =1; j<=leng; j++){
@@ -423,6 +376,9 @@ $(document).ready(function(){
 		var lcount_class = lcount_el.getAttribute('class');//id를 통해 bbs_seq가져온다
 		
 			likesu = "bbs_seq=" + lcount_class;
+		
+			hsu = "m_id=" +$(".log_id").val();
+			hsu += "&bbs_seq=" + lcount_class;
 			
 			//seq_num취득
 			//like count setting
@@ -433,16 +389,17 @@ $(document).ready(function(){
 				data: likesu,
 				success: function(su) { //성공 시 호출 할 함수
 					$("#ss"+j.toString()).text(su);
-					$("#symsucheck"+j.toString()).attr('value',su);
 				}	
 			});
 				
 	}
 	
-	//하트
-	for(var i =1; i<=leng; i++){ 
+	
+	for(var i =1; i<=leng; i++){
 		var lcount_el2 = document.getElementById('ss'+i.toString()); 
 		var lcount_class2 = lcount_el2.getAttribute('class');//id를 통해 bbs_seq가져온다
+		
+			likesu = "bbs_seq=" + lcount_class2;
 		
 			hsu = "m_id=" +$(".log_id").val();
 			hsu += "&bbs_seq=" + lcount_class2;
@@ -467,118 +424,43 @@ $(document).ready(function(){
 		
 	}
 	
-/* --------------------------------------------------------------------------------------------------- */	
- 
- var pleng ='';
-
- 
-//like pepole list
-/* 	for(var k =1; k<=leng; k++){ //bbs list 공감허용한 수만큼 돈다
-		var lpeople_el = document.getElementById('ss'+k.toString()); 
-		var lpeople_class = lpeople_el.getAttribute('class');//id를 통해 bbs_seq가져온다
+	
+	//likelist 좋아요 누른건 꽉찬 하트
+/* 	<c:forEach items="${likelist }" var="llist" varStatus="likevar">
+		var like_bseq = ${llist.bbs_seq}; //like.bbs_seq
+		var llllike = '.himg_sname'+like_bseq;
+		exc_num.push(like_bseq); //좋아요 3번누르면 3번들어감
 		
-		var insymsu = document.getElementById('symsucheck'+k.toString()); 
-		var insymval = insymsu.getAttribute('value');//공감수가 몇인지 가져온다
-		
-		likepeoseq = "bbs_seq=" + lpeople_class;
-		
-			//seq_num취득
-			//like people data setting
-			$.ajax({
-				type: "POST",
-				url: url,
-				async:false,
-				data: likepeoseq,
-				success: function(plist) { //성공 시 호출 할 함수
-					var likecontent='';
-					if(insymval == 0){
-						likecontent+="<h6>이 포스트에 공감한  사람이 없습니다.</h6>";
-						$(".foot_sym"+k.toString()).html(likecontent);
-					}else{
-						likecontent+="<h6>이 포스트에 공감한 블로거</h6>";
-						likecontent+="<table>";
-						likecontent+="<colgroup>";
-						likecontent+="<col>";
-						likecontent+="<col width='160'>";
-						likecontent+="</colgroup>";
-						likecontent+="<tbody>";
-						likecontent+="<tr>";
-						likecontent+="<th>";
-						likecontent+="<a href='#none' id='pp_id${blogvar.count }'>${plist.m_id }</a>";
-						likecontent+="<span class='sym_likedate' id='pp_date${blogvar.count }'><small>${plist.like_date }</small></span>";
-						likecontent+="<span>&nbsp;&nbsp;</span>";
-						likecontent+="<span style='color:green;'><small>x</small></span>";
-						likecontent+="</th>";
-						likecontent+="<td class='sym_name_right'>";
-						likecontent+="<small><a href='#none' id='pp_name${blogvar.count }'>${plist.m_name }</a></small>";
-						likecontent+="</td>";
-						likecontent+="</tr>";
-						likecontent+="</tbody>";
-						likecontent+="</table>";
-						$(".foot_sym"+k.toString()).html(likecontent);
-					}
-					
-				}	
-			});
-				
+		<c:if test="${llist.m_id eq login.m_id }">
+			$(llllike).html("<i class='fa fa-heart' aria-hidden='true' style='color:red; font-size:11px;'></i>");
+		</c:if>
+	</c:forEach>	
+	
+	
+	//var leng =  '${fn:length(likerest)}'; //bbs 게시물 전체 개수
+	//꽉찬 하트아닌건 빈 하트를 넣어줌
+	for(var i = 1; i <=leng; i++){
+		if(exc_num[i]!=i){
+			$(".himg_sname"+i.toString()).html("<i class='fa fa-heart-o' aria-hidden='true' style='color:red; font-size:11px;'></i>");
+		}
 	} */
-
-	
-	//공감창 열기
-	for(var a =1; a<=leng; a++){ //bbs list 공감허용한 수만큼 돈다
-		var check_sym = 0;
-		$(".sym"+a.toString()).click(function(){
-			var a_class = $(this).attr('class'); //class명 가져오기
-			
-			var alen = a_class.length;
-			var aa = a_class.substring(3,alen); //숫자만 잘라냄
-			
-			var aacheck = 0;
-			
-			if(aacheck==0){ //공감이랑 댓글같이 열지 못하게
-				aacheck = 1;
-				$(".foot_sym"+aa).show();
-				$(".foot_reple"+aa).hide();
-			}else{
-				aacheck = 0;
-				$(".foot_sym"+aa).hide();
-				$(".foot_reple"+aa).show();
-
-			}
-			
-		})	
-	}
-	
-	
-	//댓글창 열기
-	for(var b=1; b<=leng; b++){ //bbs list 공감허용한 수만큼 돈다
-		var check_rep = 0;
-		$(".reple_show"+b.toString()).click(function(){
-			var b_class = $(this).attr('class'); //class명 가져오기
-			
-			var blen = b_class.length;
-			var bb = b_class.substring(10,blen); //숫자만 잘라냄
-			
-			var bbcheck = 0;
-			
-			if(bbcheck==0){
-				bbcheck = 1;
-				$(".foot_sym"+bb).hide();
-				$(".foot_reple"+bb).show();
-
-			}else{
-				bbcheck = 0;
-				$(".foot_sym"+bb).show();
-				$(".foot_reple"+bb).hide();
-
-			}
-			
-		})	
-	}
-
 	
 });
-
+/* loading - heart state */
+/* function heartox(bbs_num){//string형(하트반환)
+	var heart = bbs_num; //int형
+	return heart;
+}
+ */
+/* loading - likecount return */
+/* function likesu(bbs_num){ //int형 반환
+	int likecount = 0;
+	
+	
+	return likecount.length > 0 ?likecount :0;
+	
+}
+ */
 /* bbs_seq matching */
 /* like counting */
 	var check_openList = 0;
@@ -613,15 +495,41 @@ $(document).ready(function(){
 		
 	})
 	
-
+	//공감 창 열기
+	var check_sym = 0;
+	$(".sym").click(function(){
+		if(check_sym==0){
+			check_sym = 1;
+			$(".foot_sym").show();
+		}else if(check_sym==1 && check_reList==1){
+			check_reList = 0;
+			$(".foot_reple").hide();
+		}
+		else{
+			check_sym = 0;
+			$(".foot_sym").hide();
+			
+		}
+		
+	})
 	
-
 	
-	
-	
-	
-	
-/* 
+	//댓글 창 열기
+	var check_reList = 0;
+	$(".reple_show").click(function(){
+		if(check_reList == 0){
+			check_reList = 1;
+			$(".foot_reple").show();
+		}else if(check_sym==1 && check_reList==1){
+			check_sym = 0;
+			$(".foot_sym").hide();
+		}else{
+			check_reList = 0
+			$(".foot_reple").hide();
+		}
+		
+		
+	});
 	
 	
 	//댓글 내부 댓글 창 열기
@@ -636,7 +544,7 @@ $(document).ready(function(){
 			
 		}
 		
-	}); */
+	});
 /*blog_like/////////////////*/
 function likeajax(bbs_seq,loopnum){
 	var url = "<%=application.getContextPath() %>/bbs_like.do"; //컨트롤러 호출

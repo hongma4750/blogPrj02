@@ -46,7 +46,6 @@ public interface SistMemberService {
 	
 	List selectNewMessage(SistMessage sm) throws Exception;
 	
-	void sendMessageAF(SistMessage sm) throws Exception;
 	
 	
 	
@@ -54,7 +53,4 @@ public interface SistMemberService {
 	
 	
 	List selectAllMessage(SistMessage sm) throws Exception;
-
-	//ssunhj: getmember
-		SistMemberVO getmember(String m_id)throws Exception;
 }
