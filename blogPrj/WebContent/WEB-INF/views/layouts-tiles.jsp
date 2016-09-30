@@ -66,11 +66,11 @@
 		
 		<!-- 중간-오른쪽  <로그인박스, 공지사항> -->
 		<div id="template_aside" style="background-color:#FFB2D9;">
-			<div id="login_box" >
+			<div id="login_box" style="height:350px" >
 				<tiles:insertAttribute name="login_box"/>
 			</div>
 			
-			<div id="noticeArea">
+			<div id="noticeArea"  style="height:350px">
 				<tiles:insertAttribute name="noticeArea"/>
 			</div>
 		</div>

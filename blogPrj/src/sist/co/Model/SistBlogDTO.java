@@ -67,13 +67,16 @@ public class SistBlogDTO {
 	private int bbs_likechk;
 	private int bbs_scrapchk;
 	private String bbs_date;
+	private int bbs_like_count;
 	
+	// 공감 사용
+	private int bbs_likes;
 	
 	public SistBlogDTO(){}
 	
 	//필수입력부분
 	public SistBlogDTO(int bbs_seq, String m_id, int bbs_ca_seq, String bbs_title, String bbs_content,
-			int bbs_hid, int bbs_comchk, int bbs_likechk ,int bbs_scrapchk, String bbs_date){
+			int bbs_hid, int bbs_comchk, int bbs_likechk ,int bbs_scrapchk, String bbs_date,int bbs_like_count){
 		this.bbs_seq = bbs_seq;
 		this.m_id = m_id;
 		this.bbs_ca_seq = bbs_ca_seq;
@@ -84,6 +87,8 @@ public class SistBlogDTO {
 		this.bbs_likechk = bbs_likechk;
 		this.bbs_scrapchk = bbs_scrapchk;	
 		this.bbs_date = bbs_date;
+		this.bbs_like_count = bbs_like_count;
+		
 	}
 	
 	public int getBbs_seq() {
@@ -164,5 +169,21 @@ public class SistBlogDTO {
 	public void setBbs_date(String bbs_date) {
 		this.bbs_date = bbs_date;
 	}
+
+	public int getBbs_likes() {
+		return bbs_likes;
+	}
+	public void setBbs_likes(int bbs_likes) {
+		this.bbs_likes = bbs_likes;
+	}
+
+	public int getBbs_like_count() {
+		return bbs_like_count;
+	}
+
+	public void setBbs_like_count(int bbs_like_count) {
+		this.bbs_like_count = bbs_like_count;
+	}
+	
 	
 }

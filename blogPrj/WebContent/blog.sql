@@ -6,6 +6,8 @@ select * from BLOG_BBS;
 DROP TABLE blog_bbs
 CASCADE CONSTRAINT;
 
+drop sequence seq_blogbbs;
+
 create table blog_bbs(
 	bbs_seq number not null, --seq
 	m_id varchar2(50) not null,--회원id
@@ -20,15 +22,15 @@ create table blog_bbs(
 	bbs_likechk number not null, --공감 허용 여부. 공감허용(0), 공감비허용(1)
 	bbs_scrapchk number not null, --스크랩 허용 여부
 	bbs_date date not null,
+	bbs_like_count number default 0 not null ,
 	primary key(bbs_seq)
 );
 
 create sequence seq_blogbbs
 start with 1 increment by 1;
 
-drop sequence seq_blogbbs;
-  
 
+ 
 alter table blog_bbs
 add constraint fk_blogbbs_id foreign key(m_id)
 references member(m_id);
@@ -44,6 +46,8 @@ select * from bbs_like;
 DROP TABLE bbs_like
 CASCADE CONSTRAINT;
 
+drop sequence seq_bbslike;
+
 create table bbs_like(
 	like_seq number not null,
 	m_id varchar2(50) not null,
@@ -57,7 +61,7 @@ create table bbs_like(
 create sequence seq_bbslike
 start with 1 increment by 1;
 
-drop sequence seq_bbslike;
+
   
 
 alter table bbs_like

@@ -43,7 +43,7 @@
 
 			<select id="_selgroup" name="fnd_groupname" class="form-control input-sm" style="width: 200px; float: left;">
 			  <c:forEach items="${glist }" var="gl">
-				<option value="${gl.fg_groupname }">${gl.fg_groupname }</option>
+				<option value="${gl.fnd_groupname }">${gl.fnd_groupname }</option>
 				
 			  </c:forEach>
 			</select> 
@@ -75,7 +75,8 @@ $(function(){
 	});
 });
 
-//서로이웃받기여부 확인버튼
+
+ 
 $("#_btnOk").click(function name(){
 	if($("#_gname").val()==""){
 		alert($("#_gname").attr("data-msg") + " 입력하세요");
@@ -86,7 +87,8 @@ $("#_btnOk").click(function name(){
 	
 });
 
-//팝업창닫기
+
+ //팝업창닫기
 function popupClose(){
 	window.close();
 }
@@ -103,45 +105,60 @@ function newgroup(){
 }
 
 
-//ajax로 바꾸기
-function checkChk(){
-	$.ajax({
-		type:"POST",
-		url:"./.do", //controller로
-		async:true,
-		data:"",
-		success:function(a){
-			outputList(a);
-	}
+/* if($("input:checkbox[id='_chkg']").prop("checked")==false){
+	//체크false상태로설정
+	alert('체크안됨');
+	$("_chkg").click(function(){
+		alert(ok);
+		//기존 그룹 name값을 변경하고
+		$("#_selgroup").attr('name','');
+		alert($("#_selgroup").attr('name'));
 		
-});
+		//input type=text의 name을 넘기기
+		$("#_gname").attr('name','fnd_groupname');
+		alert($("#_gname").attr('name'));
+	});
 	
-function outputList(a){	
-	//그룹추가 버튼클릭시//그룹추가 버튼클릭시
-}
+} */
 
-}
-/* if($("input:checkbox[id='_chkg']").prop("checked",false)){
-			//체크false일때
-			
-}
+
 $("#_addG").click(function(){
+$("input:checkbox[id='_chkg']").click(function(){
+
+    if(this.checked){//checked 처리된 항목의 값
+    	alert(this.value);
+    	//기존 그룹 name값을 변경하고
+		$("#_selgroup").attr('name','');
+		alert($("#_selgroup").attr('name'));
+
+		//input type=text의 name을 넘기기
+		$("#_gname").attr('name','fnd_groupname');
+		alert($("#_gname").attr('name'));
+    }
+});
+}); 
+
+/* 
+$("#_addG").click(function(){
+	if($("input:checkbox[id='_chkg']").prop("checked",false)){
+		//체크false상태로설정
+		alert('체크안됨');
+		
+		//$("_chkg").click(function(){
+
+	} 
+	if ($("input:checkbox[id='_chkg']").prop("checked",true)) {
 		alert('ok');
-		if($("input:checkbox[id='_chkg']").prop("checked",false)){
-			//체크false일때
-			
-		}else{
-			//체크true일때
-			alert(ok);
-			//기존 그룹 name값을 변경하고
-			$("#_selgroup").attr('name','');
-			alert($("#_selgroup").attr('name'));
-			
-			//input type=text의 name을 넘기기
-			$("#_gname").attr('name','fnd_groupname');
-			alert($("#_gname").attr('name'));
-		}
-}); */
+		//기존 그룹 name값을 변경하고
+		$("#_selgroup").attr('name','');
+		alert($("#_selgroup").attr('name'));
+
+		//input type=text의 name을 넘기기
+		$("#_gname").attr('name','fnd_groupname');
+		alert($("#_gname").attr('name'));
+	}
+
+});  */
 </script>
 
 </body>

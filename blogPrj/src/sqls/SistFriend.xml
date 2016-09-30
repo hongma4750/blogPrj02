@@ -42,16 +42,24 @@
     
     <select id="getGroups" parameterType="java.lang.String"
     resultType="sist.co.Model.SistFgroupVO">
-    SELECT FG_GROUPNAME FROM FGROUP WHERE FG_MYID=#{fg_myid}
+    SELECT FND_GROUPNAME FROM FGROUP WHERE FND_MYID=#{fnd_myid}
     </select>
     
     <insert id="addGroup" parameterType="sist.co.Model.SistFgroupVO">
-    INSERT INTO FGROUP VALUES (SEQ_FGROUP.NEXTVAL, #{fg_groupname}, #{fg_myid}, #{fg_openchk})
+    INSERT INTO FGROUP VALUES (SEQ_FGROUP.NEXTVAL, #{fnd_groupname}, #{fnd_myid}, #{fg_openchk})
     </insert>
+    
+    <update id="moveGroup" parameterType="sist.co.Model.SistFriendVO">
+    UPDATE FRIEND SET FND_GROUPNAME=#{fnd_groupname} WHERE FND_SEQ=#{fnd_seq} 
+    </update>
     
     <insert id="addFriend" parameterType="sist.co.Model.SistFriendVO">
     INSERT INTO FRIEND VALUES (SEQ_FRIEND.NEXTVAL, #{fnd_myid}, #{fnd_fndid}, #{fnd_groupname}, #{fnd_chk},SYSDATE,0)
     </insert>
+    
+    <delete id="delFriend" parameterType="sist.co.Model.SistFriendVO">
+    DELETE FRIEND WHERE FND_SEQ=#{fnd_seq}
+    </delete>
     
     <insert id="addDblFollowing" parameterType="sist.co.Model.SistDblFollowingVO">
     INSERT INTO DBLFOLLOWING VALUES (SEQ_DBLFOLLOWING.NEXTVAL, #{df_send}, #{df_receive},#{fnd_groupname},#{df_msg},SYSDATE,0,'')
@@ -79,5 +87,43 @@
     resultType="sist.co.Model.SistDblFollowingVO">
     SELECT * FROM DBLFOLLOWING WHERE DF_SEQ=#{df_seq}
     </select>
+    
+    <select id="cntR_2Fol" parameterType="java.lang.String"
+    resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM DBLFOLLOWING WHERE DF_RECEIVE=#{df_receive} AND DF_ACCEPT=0
+    </select>
+    
+    <select id="cntfriend" parameterType="java.lang.String"
+    resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM FRIEND WHERE FND_MYID=#{fnd_myid}
+    </select>
+    
+    <select id="getGroupbyFriends" parameterType="java.lang.String"
+    resultType="sist.co.Model.SistFriendVO">
+    SELECT * from friend WHERE FND_MYID=#{fnd_myid}
+    </select>
+    
+    <select id="getAllBlogList" resultType="sist.co.Model.SistBlogDTO">
+		SELECT * FROM BLOG_BBS
+		ORDER BY BBS_DATE DESC
+	</select>
+    
+    
+    <!-- 검색 -->
+    <select id="getFriendPagingList"
+	parameterType="sist.co.Model.SistFriendParamVO"
+	resultType="sist.co.Model.SistFriendVO">
+	SELECT fnd_seq, fnd_myid, fnd_fndid, fnd_groupname, fnd_chk, fnd_foldate, 
+	fnd_newAlert
+	FROM FRIEND
+	    WHERE 1 = 1 AND FND_MYID=#{fnd_myid}
+	    <if test="s_category != '' and s_category != null and s_keyword != '' and s_keyword != null">
+			<if test="s_category == 'fnd_fndid'"> AND fnd_fndid like '%'||#{s_keyword}||'%'</if>	
+			<if test="s_category == 'fnd_groupname'"> AND fnd_groupname like '%'||#{s_keyword}||'%'</if>	
+		</if>
+		
+	</select>
+    
+    
     
   </mapper>

@@ -32,7 +32,7 @@
   <c:forEach items="${glist }" var="gl">
   <tr>
    
-    <td>${gl.fg_groupname }</td>
+    <td>${gl.fnd_groupname }</td>
   </tr>  
   </c:forEach>
 </table>

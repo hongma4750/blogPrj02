@@ -2,13 +2,18 @@ package sist.co.Service;
 
 import java.util.List;
 
+import sist.co.Model.SistBlogDTO;
 import sist.co.Model.SistDblFollowingVO;
 import sist.co.Model.SistFgroupVO;
+import sist.co.Model.SistFriendParamVO;
 import sist.co.Model.SistFriendVO;
 import sist.co.Model.SistFsettingVO;
 import sist.co.Model.SistMemberVO;
 
 public interface SistFriendService {
+	
+	//이웃 수
+	public int cntfriend(String myid) throws Exception;
 	
 	//이웃 한명
 	public SistFriendVO getFriend(String myid) throws Exception;
@@ -32,9 +37,15 @@ public interface SistFriendService {
 
 	//그룹추가
 	public boolean addGroup(SistFgroupVO group) throws Exception;
+	
+	//그룹이동
+	public boolean moveGroup(SistFriendVO friend)throws Exception;
 
 	//이웃추가
 	public boolean addFriend(SistFriendVO friend) throws Exception;
+	
+	//이웃 삭제
+	public boolean delFriend(SistFriendVO friend) throws Exception;
 
 	//서로이웃팔로잉추가
 	public boolean addDblFollowing(SistDblFollowingVO dblfol) throws Exception;
@@ -53,4 +64,17 @@ public interface SistFriendService {
 	
 	//팔로잉조회
 	public SistDblFollowingVO get2fol(int seq) throws Exception;
+	
+	//서로이웃신청 미확인한 수
+	public int cntR_2Fol(String m_id) throws Exception;
+	
+	//getGroupbyFriends
+	public List<SistFriendVO> getGroupbyFriends(String m_id) throws Exception;
+	
+	//모든블로그리스트
+	public List<SistBlogDTO> getAllBlogList() throws Exception;
+	
+	//검색 / 페이징
+	public List<SistFriendVO> getFriendPagingList(SistFriendParamVO param) throws Exception;
+
 }

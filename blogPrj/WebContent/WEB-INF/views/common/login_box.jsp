@@ -22,37 +22,82 @@
 
 	
 	
-	
 	<c:choose>
 		<c:when test="${login.m_id ne null }">
-			<a href="blog.do?fid=${login.m_id }"" title="내 블로그 가기">내 블로그 가기</a>
+		
+		
+			<a href="blog.do?fid=${login.m_id }" title="내 블로그 가기">내 블로그 가기</a>
 			
 			<ul class="nav nav-tabs" role="tablist" id="myTab">
   <li role="presentation" class="active" data-target="#layerpop" data-toggle="modal"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">내 블로그 소식</a></li>
-  <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">내가 남긴 글</a></li>
+  <%-- <li role="presentation"><a href="blog.do?fid=${login.m_id }" aria-controls="profile" role="tab" data-toggle="tab">내블로그</a></li> --%>
 </ul>
-<a href="blog.do">오늘 방문수 n</a>&nbsp;&nbsp;&nbsp;<a href="setdblfollow.do">서로이웃 신청 n</a> 
+
+<br>
+<%-- <a href="blog.do?fid=${login.m_id }">오늘 방문수 n</a>&nbsp;&nbsp;&nbsp; --%>
+<code><a href="f_receive.do" ><b>서로이웃 신청&nbsp;<c:if test="${not empty cnt}">${cnt}</c:if></b></a></code> 
 <br><br>
-홍마님이 서로이웃 신청을 했습니다. X
-어제
-<hr>
-<strong>댓글</strong> 2016년 8월 30일 오후5...[1]
-by홍마 어제
-<br>
-<br>
+    <form style="height:150px">
+			<table>
+
+				<c:if test="${not empty Rfolist}">
+					<c:forEach items="${Rfolist}" var="rl" end="2">
+
+						<!-- 미확인건만 -->
+						<c:if test="${rl.df_accept==0}">
+
+							<tr align="left">
+								<td><a href="f_receive.do"><code
+											style="color: #2eaa08;">${rl.df_send}</code>님이 서로이웃 신청을 했습니다.</a></td>
+							</tr>
+							<tr align="left">
+								<td align="left">${rl.df_date}</td>
+							</tr>
+
+						</c:if>
+						<!-- 미확인건만 -->
+
+					</c:forEach>
+				</c:if>
+
+			</table>
+	</form>
+	<br>
+    
+
+
+
 
 <ul class="nav nav-tabs" role="tablist" id="myTab">
-  <li role="presentation" class="active" ><a href="settingmain.do" >내B이웃설정</a></li>
-  <li role="presentation" class="active" ><a href="#none" >글쓰기</a></li>
-  <li role="presentation" class="active" ><a href="blog.do" >이웃B</a></li>
+  <li role="presentation" class="active" ><a href="settingmain.do" >관리</a></li>
+  <li role="presentation" class="active" ><a href="bbswrite.do" >글쓰기</a></li>
+  <li role="presentation" class="active" ><a href="#" id="friendBlog">블로그</a></li>
+  
 </ul>
 
 <!-- 이웃블로그 버튼 클릭_이웃리스트 div -->
-<div id="friendlist" style="position:absolute; top:40px; z-index:3; 
-     background-color: #fff; border:1px solid #000;width:300px; display: none;">
-  <button type="button" id="btnClose" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>&nbsp;&nbsp;</button></h5>
-  <select><option selected="selected">그룹전체</option></select>
+
+<div id="friendlist" style="position:absolute; top:325px; z-index:3; left:-150px; 
+     background-color: #fff; border:3px solid #eaeaea;width:400px; height:500px; display: none;">
+  
+  <!-- 이웃리스트jsp:include -->
+  <jsp:include page="../friend/loginbox/friendBlogDiv.jsp" flush="true" />
+  <!-- 이웃리스트jsp:include -->
+  
+  <!-- 로그인박스, 이웃블로그의 이웃블로그목록div -->
+
+
+ 
 </div>
+<!-- 로그인박스, 이웃블로그의 이웃블로그목록div -->
+
+
+
+
+<br>
+
+
+
 
 		</c:when>
 		<c:otherwise>
@@ -83,3 +128,30 @@ by홍마 어제
 	</c:choose>
 	
 </div>
+
+
+<script>
+
+//친구목록 보이기
+$("#friendBlog").click(function(){
+	
+	if(document.all.friendlist.style.display == "block"){
+		document.all.friendlist.style.display = "none";
+	}else{
+		document.all.friendlist.style.display = "block";	
+	}
+});
+
+/* //검색 버튼 클릭시
+$("#_btnSearch").click(function(){
+	if($("#_s_keyword").val()==""){
+		alert('검색어를 입력해주세요.');	
+	}
+});
+
+$("#_btnSearch").click(function(){
+	$("#_frmFormSearch").attr({"target":"_self","action":""}).submit();
+	document.all.friendlist.style.display = "block";
+}); */
+
+</script>

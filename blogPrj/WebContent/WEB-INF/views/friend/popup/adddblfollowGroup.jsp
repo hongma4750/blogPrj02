@@ -35,21 +35,25 @@
 
            <input type="hidden" name="df_receive" value="<%=blogId%>" /> 
            <input type="hidden" name="df_send" value="${login.m_id }" /> 
+            
+           <input type="hidden" name="fnd_fndid" value="<%=blogId %>"/>
+           <input type="hidden" name="fnd_myid" value="${login.m_id }"/>
+           <input type="hidden" name="fnd_chk" value="1"/>
 
 			<div style="float: left;">그룹선택&nbsp;</div>
 
-		<select name="fnd_groupname" class="form-control input-sm" style="width: 200px; float: left;">
+		<select id="_selgroup" name="fnd_groupname" class="form-control input-sm" style="width: 200px; float: left;">
 			  <c:forEach items="${glist }" var="gl">
-				<option value="${gl.fg_groupname }">${gl.fg_groupname }</option>
+				<option value="${gl.fnd_groupname }">${gl.fnd_groupname }</option>
 				
 			  </c:forEach>
 			</select> 
-		&nbsp;<a class="btn btn-default btn-xs" onclick="newgroup();">그룹추가</a>
+		&nbsp;<a class="btn btn-default btn-xs" id="_addG" onclick="newgroup();">그룹추가</a>
 		<br><br>
 		
 		
 <div id="newgroup" style="display:none">
-&nbsp;&nbsp;<input id="_chkg" name="chkg" type="checkbox" checked=""/> <input type="text" id="_gname" name="" data-msg="그룹명을" value="새 그룹"/>
+&nbsp;&nbsp;<input id="_chkg" name="chkg" type="checkbox"/> <input type="text" id="_gname" name="" data-msg="그룹명을" value="새 그룹"/>
 <select name="openChk"><option selected="selected">공개</option><option>비공개</option></select>
 </div>
 <br>
@@ -98,6 +102,22 @@ function newgroup(){
 	}
 }
 
+
+$("#_addG").click(function(){
+	$("input:checkbox[id='_chkg']").click(function(){
+
+	    if(this.checked){//checked 처리된 항목의 값
+	    	alert(this.value);
+	    	//기존 그룹 name값을 변경하고
+			$("#_selgroup").attr('name','');
+			alert($("#_selgroup").attr('name'));
+
+			//input type=text의 name을 넘기기
+			$("#_gname").attr('name','fnd_groupname');
+			alert($("#_gname").attr('name'));
+	    }
+	});
+}); 
 </script>
 
 

@@ -9,6 +9,7 @@ import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.crypto.Cipher;
@@ -36,10 +37,17 @@ import nl.captcha.servlet.CaptchaServletUtil;
 import nl.captcha.text.producer.DefaultTextProducer;*/
 import sist.co.Model.FUpUtil;
 import sist.co.Model.SendEmail;
+import sist.co.Model.SistBlogDTO;
+import sist.co.Model.SistDblFollowingVO;
+import sist.co.Model.SistFgroupVO;
+import sist.co.Model.SistFriendParamVO;
+import sist.co.Model.SistFriendVO;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 import sist.co.Model.YesMember;
+import sist.co.Service.SistFriendService;
 import sist.co.Service.SistMemberService;
+import sist.co.Service.SistTopicService;
 
 
 
@@ -50,10 +58,74 @@ public class SistMemberController {
 	 
 	@Autowired
 	SistMemberService sistMemberService;
+	@Autowired
+	SistFriendService sistFriendService;
+	@Autowired
+	SistTopicService sistTopicService;
 
 	@RequestMapping(value="index.do",method=RequestMethod.GET)
-	public String index(Model model){
+	public String index(HttpServletRequest request, Model model)throws Exception{
 		logger.info("환영합니다. index.do 실행중");
+
+		//bys: 주제별리스트
+		SistBlogDTO bdto = new SistBlogDTO();
+
+		List<SistBlogDTO> blist = sistTopicService.getTopicListAll(bdto);
+		model.addAttribute("blist", blist);
+
+		//bomyi
+		if((SistMemberVO)request.getSession().getAttribute("login")!=null){
+			String m_id = ((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+			
+			//bomyi:서로이웃신청받은 수
+			int cnt = sistFriendService.cntR_2Fol(m_id);
+			
+			if(cnt>=0){
+				model.addAttribute("cnt", cnt);
+			}
+			
+			//bomyi:서로이웃 신청 알림 내역
+			List<SistDblFollowingVO> Rfolist = sistFriendService.getReceiveDblFols(m_id);
+			if(Rfolist!=null){
+				model.addAttribute("Rfolist", Rfolist);
+			}
+			
+			//bomyi:이웃목록 div / 검색
+			//그룹조회
+			List<SistFgroupVO> glist = new ArrayList<SistFgroupVO>();
+			glist = sistFriendService.getGroups(m_id);
+			if(glist!=null){
+				model.addAttribute("glist", glist);
+			}
+			
+			/*List<SistFriendVO> flist = sistFriendService.getFriends(m_id);
+			if(flist!=null){
+				model.addAttribute("flist", flist);
+			}*/
+			
+			SistFriendParamVO param = new SistFriendParamVO();
+			System.out.println(param);
+			param.setFnd_myid(m_id);
+			String r_s_category =request.getParameter("s_category");
+			param.setS_category(r_s_category);
+			String r_s_keyword = request.getParameter("s_keyword");
+			param.setS_keyword(r_s_keyword);
+			//카테고리, 키워드
+			
+			
+			List<SistFriendVO> flist = sistFriendService.getFriendPagingList(param);
+			System.out.println(param);
+			if(flist!=null){
+				model.addAttribute("flist", flist);
+				
+				model.addAttribute("s_category", param.getS_category());
+				model.addAttribute("s_keyword", param.getS_keyword());
+			}
+		}
+		//-----------
+				
+				
+		
 		return "index.tiles";
 	}
 	
@@ -82,7 +154,6 @@ public class SistMemberController {
 
 		request.setAttribute("publicKeyModulus", publicKeyModulus);
 		request.setAttribute("publicKeyExponent", publicKeyExponent);
-		
 		
 		return "login.tiles";
 	}
@@ -140,6 +211,7 @@ public class SistMemberController {
 				//세션에 등록		--> 이후 매초마다 새로운걸로 갱신해야됨
 				request.getSession().setAttribute("myMessageCount", myMessageCount);
 				request.getSession().setAttribute("newMyMessageList", newMyMessageList);
+				
 				
 				return "redirect:index.do";
 			}
@@ -812,8 +884,28 @@ public class SistMemberController {
 	  }
 	  
 	 }
+	
+	/*//bomyi:이웃블로그 목록 //검색 / 페이징
+	 @RequestMapping(value="friendDiv.do",method={RequestMethod.GET,RequestMethod.POST})
+		public String friendDiv(HttpServletRequest request,SistFriendParamVO param, Model model)throws Exception{
+			logger.info("환영합니다. friendDiv.do 실행중");
+			
+			//이웃목록
+			//'로그인 한 사람' 정보 취득
+			String id = ((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+			
+			//그룹조회
+			List<SistFgroupVO> glist = new ArrayList<SistFgroupVO>();
+			glist = sistFriendService.getGroups(id);
+			model.addAttribute("glist", glist);
+			
+	    	List<SistFriendVO> flist = sistMemberService.getFriendPagingList(param);
+	    	model.addAttribute("flist", flist);
+	    	
+	    	model.addAttribute("s_category", param.getS_category());
+	    	model.addAttribute("s_keyword", param.getS_keyword());
+			
+			return "redirect:index.do";
+		}*/
 	 
-	
-	
-	
 }
