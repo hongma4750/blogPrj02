@@ -15,7 +15,7 @@ $(document).ready(function(){
 
 
 function deleteImg(){
-	$("#m_photo").val("/blogPrj/upload/no_image.gif");
+	$("#m_photo").val("/TeamProject03/upload/no_image.gif");
 	
 	$("#myImg").attr("src",$("#m_photo").val());
 	$("#exampleInputFile").val("");

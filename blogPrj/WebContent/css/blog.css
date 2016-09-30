@@ -182,7 +182,7 @@
 	
 	.paginglist {
 		width:980px;
-		height: 44px;
+		height: 50px;
 		border: 1px solid silver;
 		margin: 0 auto;
 	}
@@ -252,9 +252,13 @@
 		float: right;
 	}
 	
-	#foot_reple .i1 , #foot_reple .i2 {
+	.foot_reple .i1 , .foot_reple .i2 {
 		vertical-align: top;
-	}	
+
+	}
+	#foot_reple .ii1 , #foot_reple .i3 {
+		vertical-align: top;
+	}		
 	
 	#foot_reple , #foot_sym{
 		width: 936px;
@@ -262,6 +266,9 @@
 		padding: 13px 25px 20px;
 		font-size: 13px;
 	}
+
+	}	
+
 	
 	.foot_reple , .foot_sym{
 		width: 936px;
@@ -270,15 +277,41 @@
 		font-size: 13px;
 	}
 	
-	#foot_reple , #foot_sym{
-		width: 936px;
-		background: rgb(245, 240, 223);
-		padding: 13px 25px 20px;
-		font-size: 13px;
+	.foot_reple tr{
+		padding: 20px;
 	}
 	
-	#foot_reple tr{
-		padding: 20px;
+	#foot_reple img{
+		width: 40px;
+		height:40px;
+	}
+	
+	#foot_reple textarea{
+		overflow: visible; 
+		line-height: 14px; 
+		width:750px; 
+		height: 55px; 
+		resize: none; 
+		margin:0 10px 0 10px;
+	}
+	
+	.rerei2 textarea{
+		overflow: visible; 
+		line-height: 14px; 
+		width:650px; 
+		height: 55px; 
+		resize: none; 
+		margin:0 10px 0 10px;
+	}
+	
+	.i2 textarea{
+		overflow: visible; 
+		line-height: 14px; 
+		width:650px; 
+		height: 55px; 
+		resize: none; 
+		margin:0 10px 0 10px;
+		text-align: left;
 	}
 
 
@@ -323,6 +356,10 @@
 		color: sliver;
 		font-size: 11px;
 	}
+	
+	#replyform {
+		padding: 0 10px 10px 0;
+	}
 
 
 /* footer */
@@ -332,14 +369,10 @@
 		color: rgb(138, 131, 126);
 		
 	}
-	.r_re li {
+	.r_re ul {
 		border-bottom: 1px dashed silver;
 	}
 	
-	#foot_sym h6{
-		padding-bottom: 10px;
-		border-bottom: 1px dashed silver;
-	}
 	.foot_sym h6{
 		padding-bottom: 10px;
 		border-bottom: 1px dashed silver;
@@ -348,8 +381,8 @@
 	.re_date {
 		color: rgb(138, 131, 126);
 	}
-	.re_re_li .dt1 , .re_hide{
-		padding-left: 20px;
+	.re_re_li .dt1 , .rere_insert{
+		padding-left: 30px;
 	}
 
 
@@ -357,7 +390,7 @@
 		vertical-align: top;
 		display: inline-block;
 	}
-	#foot_reple dt, #foot_reple dd{
+	.foot_reple dt, .foot_reple dd{
 		display: inline-table;
 	}
 	

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SistTopic">
+
+<!-- 메인 전체 -->
+<select id="getTopicListAll" resultType="sist.co.Model.SistBlogDTO">
+<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, NVL(COUNT(B.BBS_SEQ),0) AS BBS_LIKES
+FROM BLOG_BBS A, BBS_LIKE B
+WHERE A.BBS_SEQ = B.BBS_SEQ
+GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE -->
+
+SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, A.bbs_like_count
+FROM BLOG_BBS A
+WHERE bbs_hid=0
+</select>
+
+<!-- 메인 항목별 -->
+<select id="getTopicList" parameterType="java.lang.Integer" resultType="sist.co.Model.SistTopicDTO">
+<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, NVL(COUNT(B.BBS_SEQ),0) AS BBS_LIKES
+FROM BLOG_BBS A, BBS_LIKE B, TOPIC C
+WHERE A.BBS_SEQ = B.BBS_SEQ AND C.TOPIC_SEQ=#{t_seq}
+GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE
+-->
+<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, NVL(COUNT(B.BBS_SEQ),0) AS BBS_LIKES
+FROM BLOG_BBS A, BBS_LIKE B
+WHERE A.TOPIC_SEQ=#{t_seq}  OR A.BBS_SEQ = B.BBS_SEQ AND B.BBS_SEQ=NULL
+GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE -->
+
+<!-- SELECT A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE, COUNT(B.BBS_SEQ) AS BBS_LIKES
+FROM BLOG_BBS A, BBS_LIKE B
+WHERE A.TOPIC_SEQ=#{t_seq}
+GROUP BY A.BBS_TITLE, A.BBS_CONTENT, A.BBS_IMG, A.BBS_DATE -->
+
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, bbs_like_count
+FROM BLOG_BBS 
+WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
+</select>
+
+
+<!-- nav바 주목 받는 글 항목별 -->
+<select id="getTopicListNav" parameterType="java.lang.Integer" resultType="sist.co.Model.SistTopicDTO">
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM BLOG_BBS 
+WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
+ORDER BY BBS_LIKE_COUNT DESC
+</select>
+
+
+<!-- nav바 클릭 전체 글 보기  -->
+<select id="getTopicListNavAll" parameterType="java.lang.Integer" resultType="sist.co.Model.SistTopicDTO">
+SELECT BBS_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, BBS_DATE, BBS_LIKE_COUNT
+FROM BLOG_BBS 
+WHERE TOPIC_SEQ=#{t_seq} AND BBS_HID=0
+ORDER BY BBS_DATE DESC
+</select>
+
+</mapper>

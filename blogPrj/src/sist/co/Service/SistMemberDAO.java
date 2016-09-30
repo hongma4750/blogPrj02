@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import sist.co.Model.SistBlog;
+import sist.co.Model.SistCategory;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
 
@@ -102,16 +104,102 @@ public class SistMemberDAO {
 		return sqlSession.selectList(ns+"selectAllMessage",sm);
 	}
 	
+
 	public void sendMessageAF(SistMessage sm) throws Exception{
 		sqlSession.insert(ns+"sendMessageAF",sm);
 	}
 	
-	//ssunhj: getmember
-		public SistMemberVO getmember(String m_id)throws Exception{
-			//SistMemberVO memvo = new SistMemberVO();
-			return (SistMemberVO) sqlSession.selectOne(ns+"getmember",m_id);
-			
-		}
-		
+	public SistMessage detailMessage(int message_seq) throws Exception{
+		return sqlSession.selectOne(ns+"detailMessage",message_seq);
+	}
 	
+	public void updateMessageRead(int message_seq) throws Exception{
+		sqlSession.update(ns+"updateMessageRead",message_seq);
+	}
+	
+	public void deleteMessage(int message_seq) throws Exception{
+		sqlSession.update(ns+"deleteMessage",message_seq);
+	}
+	
+	public List<SistMessage> getPointChargePageList(SistMessage sm) throws Exception{
+		return sqlSession.selectList(ns+"getPointChargePageList",sm);
+	}
+	
+	public void allDelteMessage (SistMessage sm) throws Exception{
+		sqlSession.update(ns+"allDelteMessage",sm);
+	}
+	
+	public void seeAllMessage (SistMessage sm) throws Exception{
+		sqlSession.update(ns+"seeAllMessage",sm);
+	}
+	
+	public void insertBlog(SistBlog vo) throws Exception{
+		sqlSession.insert(ns+"insertBlog",vo);
+	}
+	
+	public void updateBlog(SistBlog sb) throws Exception{
+		sqlSession.update(ns+"updateBlog",sb);
+	}
+	
+	//hongma: 카테고리
+	public void insertCategory (SistCategory sc) throws Exception{
+		sqlSession.insert(ns+"insertCategory",sc);
+	}
+	
+	public List<SistCategory> selectCategory (SistCategory sc ) throws Exception{
+		return sqlSession.selectList(ns+"selectCategory",sc);
+	}
+	
+	public void insertElseCategory (SistCategory sc) throws Exception{
+		sqlSession.insert(ns+"insertElseCategory",sc);
+	}
+	
+	public void insertChildCategory (SistCategory sc) throws Exception{
+		sqlSession.insert(ns+"insertChildCategory",sc);
+	}
+	
+	public SistCategory selectOneCategory (int ca_seq) throws Exception{
+		return sqlSession.selectOne(ns+"selectOneCategory",ca_seq);
+	}
+	
+	public void deleteOneCategory (int ca_seq) throws Exception{
+		sqlSession.delete(ns+"deleteOneCategory", ca_seq);
+	}
+	
+	public int countChild (int ca_seq) throws Exception{
+		return sqlSession.selectOne(ns+"countChild",ca_seq);
+	}
+	
+	public List<SistCategory> selectAllChildCategory (int ca_seq) throws Exception{
+		return sqlSession.selectList(ns+"selectAllChildCategory",ca_seq);
+	}
+	
+	public void updateParentCategory (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateParentCategory",sc);
+	}
+	
+	public void updateToParentCategory (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateToParentCategory",sc);
+	}
+	
+	public void updateAnotherChild (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateAnotherChild",sc);
+	}
+	
+	public void updateToChildCategory (SistCategory sc) throws Exception{
+		sqlSession.update(ns+"updateToChildCategory",sc);
+	}
+	
+	
+	//ssunhj: getmember
+	public SistMemberVO getmember(String m_id)throws Exception{
+		//SistMemberVO memvo = new SistMemberVO();
+		return (SistMemberVO) sqlSession.selectOne(ns+"getmember",m_id);
+		
+	}
+	
+	public List<SistMessage> selectMessagePaging (SistMessage sm) throws Exception{
+		return sqlSession.selectList(ns+"selectMessagePaging",sm);
+	}
+
 }

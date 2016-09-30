@@ -30,49 +30,69 @@
 
 
 
-<!-- 이웃이 있을 때 -->
+<!-- 이웃이있을때 -->
 <c:if test="${not empty flist }">
-<c:forEach items="${flist }" var="fl">
 
+<!-- 이웃글이 없을때 -->
+<c:if test="${empty blog }">
+<div align="center" style="color:#666;">이웃의 새 글이 없습니다.</div>
+</c:if>
+<!-- 이웃글이 없을때 -->
+
+<!-- 이웃이 새글이 있을 때 -->
+<c:if test="${not empty blog }">
+
+
+<c:forEach items="${flist }" var="fl">
+<c:forEach items="${blog }" var="bl">
+
+<!-- 이웃아이디랑 블로그게시 아이디가 같은 글만 -->
+<c:if test="${fl.fnd_fndid eq bl.m_id }">
+
+<!-- 이웃포스트 리스트 -->
 	<table style="width: 650px;">
-		<col width="200px" /><col width="50px" />
+	<col width="200px"/><col width="50px"/>
 		<tr>
-			<td>
-				<!-- 제목[댓글수] -->
-				<h5>
-					<a>글제목</a> <span style="color: #ff0000">
-						[ <em>n</em> ]
-					</span> <span> <!-- 지우기 버튼 -->
+				<td>
+					<!-- 제목[댓글수] -->
+					<h5>
+						<a>${bl.bbs_title }</a> <span style="color: #ff0000"> [ <em>n</em> ]
+						</span>
+						<!-- 지우기 버튼 -->
 						<button type="button" onclick="();" id="btnClose" class="close"
 							data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-					</span>
-				</h5>
+					</h5>
+				</td>
 
-			</td>
-		</tr>
+			</tr>
 
 		<tr>
 			<td colspan="2">
-				<!-- 블로그명,작성일,공감수 --> <a>블로그명</a>&nbsp;<span>2016.09.04.
-					22:05</span>&nbsp;<span style="color: #110000">공감 n</span>
+				<!-- 아이디,작성일,공감수 --> <a>${bl.m_id }</a>&nbsp;
+				<span>${bl.bbs_date }</span>&nbsp;
+				<span style="color: #110000">공감 n</span>
 			</td>
 		</tr>
 
 		<tr>
 			<td>
-				<!-- 내용 -->글내용...
+				<!-- 내용 -->${bl.bbs_content }
 			</td>
-			<td><img src="./image/LiloAndStitch.jpg" alt="이미지없음" width="70px" height="70px" /></td>
+			<td><c:if test="${not empty bl.bbs_img }">
+				<img src="${bl.bbs_img }" alt="이미지없음" width="70px"height="70px" />
+				</c:if>
+			</td>
 		</tr>
-
 	</table>
 	<hr>
+<!-- 이웃포스트 리스트 -->
 
+</c:if>
+<!-- 이웃아이디랑 블로그게시 아이디가 같은 글만 -->
 </c:forEach>
-
-
+</c:forEach>
 <!-- 페이징 -->
 <div align="center">
 <nav aria-label="Page navigation">
@@ -96,8 +116,14 @@
 </nav>
 </div>
 <!-- 페이징 -->
+
+
 </c:if>
-<!-- 이웃이 있을 때 -->
+<!-- 이웃이 새글이 있을 때 -->
+
+
+</c:if>
+<!-- 이웃이있을때 -->
 
 <!-- 이웃이 없을 때 -->
 <c:if test="${empty flist }">

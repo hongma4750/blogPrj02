@@ -35,12 +35,17 @@
 	
 		
 	<!-- 중간 제일 중요한 부분 -->
-	<div id="container" >
-		
+	<div id="setcontainer">
+	
+		<!-- 사이드바 -->
+		<div id="setsidebar" >
+			<tiles:insertAttribute name="setsidebar"/>
+		</div>
+		<!-- 사이드바 -->
 		
 		<!-- 이웃설정 -->
-		<div id="content" >
-			<tiles:insertAttribute name="content"/>
+		<div id="setcontent">
+			<tiles:insertAttribute name="setcontent"/>
 		</div>
 		<!-- 이웃설정 -->
 		

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+    <%@ page import="java.util.*" %>
+    <%@ page import="sist.co.Model.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <!-- tag들 필요하면 Ctrl+c  /   Ctrl+v -->
@@ -26,19 +28,41 @@
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/likeAjax.js"></script>
 
+<!--  페이징 -->
+		<%
+			String pageobj = request.getParameter("page");
+			int currentpage;
+			if (pageobj == null) {
+				currentpage = 1;
+			} else {
+				currentpage = Integer.parseInt(pageobj);
+			}
+			
+			List<SistBlogPageDTO> plist = (List<SistBlogPageDTO>)request.getAttribute("blogPageList");
+			List<SistBlogDTO> reList = (List<SistBlogDTO>)request.getAttribute("bloglist");
+			
+			int pnum;
+			int pageblock = 20;
+			int block = (int) Math.ceil((double) currentpage / pageblock);
+			int bstartpage = (block - 1) * pageblock + 1;
+			int bendpage = bstartpage + pageblock - 1;
+			pnum = (int) Math.ceil((double) reList.size() / 5);
+		%>
+	<!--  페이징 -->
+	
 
 <div class="con">
 	<!-- 전체보기 목록 -->
 	<div id="total_list">
 		<div class="total_view">
-			<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(24)</strong></a>
+			<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(${fn:length(bloglist) })</strong></a>
 			<a href="#none" class ="tview2" title="listopen" id="open_list"><strong>목록열기</strong></a>
 		</div>
 		
 		<div class="total_view_detail" style="display:none;">
 			<div class="row" style="margin:auto; padding:auto;">
 				<span>
-					<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(24)</strong></a>
+					<a href="#none" class ="tview1" title="tview" id="total_show"><strong>전체보기&nbsp;(${fn:length(bloglist) })</strong></a>
 					
 					<span style="float:right;">
 						<small style="text-align:right; width:40px;">스크랩</small>&nbsp;
@@ -55,17 +79,17 @@
 					<col style="width:40px">
 					<col style="width:100px">
 					
-				<c:if test="${empty bloglist }">
+				<c:if test="${empty blogPageList }">
 					<tr valign="top">
 						<td colspan="4">작성된 게시글 목록이 없습니다.</td>
 					</tr>
 				</c:if>
-				<c:forEach items="${bloglist }" var="total_blist" varStatus="totalvar">
+				<c:forEach items="${blogPageList }" var="total_blist" varStatus="totalvar">
 					<tr valign="top">
 						<td class="t1"><input type="checkbox" name="total_chk" class="list_checkbox" style="display:none;"><p class="point">＊</p></td>
 						<td class="t2"><a href="BbbsDetail.do?bbs_seq=${total_blist.bbs_seq }&log_id=${login.m_id }">${total_blist.bbs_title }</a></td>
 						<td class="t3">12</td>
-						<td><small>${total_blist.bbs_date }</small></td>
+						<td><small>${fn:substring(total_blist.bbs_date,0,12) }</small></td>
 					</tr>
 				</c:forEach>
 					
@@ -90,12 +114,7 @@
 									<c:if test="${blogdto.m_id eq login.m_id }">
 										<input type="button" id="list_manageBtn" value="글관리 열기">
 									</c:if>
-									<select>
-										<option>5줄 보기</option>
-										<option>10줄 보기</option>
-										<option>15줄 보기</option>
-										<option>20줄 보기</option>
-									</select>
+									
 								</span>
 							</div>
 							
@@ -106,24 +125,79 @@
 				
 				<div class="row" style="margin:auto; padding:auto; text-align:center;">
 					<nav>
-					  <ul class="pagination">
-					    <li>
-					      <a href="#" aria-label="Previous">
-					        <span aria-hidden="true">&laquo;</span>
-					      </a>
-					    </li>
-					    <li><a href="#">1</a></li>
-					    <li><a href="#">2</a></li>
-					    <li><a href="#">3</a></li>
-					    <li><a href="#">4</a></li>
-					    <li><a href="#">5</a></li>
-					    <li>
-					      <a href="#" aria-label="Next">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
-					  </ul>
-					</nav>
+							<ul class="pagination">
+								<%
+									if (currentpage <= 1) {
+								%>
+								<li class="disabled"><span aria-hidden="true">처음</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blognl.do?page=1">처음</a></li>
+								<%
+									}
+								%>
+			
+								<%
+									if (currentpage <= 1) {
+								%>
+								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;" aria-lable="Previous"
+									href="blognl.do?page=<%=currentpage - 1%>"><span
+										aria-hidden="true">&laquo;</span></a></li>
+								<%
+									}
+								%>
+			
+								<%
+									if (bendpage > pnum) {
+										bendpage = pnum;
+									}
+									for (int i = bstartpage; i <= bendpage; i++) {
+										if (currentpage == i) {
+								%>
+								<li class='active'><a href="#"><%=i%></a></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blognl.do?page=<%=i%>"><%=i%></a></li>
+								<%
+									}
+									}
+								%>
+			
+								<%
+									if (currentpage >= pnum) {
+								%>
+								<li class="disabled"><span aria-hidden="true">&raquo;</span></a></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;" aria-lable="Next"
+									href="blognl.do?page=<%=currentpage + 1%>"><span
+										aria-hidden="true">&raquo;</span></a></li>
+								<%
+									}
+								%>
+								<%
+									if (currentpage >= pnum) {
+								%>
+								<li class="disabled"><span aria-hidden="true">끝</span></li>
+								<%
+									} else {
+								%>
+								<li><a style="color: black;"
+									href="blognl.do?page=<%=pnum%>">끝</a></li>
+								<%
+									}
+								%>
+							</ul>
+						</nav>
 				</div>
 				
 				
@@ -145,13 +219,13 @@
 <!-- 글 목록 전체보기 -->
 
 	<div class="viewcon">
-		<c:if test="${empty bloglist }">
+		<c:if test="${empty blogPageList }">
 			<div class="total_content">
 				<p>작성된 글이 없습니다.</p>
 			</div>
 		</c:if>
 		<form name="bfrmform" id="bfrmform" action="" method="post">
-		<c:forEach items="${bloglist }" var="blog" varStatus="blogvar">
+		<c:forEach items="${blogPageList }" var="blog" varStatus="blogvar">
 			<div class="total_content">
 				<div class="priv_content">
 					<p>
@@ -179,6 +253,8 @@
 						<c:if test="${blog.bbs_comchk eq 1 }">
 							<a href="#none" class="reple_show${blogvar.count }">댓글쓰기</a>
 						</c:if>
+						
+						
 					<!-- 공감하기 허용했으면 보여라 -->
 						<c:if test="${blog.bbs_likechk eq 1 }">
 							<a href="#none" class="sym${blogvar.count }">공감</a>
@@ -264,13 +340,101 @@
 					
 <!-- --------------------------------------------------------------------------------------------------- -->			
 				
-				
+				<!-- 댓글 -->
 				<!-- 여기 댓글 클래스명 나중에 seq로 줘서 구분하기 -->
-				<div class="foot_reple${blogvar.count }" id="foot_reple" style="display:none;">
+				<div class="foot_reple${blogvar.count }" id="foot_reple" ><!-- style="display:none;" -->
 				<!-- 댓글 리스트 -->
-					<div class="r_re">
+					
+					<c:forEach items="${commentList }" var="comment" varStatus ="commentStatus">
+					
+						<c:if test="${blogvar.index eq commentStatus.index}">
+							
+							<c:forEach items="${comment }" var="realyComment">
+								<ul>
+									<li class="re_li">
+										<dl>
+											<dt class="dt1" >
+												<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+											</dt>
+											
+											<dt class="dt2" style="background-color:red;">
+												<a href="blog.do" class="nick">${realyComment.m_id }</a>
+												&nbsp;&nbsp;
+												<span class="re_date"><small>${fn:substring(realyComment.com_date,0,11) }</small></span>
+												
+													<span style="float:right;">
+														&nbsp;&nbsp;
+														<a href="#none" class="re_sh"><small>답글</small></a>
+														<span>&nbsp;|&nbsp;</span>
+														<a href="#" ><small class="comment-toggle">수정</small></a>
+														<span>&nbsp;|&nbsp;</span>
+														<a href="bbsdel.do"><small>삭제</small></a>
+													</span>
+											</dt>
+											
+											<dd style="float:center">${realyComment.com_content }</dd>
+											
+											<div class="modify-comment" style="display:none;">
+							    	
+											    <div style="text-align: right;">
+											      <a href="#" ><small class="modifying" onclick="updateComment()">수정</small></a> |
+											      <a href="#"><small class="cancel" id="${realyComment.com_seq }">취소</small></a>
+											    </div>
+											    
+											    <div>
+											      <textarea class="modify-comment-ta" name="com_content_re" rows="4" cols="50" id="modifyContent">${realyComment.com_content }</textarea>
+											    </div>
+											    
+											  </div>
+							  
+										</dl>
+									</li>
+									
+									<li class="re_hide" style="display:none">		<%--대댓글 쓰는부분 --%>
+										<i class="fa fa-share-square" aria-hidden="true"></i>
+										<table>
+											<tr>
+												<td class="i1">
+													<img src="${login.m_photo }" class="img-responsive" alt="Responsive image" style="width:40px; height:40px;">
+												</td>
+												<td class="i2">
+													<textarea cols="50" rows="2" class="textarea _activeId _commentRosText" 
+													name="comment.contents" maxlength="6000" tabindex="0" 
+													style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+												</td>
+												<td class="i3">
+													<input type="button" class="re_btn" value="덧글입력" />
+												</td>
+											</tr>
+										
+										</table>
+									</li>
+							</ul>
+							</c:forEach>
+							
+							<table>
+								<tr>
+									<td class="i1">
+										<input type="hidden" name="m_id" value="${login.m_id }" id="m_id"/>
+										<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+										<img src="${login.m_photo }" class="img-responsive" alt="Responsive image" style="width:40px; height:40px;">
+									</td>
+									<td class="i2">
+										<textarea cols="50" rows="2" class="com_cont${blogvar.count }" name="com_content" id="commentTextArea" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
+									</td>
+									<td class="i3">
+										<input type="button" class="re_btngo${blogvar.count }" value="덧글입력" onclick="insertComment('${blog.bbs_seq}','${someoneBlog.blog_nickname }')"/>
+									</td>
+								</tr>
+								
+							</table>
+					
+						</c:if>
+					</c:forEach>
+					
+				
+					<%-- <div class="r_re">
 						<ul>
-						<!-- 댓글 -->
 							<li class="re_li">
 								<dl>
 									<dt class="dt1">
@@ -296,7 +460,7 @@
 								<table>
 									<tr>
 										<td class="i1">
-											<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+											<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 										</td>
 										<td class="i2">
 											<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
@@ -336,7 +500,7 @@
 								<table>
 									<tr>
 										<td class="i1">
-											<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+											<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">						
 										</td>
 										<td class="i2">
 											<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
@@ -350,22 +514,26 @@
 							</li>
 						
 						</ul>
-					</div>
-				
+					</div> --%>
+				<%-- <form name="replyform" id="replyform" method="post">			
 					<table>
 						<tr>
 							<td class="i1">
-								<img src="http://static.naver.com/poll/img/noimg_img.gif" width="43" height="43" class="border" alt="첨부된 이미지 없음">							
+								<input type="hidden" name="bbs_seq" class="bbs_seq" value="${blog.bbs_seq }"/>
+								<input type="hidden" name="m_id" value="${login.m_id }"/>
+								<input type="hidden" name="blog_nickname" value="${someoneBlog.blog_nickname }">
+								<img src="${login.m_photo }" class="img-responsive" alt="Responsive image">
 							</td>
 							<td class="i2">
-								<textarea cols="50" rows="2" id="commentTextArea" class="textarea _activeId _commentRosText" name="comment.contents" maxlength="6000" tabindex="0" style="overflow: hidden; line-height: 14px; height: 53px; resize: none;"></textarea>
+								<textarea cols="50" rows="2" class="com_cont${blogvar.count }" name="com_content" maxlength="6000" tabindex="0" onkeyup="areaheight(this)"></textarea>
 							</td>
 							<td class="i3">
-								<input type="button" class="re_btn" value="덧글입력"/>
+								<input type="button" class="re_btngo${blogvar.count }" value="덧글입력"/>
 							</td>
 						</tr>
 						
 					</table>
+				</form>	 --%>
 				</div>
 			</div>
 	</c:forEach>
@@ -374,28 +542,85 @@
 
 	
 	
-	<div class="paginglist">
-		<nav aria-label="Page navigation">
-			  <ul class="pagination">
-			    <li>
-			      <a href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			      </a>
-			    </li>
-			    <li><a href="#">1</a></li>
-			    <li><a href="#">2</a></li>
-			    <li><a href="#">3</a></li>
-			    <li><a href="#">4</a></li>
-			    <li><a href="#">5</a></li>
-			    <li>
-			      <a href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
+	<!-- <div class="paginglist" style="margin:auto; padding:auto; background-color:blue; display:block;"> -->
+		
+		<nav>
+			<ul class="pagination">
+				<%
+					if (currentpage <= 1) {
+				%>
+				<li class="disabled"><span aria-hidden="true">처음</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;"
+					href="blognl.do?page=1">처음</a></li>
+				<%
+					}
+				%>
+
+				<%
+					if (currentpage <= 1) {
+				%>
+				<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;" aria-lable="Previous"
+					href="blognl.do?page=<%=currentpage - 1%>"><span
+						aria-hidden="true">&laquo;</span></a></li>
+				<%
+					}
+				%>
+
+				<%
+					if (bendpage > pnum) {
+						bendpage = pnum;
+					}
+					for (int i = bstartpage; i <= bendpage; i++) {
+						if (currentpage == i) {
+				%>
+				<li class='active'><a href="#"><%=i%></a></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;"
+					href="blognl.do?page=<%=i%>"><%=i%></a></li>
+				<%
+					}
+					}
+				%>
+
+				<%
+					if (currentpage >= pnum) {
+				%>
+				<li class="disabled"><span aria-hidden="true">&raquo;</span></a></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;" aria-lable="Next"
+					href="blognl.do?page=<%=currentpage + 1%>"><span
+						aria-hidden="true">&raquo;</span></a></li>
+				<%
+					}
+				%>
+				<%
+					if (currentpage >= pnum) {
+				%>
+				<li class="disabled"><span aria-hidden="true">끝</span></li>
+				<%
+					} else {
+				%>
+				<li><a style="color: black;"
+					href="blognl.do?page=<%=pnum%>">끝</a></li>
+				<%
+					}
+				%>
+			</ul>
+		</nav>
+		
 	
-</div>
+<!-- </div> -->
 
 
 
@@ -403,6 +628,86 @@
 /*blog_like/////////////////*/
 //공감 초기 세팅
 $(document).ready(function(){
+	//공감창 열기
+	for(var a =1; a<=leng; a++){ //bbs list 공감허용한 수만큼 돈다
+		var check_sym = 0;
+		$(".sym"+a.toString()).click(function(){
+			var a_class = $(this).attr('class'); //class명 가져오기
+			
+			var alen = a_class.length;
+			var aa = a_class.substring(3,alen); //숫자만 잘라냄
+			
+			var aacheck = 0;
+			
+			if(aacheck==0){ //공감이랑 댓글같이 열지 못하게
+				aacheck = 1;
+				$(".foot_sym"+aa).show();
+				$(".foot_reple"+aa).hide();
+			}else{
+				aacheck = 0;
+				$(".foot_sym"+aa).hide();
+				$(".foot_reple"+aa).show();
+
+			}
+			
+		})	
+	}
+	
+	
+	//댓글창 열기
+	for(var b=1; b<=leng; b++){ //bbs list 공감허용한 수만큼 돈다
+		var check_rep = 0;
+		$(".reple_show"+b.toString()).click(function(){
+			var b_class = $(this).attr('class'); //class명 가져오기
+			
+			var blen = b_class.length;
+			var bb = b_class.substring(10,blen); //숫자만 잘라냄
+			
+			var bbcheck = 0;
+			
+			if(bbcheck==0){
+				bbcheck = 1;
+				$(".foot_sym"+bb).hide();
+				$(".foot_reple"+bb).show();
+
+			}else{
+				bbcheck = 0;
+				$(".foot_sym"+bb).show();
+				$(".foot_reple"+bb).hide();
+
+			}
+			
+		})	
+	}
+	
+/* 	//댓글달기
+	for(var c=1; c<=leng; c++){
+		$(".re_btngo"+c.toString()).click(function(){
+			var c_class = $(this).attr('class');
+			var clen = c_class.length;
+			var cc = c_class.substring(8,clen); //숫자만 잘라냄
+			
+			alert("댓글쓸거다"+cc);
+			var b_seq = document.getElementsByName('bbs_seq')[cc].value;
+			//alert("b_seq:"+b_seq);
+			var b_content =$(".com_cont"+cc).val();
+			//alert("b_content:"+b_content);
+			var b_mid =document.getElementsByName('m_id')[cc].value; //m_id
+			//alert("b_mid:"+b_mid);
+			var b_nick =document.getElementsByName('blog_nickname')[cc].value; //nickname
+			//alert("b_nick:"+b_nick);
+			
+			var com_con ="\'comment.do?bbs_seq="+b_seq+"&com_content="+b_content+"&m_id="+b_mid+"&blog_nickname="+b_nick"\'"; //내용 가져오기
+			alert(com_con);
+			
+		})
+		
+	}
+	 */
+	
+	
+	
+	
 	var bbs_num = '${bbs_num}'; //blog.bbs_seq
 	var exc_num = new Array(); //로그인 한 사람이 누른 공감 담은 리스트
 	
@@ -523,58 +828,6 @@ $(document).ready(function(){
 				
 	} */
 
-	
-	//공감창 열기
-	for(var a =1; a<=leng; a++){ //bbs list 공감허용한 수만큼 돈다
-		var check_sym = 0;
-		$(".sym"+a.toString()).click(function(){
-			var a_class = $(this).attr('class'); //class명 가져오기
-			
-			var alen = a_class.length;
-			var aa = a_class.substring(3,alen); //숫자만 잘라냄
-			
-			var aacheck = 0;
-			
-			if(aacheck==0){ //공감이랑 댓글같이 열지 못하게
-				aacheck = 1;
-				$(".foot_sym"+aa).show();
-				$(".foot_reple"+aa).hide();
-			}else{
-				aacheck = 0;
-				$(".foot_sym"+aa).hide();
-				$(".foot_reple"+aa).show();
-
-			}
-			
-		})	
-	}
-	
-	
-	//댓글창 열기
-	for(var b=1; b<=leng; b++){ //bbs list 공감허용한 수만큼 돈다
-		var check_rep = 0;
-		$(".reple_show"+b.toString()).click(function(){
-			var b_class = $(this).attr('class'); //class명 가져오기
-			
-			var blen = b_class.length;
-			var bb = b_class.substring(10,blen); //숫자만 잘라냄
-			
-			var bbcheck = 0;
-			
-			if(bbcheck==0){
-				bbcheck = 1;
-				$(".foot_sym"+bb).hide();
-				$(".foot_reple"+bb).show();
-
-			}else{
-				bbcheck = 0;
-				$(".foot_sym"+bb).show();
-				$(".foot_reple"+bb).hide();
-
-			}
-			
-		})	
-	}
 
 	
 });
@@ -614,12 +867,6 @@ $(document).ready(function(){
 	})
 	
 
-	
-
-	
-	
-	
-	
 	
 /* 
 	
@@ -679,4 +926,99 @@ function likeajax(bbs_seq,loopnum){
 	
 	
 };
+
+//textarea높이 늘어나게
+function areaheight(obj){
+	obj.style.height="1px";
+	obj.style.height=(20+obj.scrollHeight)+"px";
+	
+}
+
+function insertComment(bbs_seq,blog_nickname){
+	location.href="comment.do?com_content="+$("#commentTextArea").val()+"&m_id="+$("#m_id").val()+"&bbs_seq="+bbs_seq+"&blog_nickname="+blog_nickname;
+}
+	
+
+$(document).ready(function() {
+	
+	function updateComment(){
+		alert("sksl?");
+	}
+	
+	 
+	$('.comment-toggle').click(function(e) {
+			alert("일단반응");
+	        var $form = $(e.target).parent().parent().parent().parent().find('.modify-comment');
+
+	        var $p = $(e.target).parent().parent().find('.comment-toggle');
+	        var $o = $(e.target).parent().parent().find('.comment-delete');
+	        var $c = $(e.target).parent().parent().parent().find('.comment-content');
+      
+	        if ($form.is(':hidden') == true) {
+	            $form.show();
+	            $p.hide();
+	        	$o.hide();
+	        	$c.hide();
+	        } else {
+	            $form.hide();
+	            $p.show();
+	            $o.show();
+	            $c.show();
+	        }
+	        return false;
+	});
+	
+	$('.comment-delete').click(function(e) {
+		var chk = confirm("정말로 삭제하시겠습니까?");
+        if (chk == true) {
+            return true;
+        }
+        return false;
+});
+	
+	/* SNS/CommentUpdate.jsp?com_seq=${comment.com_seq }$r_seq=${comment.r_seq }&com_content= */
+	//form 안의 수정하기 링크
+	/* $('.modifying').click(function(e) {
+		
+	   var url="updateComment.do?com_seq="+$('.com_seq_re').val()+"&com_content="+$('.modify-comment-ta').val();
+	   
+	   alert("seq : "+$('.com_seq_re').val() + " , content = "+$('.modify-comment-ta').val());
+	    //$(location).attr('href',url);
+	     
+	    //alert(url);
+	    //location.href="index01.jsp?mode=SNS/ReviewDetail"
+
+	}); */
+	
+	
+	
+	//form 안의 취소 링크
+	$('.cancel').click(function(e) {
+	    var $form = $(e.target).parent().parent().parent().parent().find('.modify-comment');
+	    
+	    var $p = $(e.target).parents().find('.comment-toggle');
+        var $o = $(e.target).parents().find('.comment-delete');
+        var $c = $(e.target).parents().find('.comment-content');
+        
+        
+        /* alert("1 : "+$('#com_seq_check').attr('value'));
+        alert("2 : "+$(e.target).parents().find('.cancel').attr('id')); */
+        
+	    if ($form.is(':hidden') == true) {
+	    	$form.show();
+	        $p.hide();
+        	$o.hide();
+        	$c.hide();
+	    } else {
+	    	
+	    	$form.hide();
+	        $p.show();
+            $o.show();
+            $c.show();
+	    }
+	    return false;
+	});
+
+});
+
 </script>
