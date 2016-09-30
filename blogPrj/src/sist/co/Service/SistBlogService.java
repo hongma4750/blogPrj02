@@ -39,6 +39,7 @@ public interface SistBlogService {
 	//카테고리 안에 있는 게시글 삭제
 	void deleteAllBbsInCategory (int ca_seq) throws Exception;
 	
+		
 	//hj:집중중입니다.
 	/*댓글//////////////////////////////////////////////////////*/
 	boolean bbscomment(SistBlogComDTO bbscom)throws Exception;
@@ -46,6 +47,16 @@ public interface SistBlogService {
 
 	//대댓글 밀고 삽입하기
 	void rereply(SistBlogComDTO bbscom) throws Exception;
+	
+	//댓글 수정하기
+	void modicom(SistBlogComDTO bbscom) throws Exception;
+	
+	//댓글 삭제하기
+	void delcom(int com_seq)throws Exception;
+	//댓글 수(삭제 안된거)
+	int viewcomsu(int bbs_seq)throws Exception;
+	
+	
 	
 	
 }

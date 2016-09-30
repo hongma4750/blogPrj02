@@ -1,9 +1,18 @@
 package sist.co.Controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +50,7 @@ public class SistBlogController {
    SistMemberService sistMemberService;
    
    @Autowired
-	SistFriendService sistFriendService;
+   SistFriendService sistFriendService;
    
    /*블로그 기본 화면. 전체 리스트를 볼 수 있다.*/
    @RequestMapping(value="blog.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -72,8 +81,8 @@ public class SistBlogController {
       //댓글 리스트<리스트>
       ArrayList<ArrayList<SistBlogComListDTO>> commentList = new ArrayList<ArrayList<SistBlogComListDTO>>();
       for(int i =0;i<bloglist.size();i++){
-    	  commentList.add((ArrayList<SistBlogComListDTO>) sistBlogService.getreplyList(bloglist.get(i).getBbs_seq()));
-    	  
+         commentList.add((ArrayList<SistBlogComListDTO>) sistBlogService.getreplyList(bloglist.get(i).getBbs_seq()));
+         
       }
       model.addAttribute("commentList",commentList);
       
@@ -87,46 +96,46 @@ public class SistBlogController {
       List<SistBlogDTO> likerest = sistBlogService.getLikeallow();
       model.addAttribute("likerest",likerest);
       
-      	
-		//페이지 수
-		
-		String pageobj = request.getParameter("page");
-		int currentpage;
-		if (pageobj == null) {
-			currentpage = 1;
-		} else {
-			currentpage = Integer.parseInt(pageobj);
-		}
-		
-		
-		int page01 = (currentpage - 1) * 5 + 1;
-		int page02 = currentpage * 5;
-		
-		SistBlogPageDTO pageDto = new SistBlogPageDTO();
-		pageDto.setPage01(page01);
-		pageDto.setPage02(page02);
-		pageDto.setM_id(finfo.getM_id());
-		
-		List<SistBlogPageDTO> blogPageList = sistBlogService.getPointChargePageList(pageDto);
-		model.addAttribute("blogPageList",blogPageList);
+         
+      //페이지 수
+      
+      String pageobj = request.getParameter("page");
+      int currentpage;
+      if (pageobj == null) {
+         currentpage = 1;
+      } else {
+         currentpage = Integer.parseInt(pageobj);
+      }
+      
+      
+      int page01 = (currentpage - 1) * 5 + 1;
+      int page02 = currentpage * 5;
+      
+      SistBlogPageDTO pageDto = new SistBlogPageDTO();
+      pageDto.setPage01(page01);
+      pageDto.setPage02(page02);
+      pageDto.setM_id(finfo.getM_id());
+      
+      List<SistBlogPageDTO> blogPageList = sistBlogService.getPointChargePageList(pageDto);
+      model.addAttribute("blogPageList",blogPageList);
       //hongma------------------------------------------------------
-		
-		
-		
-		//블로그 정보
-		SistBlog sb = sistFriendService.selectBlog(fid);
-		request.getSession().setAttribute("someoneBlog", sb);
-		
-		//블로그 게시판 카테고리 설정
-		SistCategory sc = new SistCategory();
-		sc.setM_id(finfo.getM_id());
-		
-		List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
-		
-		request.getSession().setAttribute("blogCategoryList", blogCategoryList);
-		//블로그 게시판 카테고리 설정
-		
-		
+      
+      
+      
+      //블로그 정보
+      SistBlog sb = sistFriendService.selectBlog(fid);
+      request.getSession().setAttribute("someoneBlog", sb);
+      
+      //블로그 게시판 카테고리 설정
+      SistCategory sc = new SistCategory();
+      sc.setM_id(finfo.getM_id());
+      
+      List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
+      
+      request.getSession().setAttribute("blogCategoryList", blogCategoryList);
+      //블로그 게시판 카테고리 설정
+      
+      
       return "blog.tiles";
       
    }
@@ -149,8 +158,8 @@ public class SistBlogController {
     //댓글 리스트<리스트>
       ArrayList<ArrayList<SistBlogComListDTO>> commentList = new ArrayList<ArrayList<SistBlogComListDTO>>();
       for(int i =0;i<bloglist.size();i++){
-    	  commentList.add((ArrayList<SistBlogComListDTO>) sistBlogService.getreplyList(bloglist.get(i).getBbs_seq()));
-    	  
+         commentList.add((ArrayList<SistBlogComListDTO>) sistBlogService.getreplyList(bloglist.get(i).getBbs_seq()));
+         
       }
       model.addAttribute("commentList",commentList);
       
@@ -164,25 +173,25 @@ public class SistBlogController {
       model.addAttribute("likerest",likerest);
       
       String pageobj = request.getParameter("page");
-		int currentpage;
-		if (pageobj == null) {
-			currentpage = 1;
-		} else {
-			currentpage = Integer.parseInt(pageobj);
-		}
-		
-		
-		int page01 = (currentpage - 1) * 5 + 1;
-		int page02 = currentpage * 5;
-		
-		SistBlogPageDTO pageDto = new SistBlogPageDTO();
-		pageDto.setPage01(page01);
-		pageDto.setPage02(page02);
-		pageDto.setM_id(finfo_date.getM_id());
-		
-		List<SistBlogPageDTO> blogPageList = sistBlogService.getPointChargePageList(pageDto);
-		model.addAttribute("blogPageList",blogPageList);
-		
+      int currentpage;
+      if (pageobj == null) {
+         currentpage = 1;
+      } else {
+         currentpage = Integer.parseInt(pageobj);
+      }
+      
+      
+      int page01 = (currentpage - 1) * 5 + 1;
+      int page02 = currentpage * 5;
+      
+      SistBlogPageDTO pageDto = new SistBlogPageDTO();
+      pageDto.setPage01(page01);
+      pageDto.setPage02(page02);
+      pageDto.setM_id(finfo_date.getM_id());
+      
+      List<SistBlogPageDTO> blogPageList = sistBlogService.getPointChargePageList(pageDto);
+      model.addAttribute("blogPageList",blogPageList);
+      
       
       
       return "blog.tiles";
@@ -196,34 +205,34 @@ public class SistBlogController {
       logger.info("welcome SistBlogController bbswrite");
       
       //블로그 게시판 카테고리 설정
-	  	SistCategory sc = new SistCategory();
-	  	
-	  	String m_id =((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
-	  	sc.setM_id(m_id);
-  	
-	  	List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
-  	
-  		request.getSession().setAttribute("blogCategoryList", blogCategoryList);
-  	
+        SistCategory sc = new SistCategory();
+        
+        String m_id =((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+        sc.setM_id(m_id);
+     
+        List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
+     
+        request.getSession().setAttribute("blogCategoryList", blogCategoryList);
+     
       
       return "bbswrite.tiles";
    }
    
    /*글쓴거 db에 넣기*/
    @RequestMapping(value="bbswriteAf.do",method=RequestMethod.POST)
-   public String bbswriteAf(SistBlogDTO blog,Model model)throws Exception{
+   public String bbswriteAf(HttpServletRequest request,SistBlogDTO blog,Model model)throws Exception{
       logger.info("welcome SistBlogController bbswriteAf");
-/*      
+      
       System.out.println("seq: "+ blog.getBbs_seq());
       System.out.println("m_id: "+ blog.getM_id());
       System.out.println("bbs_ca_seq : "+ blog.getBbs_ca_seq());
       System.out.println("bbs_title : "+ blog.getBbs_title());
-      System.out.println("bbs_content: "+ blog.getBbs_content());
+      System.out.println("bbs_content : "+ blog.getBbs_content());
       System.out.println("bbs_hid : "+ blog.getBbs_hid());
       System.out.println("bbs_comchk : "+ blog.getBbs_comchk());
       System.out.println("bbs_likechk : "+ blog.getBbs_likechk());
       System.out.println("bbs_scrapchk  : "+ blog.getBbs_scrapchk());
-   */   
+      
       sistBlogService.writeBBS(blog);
       
       return "redirect:/blognl.do";
@@ -256,7 +265,7 @@ public class SistBlogController {
       logger.info("welcome SistBlogController bbsdel");
       
       System.out.println("m_id:"+m_id);
-      sistBlogService   .delBBS(bbs_seq);
+      sistBlogService.delBBS(bbs_seq);
       
       return "redirect:/blognl.do";
    }
@@ -286,29 +295,29 @@ public class SistBlogController {
       List<SistBlogDTO> searchList = sistBlogService.selectBlogSearch(blogDto);
       model.addAttribute("searchList",searchList);
     //페이지 수
-		
-	String pageobj = request.getParameter("page");
-	int currentpage;
-	if (pageobj == null) {
-		currentpage = 1;
-	} else {
-		currentpage = Integer.parseInt(pageobj);
-	}
-	
-	
-	int page01 = (currentpage - 1) * 5 + 1;
-	int page02 = currentpage * 5;
-	
-	
-	SistBlogPageDTO pageDto = new SistBlogPageDTO();
-	pageDto.setPage01(page01);
-	pageDto.setPage02(page02);
-	pageDto.setBbs_title(blogSearch);
-	pageDto.setBbs_content(blogSearch);
-	pageDto.setM_id(m_id);
-	
-	List<SistBlogPageDTO> blogSearPageList = sistBlogService.getPointChargeSearchPageList(pageDto);
-	model.addAttribute("blogSearPageList",blogSearPageList);
+      
+   String pageobj = request.getParameter("page");
+   int currentpage;
+   if (pageobj == null) {
+      currentpage = 1;
+   } else {
+      currentpage = Integer.parseInt(pageobj);
+   }
+   
+   
+   int page01 = (currentpage - 1) * 5 + 1;
+   int page02 = currentpage * 5;
+   
+   
+   SistBlogPageDTO pageDto = new SistBlogPageDTO();
+   pageDto.setPage01(page01);
+   pageDto.setPage02(page02);
+   pageDto.setBbs_title(blogSearch);
+   pageDto.setBbs_content(blogSearch);
+   pageDto.setM_id(m_id);
+   
+   List<SistBlogPageDTO> blogSearPageList = sistBlogService.getPointChargeSearchPageList(pageDto);
+   model.addAttribute("blogSearPageList",blogSearPageList);
 
       return "blogsearch.tiles";
    }
@@ -346,6 +355,10 @@ public class SistBlogController {
       //reply list
       List<SistBlogComListDTO> replylist = sistBlogService.getreplyList(blog.getBbs_seq());
       model.addAttribute("replylist",replylist);
+      
+      //comment count
+      int comcount = sistBlogService.viewcomsu(blog.getBbs_seq());
+      model.addAttribute("comcount",comcount);
       
       return "BbbsDetail.tiles";
    }
@@ -559,12 +572,12 @@ public class SistBlogController {
    
  /*--comment------------------------------------------------------------------------------------*/
    
-   /*댓글내용 comment db에 넣기*/
+   /*댓글달기*/
    @RequestMapping(value="comment.do",method={RequestMethod.GET, RequestMethod.POST})
    public String comment(HttpServletRequest request, Model model) throws Exception{
       logger.info("welcome SistBlogController comment");
      
-/*      System.out.println("bbsseq: "+ request.getParameter("bbs_seq"));
+/*    System.out.println("bbsseq: "+ request.getParameter("bbs_seq"));
       System.out.println("content: "+ request.getParameter("com_content"));
       System.out.println("m_id: "+request.getParameter("m_id"));
       System.out.println("nickname: "+ request.getParameter("blog_nickname"));*/
@@ -587,96 +600,217 @@ public class SistBlogController {
    }
    
    
-   //대댓글
-   @RequestMapping(value="rereply.do",method={RequestMethod.GET, RequestMethod.POST})
-   public String rereply(SistBlogComDTO bbscom, HttpServletRequest request, Model model) throws Exception{
-      logger.info("welcome SistBlogController rereply");
-     
+   //대댓글 달기(댓글이랑 처리가 다르다)
+   @RequestMapping(value="recomment.do",method={RequestMethod.GET, RequestMethod.POST})
+   public String recomment(SistBlogComDTO bbscom, HttpServletRequest request, Model model) throws Exception{
+      logger.info("welcome SistBlogController recomment");
+      
+      System.out.println("comseq: "+ request.getParameter("com_seq"));
+      System.out.println("bbsseq: "+ request.getParameter("bbs_seq"));
+      System.out.println("content: "+ request.getParameter("com_content"));
+      System.out.println("m_id: "+request.getParameter("m_id"));
+      System.out.println("nickname: "+ request.getParameter("blog_nickname"));
+      
+      
+      String scom_seq = request.getParameter("com_seq");
+      int com_seq = Integer.parseInt(scom_seq);
+      String sbbs_seq = request.getParameter("bbs_seq");
+      int bbs_seq = Integer.parseInt(sbbs_seq);
+      String com_content = request.getParameter("com_content");
+      String m_id =request.getParameter("m_id");
+      String blog_nickname = request.getParameter("blog_nickname");
+      
+      bbscom.setCom_seq(com_seq);
+      bbscom.setBbs_seq(bbs_seq);
+      bbscom.setCom_content(com_content);
+      bbscom.setM_id(m_id);
+      bbscom.setBlog_nickname(blog_nickname);
+
       boolean isS = false;   
       
-		try{
-	      sistBlogService.rereply(bbscom);
-	      isS=true;
-		}catch(Exception e){}
-		
-		
-		if(isS){
-			return "redirect:/blognl.do";
-		}else{
-			return "redirect:/blognl.do";
-		}
+      try{
+         sistBlogService.rereply(bbscom);
+         isS=true;
+      }catch(Exception e){}
+      
+      
+      if(isS){
+         return "redirect:/blognl.do";
+      }else{
+         return "redirect:/blognl.do";
+      }
 
    }
    
-   //hongma:category
+   
+   
+   @RequestMapping(value="modicomment.do",method={RequestMethod.GET, RequestMethod.POST})
+   public String modicomment(HttpServletRequest request, Model model) throws Exception{
+      logger.info("welcome SistBlogController modicomment");
+   
+      System.out.println("comsseq: "+ request.getParameter("com_seq"));
+      System.out.println("content: "+ request.getParameter("com_content"));
+      
+      SistBlogComDTO bbscom = new SistBlogComDTO();
+      
+      String scom_seq = request.getParameter("com_seq");
+      int com_seq = Integer.parseInt(scom_seq);
+      String com_content = request.getParameter("com_content");
+      
+      bbscom.setCom_seq(com_seq);
+      bbscom.setCom_content(com_content);
+      
+      sistBlogService.modicom(bbscom);
+      
+      return "redirect:/blognl.do";
+   }
+   
+   
+   
+   @RequestMapping(value="delcomment.do",method={RequestMethod.GET, RequestMethod.POST})
+   public String delcomment(HttpServletRequest request, Model model) throws Exception{
+      logger.info("welcome SistBlogController delcomment");
+   
+      System.out.println("comsseq: "+ request.getParameter("com_seq"));
+      
+      String scom_seq = request.getParameter("com_seq");
+      int com_seq = Integer.parseInt(scom_seq);
+
+      sistBlogService.delcom(com_seq);
+      
+      return "redirect:/blognl.do";
+   }
+   
+   
+  /* 스마트에디터 파일 업로드 /////////////////////////////////*/
+   
+ //다중파일업로드
+   @RequestMapping(value="multiplePhotoUpload.do",method={RequestMethod.GET, RequestMethod.POST})
+   public void multiplePhotoUpload(HttpServletRequest request, HttpServletResponse response){
+      logger.info("multiple 실행");
+      try {
+            //파일정보
+            String sFileInfo = "";
+            //파일명을 받는다 - 일반 원본파일명
+            String filename = request.getHeader("file-name");
+            //파일 확장자
+            String filename_ext = filename.substring(filename.lastIndexOf(".")+1);
+            //확장자를소문자로 변경
+            filename_ext = filename_ext.toLowerCase();
+            //파일 기본경로
+            String dftFilePath = request.getSession().getServletContext().getRealPath("/");
+            //파일 기본경로 _ 상세경로
+            String filePath = dftFilePath + "smarteditor" + File.separator + "photo_upload" + File.separator;
+            System.out.println("filePath : "+filePath);
+            File file = new File(filePath);
+            if(!file.exists()) {
+               file.mkdirs();
+            }
+            String realFileNm = "";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+            String today= formatter.format(new java.util.Date());
+            realFileNm = today+UUID.randomUUID().toString() + filename.substring(filename.lastIndexOf("."));
+            String rlFileNm = filePath + realFileNm;
+            ///////////////// 서버에 파일쓰기 ///////////////// 
+            InputStream is = request.getInputStream();
+            OutputStream os=new FileOutputStream(rlFileNm);
+            int numRead;
+            byte b[] = new byte[Integer.parseInt(request.getHeader("file-size"))];
+            while((numRead = is.read(b,0,b.length)) != -1){
+               os.write(b,0,numRead);
+            }
+            if(is != null) {
+               is.close();
+            }
+            os.flush();
+            os.close();
+            ///////////////// 서버에 파일쓰기 /////////////////
+            // 정보 출력
+            sFileInfo += "&bNewLine=true";
+            // img 태그의 title 속성을 원본파일명으로 적용시켜주기 위함
+            sFileInfo += "&sFileName="+ filename;;
+            sFileInfo += "&sFileURL="+"/blogPrj/smarteditor/photo_upload/"+realFileNm;
+            PrintWriter print = response.getWriter();
+            print.print(sFileInfo);
+            print.flush();
+            print.close();
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+      
+      
+   }
+   
+   
+ //hongma:category
    @RequestMapping(value="categoryHome.do",method={RequestMethod.GET, RequestMethod.POST})
    public String categoryHome(HttpServletRequest request, Model model) throws Exception{
-	   logger.info("categoryHome 실행중");
-	   
-	   model.addAttribute("sideMenu","categoryHome");
-	   
-	 //블로그 게시판 카테고리 설정
-	SistCategory sc = new SistCategory();
-	
-	String m_id =((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
-	sc.setM_id(m_id);
-	
-	List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
-	
-	request.getSession().setAttribute("blogCategoryList", blogCategoryList);
-	//블로그 게시판 카테고리 설정
-	   return"categoryHome.tiles";
+      logger.info("categoryHome 실행중");
+      
+      model.addAttribute("sideMenu","categoryHome");
+      
+    //블로그 게시판 카테고리 설정
+   SistCategory sc = new SistCategory();
+   
+   String m_id =((SistMemberVO)request.getSession().getAttribute("login")).getM_id();
+   sc.setM_id(m_id);
+   
+   List<SistCategory> blogCategoryList = sistMemberService.selectCategory(sc);
+   
+   request.getSession().setAttribute("blogCategoryList", blogCategoryList);
+   //블로그 게시판 카테고리 설정
+      return"categoryHome.tiles";
    }
    
    @RequestMapping(value="insertCategory.do",method={RequestMethod.GET, RequestMethod.POST})
    public String insertCategory(HttpServletRequest request, SistCategory sc ,Model model) throws Exception{
-	   logger.info("insertCateogry.do 실행중");
-	   
-	   String m_id = ((SistMemberVO) request.getSession().getAttribute("login")).getM_id();
-	   sc.setM_id(m_id);
-	   
-	   if(sc.getCa_parent() == 0){
-		   sistMemberService.insertElseCategory(sc);
-	   }else{
-		   sistMemberService.insertChildCategory(sc);
-	   }
-	  
-	   
-	   return "redirect:categoryHome.do";
+      logger.info("insertCateogry.do 실행중");
+      
+      String m_id = ((SistMemberVO) request.getSession().getAttribute("login")).getM_id();
+      sc.setM_id(m_id);
+      
+      if(sc.getCa_parent() == 0){
+         sistMemberService.insertElseCategory(sc);
+      }else{
+         sistMemberService.insertChildCategory(sc);
+      }
+     
+      
+      return "redirect:categoryHome.do";
    }
    
    @RequestMapping(value="deleteCategory.do",method={RequestMethod.GET, RequestMethod.POST})
    public String deleteCategory(HttpServletRequest request, Model model) throws Exception{
-	   logger.info("deleteCategory.do 실행중");
-	   
-	   int ca_seq = Integer.parseInt(request.getParameter("ca_seq"));
-	   
-	   SistCategory sc = sistMemberService.selectOneCategory(ca_seq);
-	   
-	   if(sc.getCa_parent() !=0){	//해당 카테고리가 자식인 경우
-		   sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
-		   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제
-	   }else{		//해당 카테고리가 부모인 경우
-		   
-		   int countChild = sistMemberService.countChild(sc.getCa_seq());
-		   
-		   if(countChild>0){		//자식을 가지고 있는 경우
-			   List<SistCategory> childList = sistMemberService.selectAllChildCategory(sc.getCa_seq());
-			   
-			   for(int i =0;i<childList.size();i++){
-				   sistBlogService.deleteAllBbsInCategory(childList.get(i).getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
-				   sistMemberService.deleteOneCategory(childList.get(i).getCa_seq());		//자식 카테고리 삭제
-			   }
-			   
-			   sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
-			   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제   
+      logger.info("deleteCategory.do 실행중");
+      
+      int ca_seq = Integer.parseInt(request.getParameter("ca_seq"));
+      
+      SistCategory sc = sistMemberService.selectOneCategory(ca_seq);
+      
+      if(sc.getCa_parent() !=0){   //해당 카테고리가 자식인 경우
+         sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());      //자식 카테고리 안에 있는 게시글 모두 삭제
+         sistMemberService.deleteOneCategory(sc.getCa_seq());      //자식 카테고리 삭제
+      }else{      //해당 카테고리가 부모인 경우
+         
+         int countChild = sistMemberService.countChild(sc.getCa_seq());
+         
+         if(countChild>0){      //자식을 가지고 있는 경우
+            List<SistCategory> childList = sistMemberService.selectAllChildCategory(sc.getCa_seq());
+            
+            for(int i =0;i<childList.size();i++){
+               sistBlogService.deleteAllBbsInCategory(childList.get(i).getCa_seq());      //자식 카테고리 안에 있는 게시글 모두 삭제
+               sistMemberService.deleteOneCategory(childList.get(i).getCa_seq());      //자식 카테고리 삭제
+            }
+            
+            sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());      //자식 카테고리 안에 있는 게시글 모두 삭제
+            sistMemberService.deleteOneCategory(sc.getCa_seq());      //자식 카테고리 삭제   
  
-		   }else{		//자식이 없는 경우
-			   sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());		//자식 카테고리 안에 있는 게시글 모두 삭제
-			   sistMemberService.deleteOneCategory(sc.getCa_seq());		//자식 카테고리 삭제   
-		   }
-	   }
-	   return "redirect:categoryHome.do";
+         }else{      //자식이 없는 경우
+            sistBlogService.deleteAllBbsInCategory(sc.getCa_seq());      //자식 카테고리 안에 있는 게시글 모두 삭제
+            sistMemberService.deleteOneCategory(sc.getCa_seq());      //자식 카테고리 삭제   
+         }
+      }
+      return "redirect:categoryHome.do";
    }
    
    //카테고리 수정시 선택한 카테고리 정보를 가져와 뿌린다
@@ -684,56 +818,58 @@ public class SistBlogController {
    @RequestMapping(value="choiceUpdateCategory.do",method={RequestMethod.GET, RequestMethod.POST})
    @ResponseBody
    public SistCategory choiceUpdateCategory (HttpServletRequest request, Model model) throws Exception{
-	   logger.info("choiceUpdateCategory.do 실행" );
-	   
-	   int ca_seq = Integer.parseInt(request.getParameter("ca_seq"));
-	   
-	   SistCategory sc = sistMemberService.selectOneCategory(ca_seq);
+      logger.info("choiceUpdateCategory.do 실행" );
+      
+      int ca_seq = Integer.parseInt(request.getParameter("ca_seq"));
+      
+      SistCategory sc = sistMemberService.selectOneCategory(ca_seq);
 
-	   return sc;
+      return sc;
    }
    
    @RequestMapping(value="updateCategory.do",method={RequestMethod.GET, RequestMethod.POST})
    public String updateCategory (SistCategory sc, Model model) throws Exception{
-	   logger.info("updateCategory.do 실행중");
-	   
+      logger.info("updateCategory.do 실행중");
+      
 
-	   if(sc.getCa_parent() == 0){		//부모->부모 [단순 값 변경] or 
-		   
-		   if(sc.getCa_depth() ==0){		//부모 -> 부모 [hidden, view_type 만 수정]
-			   sistMemberService.updateParentCategory(sc);
-		   }else {		//자식 -> 부모 [ref,step,depth,hidden,parent,view_type]
-			   sistMemberService.updateToParentCategory(sc);
-		   }
-		   
-	   }else{		//자식 ->부모 [모든값 변경]
-		   if(sc.getCa_depth() == 0){	//부모인 경우
-			   int countChild = sistMemberService.countChild(sc.getCa_seq());
-			   
-			   if(countChild>0){ 	//자식이 있는 경우
-				   List<SistCategory> childList = sistMemberService.selectAllChildCategory(sc.getCa_seq());
-				   
-				   for(int i =0;i<childList.size();i++){
-					   sistMemberService.updateToChildCategory(childList.get(i));
-				   }
-				   
-				   sistMemberService.updateAnotherChild(sc);
-			   }else{		//자식이 없는 경우
-				   sistMemberService.updateAnotherChild(sc);
-			   }
-			   
-		   }else{		//자식인 경우
-			   SistCategory testCate = sistMemberService.selectOneCategory(sc.getCa_seq());
-			   
-			   if(testCate.getCa_parent() == sc.getCa_parent()){
-				   sistMemberService.updateParentCategory(sc);
-			   }else{
-				   sistMemberService.updateAnotherChild(sc);
-			   }
-		   }
-	   }
-	   
-	   return "redirect:categoryHome.do";
+      if(sc.getCa_parent() == 0){      //부모->부모 [단순 값 변경] or 
+         
+         if(sc.getCa_depth() ==0){      //부모 -> 부모 [hidden, view_type 만 수정]
+            sistMemberService.updateParentCategory(sc);
+         }else {      //자식 -> 부모 [ref,step,depth,hidden,parent,view_type]
+            sistMemberService.updateToParentCategory(sc);
+         }
+         
+      }else{      //자식 ->부모 [모든값 변경]
+         if(sc.getCa_depth() == 0){   //부모인 경우
+            int countChild = sistMemberService.countChild(sc.getCa_seq());
+            
+            if(countChild>0){    //자식이 있는 경우
+               List<SistCategory> childList = sistMemberService.selectAllChildCategory(sc.getCa_seq());
+               
+               for(int i =0;i<childList.size();i++){
+                  sistMemberService.updateToChildCategory(childList.get(i));
+               }
+               
+               sistMemberService.updateAnotherChild(sc);
+            }else{      //자식이 없는 경우
+               sistMemberService.updateAnotherChild(sc);
+            }
+            
+         }else{      //자식인 경우
+            SistCategory testCate = sistMemberService.selectOneCategory(sc.getCa_seq());
+            
+            if(testCate.getCa_parent() == sc.getCa_parent()){
+               sistMemberService.updateParentCategory(sc);
+            }else{
+               sistMemberService.updateAnotherChild(sc);
+            }
+         }
+      }
+      
+      return "redirect:categoryHome.do";
    }
+   
+   
    
 }

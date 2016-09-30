@@ -18,18 +18,54 @@
 <script src="js/bootstrap.min.js"></script>
 <!-- 부트스트랩 링크 -->
 
+<!-- 스마트에디터 링트 -->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/smarteditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+<!-- 스마트에디터 링크 -->
 <!-- css -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/blog2.css"/>
 <!-- css  -->
+
+<script type="text/javascript">
+$(function(){
+    //전역변수선언
+    var editor_object = [];
+     
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: editor_object,
+        elPlaceHolder: "bbs_content",
+        sSkinURI: "<%=request.getContextPath()%>/smarteditor/SmartEditor2Skin.html", 
+        htParams : {
+            // 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseToolbar : true,             
+            // 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseVerticalResizer : true,     
+            // 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseModeChanger : true, 
+        }
+    });
+     
+    //전송버튼 클릭이벤트
+    $("#btn3").click(function(){
+        //id가 smarteditor인 textarea에 에디터에서 대입
+        editor_object.getById["bbs_content"].exec("UPDATE_CONTENTS_FIELD", []);
+        //폼 submit
+        alert("블로그 글 작성한다");
+		$("#frmFormwr").submit();
+    })
+    
+})
+</script>
+
 
 <div class="con2">
 <br><br>
 <h4>포스트 쓰기</h4> <br><br><br>
 
-<form name="frmForm" id="frmForm2" action="" method="post">
+<form name="frmFormwr" id="frmFormwr" action="bbswriteAf.do" method="post">
 <input type="hidden" name="m_id" value="${login.m_id}">
 		<div class="writecon2">
-			<!-- 카테고리 -->
+		<!-- 카테고리 -->
 			<select id="cate1" name="bbs_ca_seq" style="width:138px; height: 20px;">
 			<!-- 나중에 카테고리 생기면 여기에 카테고리 리스트 db에서 불러와서 뿌려준다. -->
 			   <c:forEach items="${blogCategoryList }" var="blogCate">
@@ -37,19 +73,15 @@
 			   </c:forEach>
 			</select> 
 			
-			<input type="text" name="bbs_title" style="width:754px; height: 20px;"/>
+			<input type="text" name="bbs_title" style="width:754px; height: 20px; margin-bottom: 13px;"/>
 			
 			 <br>
 			 
-			<div class="panel panel-success">
+			<div>
 				 <!-- 투표 -->
-				  <div class="panel-heading">
-				    	<button name="poll" id="btn_poll">투표</button>
-				  </div>
-				  
 				  <!-- content -->
-				  <div class="panel-body">
-				    <textarea id="wcon" name="bbs_content" rows="" cols="" style="width: 906px; border:0;"></textarea>
+				  <div>
+				    <textarea name="bbs_content" id="bbs_content" rows="" cols="" style="width:966px; height:494px; border:0;"></textarea>
 				  </div>
 			</div>
 			
@@ -136,16 +168,11 @@
 $(function(){
 	/* 작성취소버튼 누르면 블로그 홈으로 이동 */
 	$(".wcancel").click(function(){
-		location.href="blog.do";
+		location.href="blognl.do";
 	});
 	
 	$("#btn_poll").click(function(){
 		window.open("poll_pop.do", "_blank", "toolbar=no, scrollbars=yes, resizable=no, width=810, height=620, top=200, left=400");
-	});
-	
-	$("#btn3").click(function(){
-		alert("블로그 글 작성한다");
-		$("#frmForm2").attr({"target": "_self","action":"bbswriteAf.do"});
 	});
 	
 });

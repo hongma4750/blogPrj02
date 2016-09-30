@@ -12,7 +12,7 @@
 	</insert>
 	
 	<!-- 블로그 메인에 내용 전부 불러오기 -->
-	<select id="getBlogList" resultType="sist.co.Model.SistBlogDTO">
+	<select id="getBlogList" parameterType="sist.co.Model.SistBlogDTO" resultType="sist.co.Model.SistBlogDTO">
 		SELECT * FROM BLOG_BBS
 		WHERE M_ID=#{m_id}
 		ORDER BY BBS_DATE DESC
@@ -107,7 +107,7 @@
   	
   	
   	
-  	<!-- 댓글/////////////////////////////////////////////// -->
+  	<!-- hj:댓글/////////////////////////////////////////////// -->
   	<!-- 블로그 글쓰기 -->
 	<insert id="bbscomment" parameterType="sist.co.Model.SistBlogComDTO">
 		INSERT INTO BBS_COMMENT
@@ -123,7 +123,7 @@
 			COM.COM_DEL,COM.COM_PARENT,COM.COM_DATE,MEM.M_ID,MEM.M_PHOTO
 		FROM BBS_COMMENT COM, MEMBER MEM
 		WHERE BBS_SEQ=#{bbs_seq} AND COM.M_ID=MEM.M_ID
-		ORDER BY COM.COM_REF ASC, COM.COM_STEP ASC
+		ORDER BY COM.COM_REF ASC, COM.COM_DATE ASC
 	</select>
 	
 	
@@ -138,15 +138,35 @@
 	<!-- 대댓글 하나뒤로 민자리에 새로운 대댓글 삽입 -->
 	<insert id="rereplyadd" parameterType="sist.co.Model.SistBlogComDTO">
 		INSERT INTO BBS_COMMENT
-				(COM_SEQ,BBS_SEQ,COM_CONTENT,M_ID,BLOG_NICKNAME,COM_REF,COM_STEP,COM_DEPTH,COM_DEL,COM_PARENT,COM_DATE)
-			VALUES(SEQ_BBSCOMMENT.NEXTVAL,#{bbs_seq},#{com_content },#{m_id},#{blog_nickname },
-				(SELECT COM_REF FROM BBS_COMMENT WHERE BBS_COMMENT=#{com_seq}),
-				(SELECT COM_STEP FROM BBS_COMMENT WHERE BBS_COMMENT=#{com_seq})+1,
-				(SELECT COM_DEPTH FROM BBS_COMMENT WHERE BBS_COMMENT=#{com_seq})+1,
-				0,#{com_seq},SYSDATE)
+			(COM_SEQ,BBS_SEQ,COM_CONTENT,M_ID,BLOG_NICKNAME,COM_REF,COM_STEP,COM_DEPTH,COM_DEL,COM_PARENT,COM_DATE)
+		VALUES(SEQ_BBSCOMMENT.NEXTVAL,#{bbs_seq},#{com_content},#{m_id},#{blog_nickname },
+			(SELECT COM_REF FROM BBS_COMMENT WHERE COM_SEQ=#{com_seq}),
+			(SELECT COM_STEP FROM BBS_COMMENT WHERE COM_SEQ=#{com_seq})+1,
+			(SELECT COM_DEPTH FROM BBS_COMMENT WHERE COM_SEQ=#{com_seq})+1,
+			0,#{com_seq},SYSDATE)
 	</insert>
+	
+	<!-- 댓글 수정 -->
+	<update id="modicom" parameterType="sist.co.Model.SistBlogComDTO">	
+		UPDATE BBS_COMMENT SET
+			COM_CONTENT=#{com_content}
+		WHERE COM_SEQ=#{com_seq}		
+	</update>
+	
+	<!-- 댓글,대댓글 삭제(del update) -->
+	<update id="delcom" parameterType="java.lang.Integer">	
+		UPDATE BBS_COMMENT SET
+			COM_DEL=1
+		WHERE COM_SEQ=#{com_seq}		
+	</update>
+	
+	<!-- 댓글개수 -->
+	<select id="viewcomsu" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		SELECT NVL(COUNT(*), 0) FROM BBS_COMMENT
+		WHERE BBS_SEQ=#{bbs_seq} AND COM_DEL=0
+	</select>
 
-<!-- 검색 페이징 -->
+<!--hong: 검색 페이징 -->
   	<select id="getPointChargeSearchPageList" parameterType="sist.co.Model.SistBlogPageDTO" resultType="sist.co.Model.SistBlogPageDTO">
   		SELECT BBS_SEQ, M_ID, BBS_CA_SEQ, BBS_TITLE, BBS_CONTENT, BBS_IMG, POLL_SEQ, TOPIC_SEQ, BBS_HID, BBS_COMCHK, BBS_LIKECHK, BBS_SCRAPCHK, BBS_DATE
   		 FROM 
@@ -161,6 +181,7 @@
   	<delete id="deleteAllBbsInCategory" parameterType="int">
   		DELETE FROM BLOG_BBS WHERE BBS_CA_SEQ = #{ca_seq}
   	</delete>
+  	
 
 
 	

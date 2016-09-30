@@ -129,7 +129,6 @@ public class SistBlogImpl implements SistBlogService {
 	public List<SistBlogPageDTO> getPointChargeSearchPageList(SistBlogPageDTO pageDto) throws Exception {
 		return sistBlogDao.getPointChargeSearchPageList(pageDto);
 	}
-	
 	@Override
 	public void deleteAllBbsInCategory(int ca_seq) throws Exception {
 		sistBlogDao.deleteAllBbsInCategory(ca_seq);
@@ -156,6 +155,23 @@ public class SistBlogImpl implements SistBlogService {
 		sistBlogDao.replypush(bbscom);
 		sistBlogDao.rereplyadd(bbscom);
 		
+	}
+
+	//댓글 수정
+	@Override
+	public void modicom(SistBlogComDTO bbscom) throws Exception {
+		sistBlogDao.modicom(bbscom);
+		
+	}
+	//댓글 삭제
+	@Override
+	public void delcom(int com_seq) throws Exception {
+		sistBlogDao.delcom(com_seq);
+	}
+
+	@Override
+	public int viewcomsu(int bbs_seq) throws Exception {
+		return sistBlogDao.viewcomsu(bbs_seq);
 	}
 
 	

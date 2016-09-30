@@ -137,5 +137,17 @@ public class SistBlogDAO {
 		return true;
 	}
 	
+	//댓글 수정
+	public void modicom(SistBlogComDTO bbscom) throws Exception{
+		sqlSession.update(ns+"modicom",bbscom);
+	}
+	//댓글 삭제하기
+	public void delcom(int com_seq)throws Exception{
+		sqlSession.update(ns+"delcom",com_seq);
+	}
+	public int viewcomsu(int bbs_seq)throws Exception{
+		int comcount = sqlSession.selectOne(ns+"viewcomsu",bbs_seq);
+		return comcount;
+	}
 	
 }
