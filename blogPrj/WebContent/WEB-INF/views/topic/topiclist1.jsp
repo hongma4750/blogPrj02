@@ -54,9 +54,6 @@
   &nbsp;&nbsp;&nbsp;&nbsp;<a href="topiclist1.do?t_seq=5">일상·생각</a> 
   
   
-<c:if test="${likes ne null }">
-<c:out value="${likes }"></c:out>
-</c:if>
 
 <!-- 최신순일때-->
 <c:if test="${likes eq 1 }">

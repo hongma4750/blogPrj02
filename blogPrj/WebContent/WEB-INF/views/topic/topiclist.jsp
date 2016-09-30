@@ -69,9 +69,6 @@ $(function(){
 });
 </script>
 
-<c:if test="${likes ne null }">
-<c:out value="${likes }"></c:out>
-</c:if>
 
 <!-- 최신순일때-->
 <c:if test="${likes eq 1 }">
@@ -132,6 +129,8 @@ $(function(){
 	<a class="main_topic_blgname">블로그 이름</a>&nbsp;
 	<span class="main_topic_blgdate">${fn:substring(blog.bbs_date,0,16) }</span>&nbsp;
 	<span class="main_topic_like">공감 ${blog.bbs_like_count }</span>
+	<!-- 이웃이 아닌 사람일 때 뜨는 이웃추가 버튼 -->
+	<button class="btn btn-default btn-xs" onclick="popupOpen();">이웃추가</button>
 	</td>
 	</tr>
 	
@@ -293,4 +292,10 @@ $(function(){
 $(function () {
     $('#myTab a:last').tab('show')
 });
+
+function popupOpen(){
+	var popUrl = "addfriend.do";	//팝업창에 출력될 페이지 URL
+	var popOption = "width=370, height=400, resizable=no, scrollbars=no, status=no";    //팝업창 옵션(optoin)
+		window.open(popUrl,"FollowPop",popOption);
+}
 </script>

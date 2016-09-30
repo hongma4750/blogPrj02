@@ -70,7 +70,7 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header" style="">
-    		<a class="navbar-brand" href="index.do" style="" onclick="">블로그 홈</a>
+    		<a class="navbar-brand" href="index.do" style="font-size: 12px;" onclick="">블로그 홈</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -82,8 +82,11 @@
         	<li><a href="topic.do?cate=3" class="topic_menu">스포츠</a></li>
         	<li><a href="topic.do?cate=4" class="topic_menu">세계여행</a></li>
         	<li><a href="topic.do?cate=5" class="topic_menu">일상·생각</a></li>
-        	
-        	
+        	<c:if test="${login.m_id ne null}">
+        	<li role="presentation">
+        		<a href="#settings" onclick="url_calendar()" class="topic_menu">캘린더</a>
+        	</li>
+        	</c:if>        	
       </ul>
 
     </div><!-- /.navbar-collapse -->

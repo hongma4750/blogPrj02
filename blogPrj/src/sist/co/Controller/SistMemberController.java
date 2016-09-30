@@ -44,6 +44,8 @@ import sist.co.Model.SistFriendParamVO;
 import sist.co.Model.SistFriendVO;
 import sist.co.Model.SistMemberVO;
 import sist.co.Model.SistMessage;
+import sist.co.Model.SistTopicDTO;
+import sist.co.Model.SistTopicPageDTO;
 import sist.co.Model.YesMember;
 import sist.co.Service.SistFriendService;
 import sist.co.Service.SistMemberService;

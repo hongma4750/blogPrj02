@@ -28,7 +28,7 @@
 <ul class="nav nav-tabs" role="tablist" id="myTab">
   <li rel="ftottab" role="presentation" class="active"><a href="fnewslist.do" id="friendnews">이웃소식보기</a></li>
   <li rel="ttottab" role="presentation"><a href="topiclist.do" id="topic" aria-controls="presentation" role="tab" data-toggle="tab">주제별 글보기</a></li>
-  <br><div id="right_side_set" align="right"><a href="openfriend.do">이웃관리</a>&nbsp;&nbsp;<a href="#none">관심주제설정</a></div>
+  <br><div id="right_side_set" align="right"><a class="glyphicon glyphicon-cog" href="openfriend.do">이웃관리</a>&nbsp;&nbsp;<!-- <a href="#none">관심주제설정</a> --></div>
 </ul>
 
   
